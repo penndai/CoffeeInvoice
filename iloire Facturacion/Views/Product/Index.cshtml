@@ -1,0 +1,51 @@
+﻿@using MvcPaging;
+
+@model IPagedList<Product>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div id="ajaxResponse">
+	<h1>List <small>of Product</small></h1>
+
+    <p>
+        @Html.ActionLink("[+] Create New", "Create", null, new { @class = "btn primary" })
+    </p>
+
+	<div class="pagingContainer">
+        @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount)
+    </div>
+
+	    <table class="zebra-striped">
+        <thead>
+            <th>
+                Product Name
+            </th>
+            <th>
+                Price
+            </th>            
+            <th width="160"></th>
+        </thead>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            
+            <td nowrap>				
+                @Html.ActionLink("Edit", "Edit", new { id = item.ProductID }, new { @class = "btn primary" }) 
+                @Html.ActionLink("Details", "Details", new { id = item.ProductID }, new { @class = "btn" }) 
+                @Html.ActionLink("Delete", "Delete", new { id = item.ProductID }, new { @class = "btn" })
+				@Html.ActionLink("Copy", "Copy", new { id=item.ProductID}, new { @class="btn"})
+            </td>
+        </tr>
+    }
+
+    </table>
+</div>

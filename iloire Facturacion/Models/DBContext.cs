@@ -17,4 +17,6 @@ public class InvoiceDB : DbContext {
     public DbSet<InvoiceDetails> InvoiceDetails { get; set; }
 
     public DbSet<User> Users { get; set; }
+
+	public System.Data.Entity.DbSet<Product> Products { get; set; }
 }
