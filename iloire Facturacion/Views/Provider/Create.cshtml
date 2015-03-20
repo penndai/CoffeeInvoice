@@ -1,18 +1,12 @@
-﻿@*
-	Iván Loire - www.iloire.com
-	Please readme README file for license terms.
-
-	ASP.NET MVC3 ACME Invocing app (demo app for training purposes)
-*@
-
-@model Provider
+﻿@model Provider
 
 @{
-    ViewBag.Title = "Create";
+	ViewBag.Title = "Create";
 }
 
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     @Html.ValidationSummary(true)
     <fieldset>
          <legend>Create Provider</legend>
@@ -100,7 +94,7 @@
 
         <div class="actions">
             <input type="submit" class="btn primary" value="Create" />
-			@Html.ActionLink("Back to List", "Index", null, new { @class = "btn"})
+			@Html.ActionLink("Back to List", "Index", null, new { @class = "btn" })
         </div>
     </fieldset>
 }

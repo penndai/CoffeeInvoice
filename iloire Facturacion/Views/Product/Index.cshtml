@@ -25,7 +25,8 @@
             <th>
                 Price
             </th>            
-            <th width="160"></th>
+            <th>Provider</th>
+			<th width="160px"></th>
         </thead>
 
     @foreach (var item in Model)
@@ -37,7 +38,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
-            
+            <td>
+				@Html.DisplayFor(x=>item.Provider.Name)
+            </td>
             <td nowrap>				
                 @Html.ActionLink("Edit", "Edit", new { id = item.ProductID }, new { @class = "btn primary" }) 
                 @Html.ActionLink("Details", "Details", new { id = item.ProductID }, new { @class = "btn" }) 

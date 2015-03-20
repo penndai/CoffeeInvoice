@@ -41,12 +41,13 @@
              }
             @Html.ActionLink("Expenses", "Index", "Purchase")</li>
             <li>@Html.ActionLink("( + )", "Create", "Purchase") </li>
-        </ul>
+        </ul>	  
         <ul class="nav" id="adminmenu">
             <li class="dropdown" data-dropdown="dropdown">
               <a href="#" class="dropdown-toggle">Admin</a>
               <ul class="dropdown-menu">
                 <li><a href="@Url.Action("Index", "Provider")">Edit providers</a></li>
+				<li><a href="@Url.Action("Index", "Product")">Edit products</a></li>
                 <li><a href="@Url.Action("Index", "Customer")">Edit customers</a></li>
                 <li><a href="@Url.Action("Index", "PurchaseType")">Edit expense types</a></li>
               </ul>

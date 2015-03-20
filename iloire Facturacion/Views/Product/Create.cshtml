@@ -1,0 +1,42 @@
+﻿@model Product
+
+@{
+	ViewBag.Title = "Create Product";
+}
+
+@using (Html.BeginForm()) { 
+	 @Html.ValidationSummary(true)
+	<fieldset>
+		<legend>
+			Create Product
+		</legend>
+
+		 <div class="clearfix">
+			 @Html.LabelFor(x=>Model.ProductName)
+			 <div class="input">
+				 @Html.EditorFor(x=>Model.ProductName)
+				 @Html.ValidationMessageFor(x=>Model.ProductName)
+			 </div>
+		 </div>
+
+		<div class="clearfix">
+			@Html.LabelFor(x=>Model.Price)
+			<div class="input">
+				@Html.EditorFor(x=>Model.Price)
+				@Html.ValidationMessageFor(x=>Model.Price)
+			</div>
+		</div>
+
+		<div class="clearfix">
+			@Html.LabelFor(x=>Model.ProviderID)
+			<div class="input">
+				@Html.DropDownList("providers", "")
+			</div>
+		</div>
+
+		<div class="actions">
+            <input type="submit" class="btn primary" value="Create" />
+			@Html.ActionLink("Back to List", "Index", null, new { @class = "btn" })
+        </div>
+	</fieldset>
+}

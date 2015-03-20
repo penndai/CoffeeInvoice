@@ -157,6 +157,7 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Attributes\HandleErrorAttribute.cs" />
+    <Compile Include="Models\Helper\CurrencyHelper.cs" />
     <Compile Include="Models\Helper\TextHelper.cs" />
     <Compile Include="Models\DBContext.cs" />
     <Compile Include="Models\EntitiesContextDBInitializer.cs" />
@@ -622,6 +623,7 @@
     <Content Include="Views\Shared\Menu.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CodeTemplates\AddController\Controller.cs.t4" />
     <None Include="CodeTemplates\AddController\Controller.tt" />
     <None Include="CodeTemplates\AddView\CSHTML\Create.tt" />
     <None Include="CodeTemplates\AddView\CSHTML\Delete.tt" />
@@ -686,6 +688,7 @@
     <None Include="Properties\PublishProfiles\coffeeinvoice - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\coffeeinvoice - Web Deploy.pubxml" />
     <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
