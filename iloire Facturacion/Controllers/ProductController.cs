@@ -18,8 +18,17 @@ namespace CoffeeInvoice.Controllers
 
 		public ViewResult Index(int? page)
 		{
+			CurrencyConvertYahooController rateController = new CurrencyConvertYahooController();
+			double rate = rateController.ConvertCurrency("AUD", "CNY", 1);
+
 			var products = db.Products.OrderBy(i => i.ProductName).Include("Provider").ToList();
+			foreach (var pro in products)
+			{
+				pro.CNYPrice = pro.Price * rate;
+			}
+
 			int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
+
 			var productsListPaged = products.ToPagedList(currentPageIndex, defaultPageSize);
 			return View(productsListPaged);
 		}

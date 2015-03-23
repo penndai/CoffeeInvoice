@@ -28,6 +28,13 @@ public class Product
 		set;
 	}
 
+	[DisplayFormat(DataFormatString="{0:C}")]
+	public double? CNYPrice
+	{
+		get;
+		set;
+	}
+
 	//[System.ComponentModel.DataAnnotations.Schema.ForeignKey("ProviderID")]
 	[Display(Name="Provider")]
 	public int ProviderID

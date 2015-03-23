@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Product App</title>
+</head>
+<body>
+	Rate:
+	<div id="rate"></div>
+	<script type="text/javascript" src="Scripts/jquery-1.7.2.min.js"></script>
+	<script>
+		var url = "api/ConvertCurrency/AUD/CNY/1";
+
+		 $(document).ready(function () {
+		 // Send an AJAX request
+		$.getJSON(url)
+			.done(function (data) {
+			$("#rate").text(data);           
+          });
+    });
+	</script>
+</body>
+</html>

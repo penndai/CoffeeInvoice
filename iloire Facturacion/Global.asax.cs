@@ -1,7 +1,9 @@
-﻿using System;
+﻿using CoffeeInvoice.App_Start;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -22,24 +24,24 @@ namespace CoffeeInvoice
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-            "Invoice", // Nombre de ruta
-            "Invoice/{action}/{id}", // URL con parámetros
+            "Invoice",
+            "Invoice/{action}/{id}", 
             new { controller = "Invoice", action = "Index", id = UrlParameter.Optional, proposal = false }, // Valores predeterminados de parámetro
 			new[] { "CoffeeInvoice.Controllers" }
             );
 
             routes.MapRoute(
-              "Proposal", // Nombre de ruta
-              "Proposal/{action}/{id}", // URL con parámetros
+              "Proposal",
+              "Proposal/{action}/{id}", 
               new { controller = "Invoice", action = "Index", id = UrlParameter.Optional, proposal=true }, // Valores predeterminados de parámetro
 			  new[] { "CoffeeInvoice.Controllers" }
           );
         
 
             routes.MapRoute(
-                "Default", // Nombre de ruta
-                "{controller}/{action}/{id}", // URL con parámetros
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional }, // Valores predeterminados de parámetro
+                "Default", 
+                "{controller}/{action}/{id}",
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional }, 
 				new[] {"CoffeeInvoice.Controllers"}
             );
 
@@ -53,9 +55,12 @@ namespace CoffeeInvoice
                 System.Data.Entity.Database.SetInitializer(new EntitiesContextInitializer());
             }
 
+			
             AreaRegistration.RegisterAllAreas();
+			
+			GlobalConfiguration.Configure(WebApiConfig.Register);
 
-            RegisterGlobalFilters(GlobalFilters.Filters);
+			RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
         }
     }

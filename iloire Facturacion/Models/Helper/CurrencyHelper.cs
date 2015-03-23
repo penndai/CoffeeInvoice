@@ -8,7 +8,7 @@ namespace CoffeeInvoice.Models.Helper
 {
 	public static class CurrencyHelper
 	{
-		public static string Currency(this HtmlHelper helper, decimal data, string locale = "en-US", bool woCurrency = false)
+		public static string Currency(this HtmlHelper helper, double data, string locale = "en-US", bool woCurrency = false)
 		{
 			var culture = new System.Globalization.CultureInfo(locale);
 
