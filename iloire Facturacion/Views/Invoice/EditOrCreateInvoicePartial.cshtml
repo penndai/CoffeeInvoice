@@ -115,8 +115,8 @@
             @Html.LabelFor(model => model.AdvancePaymentTax)
         
             <div class="input">
-                @Html.EditorFor(model => model.AdvancePaymentTax) %
-                @Html.ValidationMessageFor(model => model.AdvancePaymentTax)
+                @Html.EditorFor(model => model.AdvancePaymentTax,"Currency") %
+                @Html.ValidationMessageFor(model => model.AdvancePaymentTax, "Invalide number")
             </div>
 		</div>
 
@@ -124,7 +124,7 @@
             @Html.LabelFor(model => model.Paid)
         
             <div class="input">
-                @Html.EditorFor(model => model.Paid)
+                @Html.EditorFor(model => model.Paid)	
                 @Html.ValidationMessageFor(model => model.Paid)
             </div>
 		</div>

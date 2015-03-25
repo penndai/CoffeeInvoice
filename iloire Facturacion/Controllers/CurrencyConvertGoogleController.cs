@@ -19,7 +19,7 @@ namespace CoffeeInvoice.Controllers
 
 		[Route("api/ConvertCurrency/{inCurrency}/{outCurrency}/{invalue}")]
 		[HttpGet]
-		public double ConvertCurrency(string inCurrency, string outCurrency, int invalue)
+		public decimal ConvertCurrency(string inCurrency, string outCurrency, int invalue)
 		{
 			string yahooURL = System.Configuration.ConfigurationManager.AppSettings["yahooURL"];			
 			WebClient wclient = new WebClient();
@@ -29,7 +29,7 @@ namespace CoffeeInvoice.Controllers
 
 			string[] val = Regex.Split(response, ",");
 
-			double rate = Math.Round(float.Parse(val[1],System.Globalization.CultureInfo.InvariantCulture),2) + 0.2;			
+			decimal rate = Convert.ToDecimal(Math.Round(float.Parse(val[1], System.Globalization.CultureInfo.InvariantCulture) + 0.2, 2));			
 			return rate * invalue;
 		}
 

@@ -14,6 +14,7 @@ using System.Web.Mvc;
 using MvcPaging;
 using System.Globalization;
 
+
 namespace CoffeeInvoice.Controllers
 {
     [Authorize]

@@ -14,17 +14,22 @@ namespace CoffeeInvoice.Controllers
 		private InvoiceDB db = new InvoiceDB();
 		private int defaultPageSize = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["DefaultPaginationSize"]);
 
-		// GET: /Provider/
+		private decimal _rate;
+		private decimal AUDCNYRate
+		{
+			get { return _rate; }			 
+		}
 
+		// GET: /Provider/
 		public ViewResult Index(int? page)
 		{
 			CurrencyConvertYahooController rateController = new CurrencyConvertYahooController();
-			double rate = rateController.ConvertCurrency("AUD", "CNY", 1);
+			_rate = rateController.ConvertCurrency("AUD", "CNY", 1);
 
 			var products = db.Products.OrderBy(i => i.ProductName).Include("Provider").ToList();
 			foreach (var pro in products)
 			{
-				pro.CNYPrice = pro.Price * rate;
+				pro.CNYPrice = pro.Price * AUDCNYRate;
 			}
 
 			int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
@@ -50,6 +55,21 @@ namespace CoffeeInvoice.Controllers
 
 			ViewBag.providers = items;
 			return View();
+		}
+
+		public ActionResult Edit(int id)
+		{
+			Product product = db.Products.Find(id);
+			CurrencyConvertYahooController rateController = new CurrencyConvertYahooController();
+
+			_rate = rateController.ConvertCurrency("AUD", "CNY", 1);
+			if (!product.CNYPrice.HasValue)
+			{
+				if (product.Price > 0)
+					product.CNYPrice = product.Price * AUDCNYRate;
+
+			}
+			return View(product);
 		}
 
 		 [HttpPost]

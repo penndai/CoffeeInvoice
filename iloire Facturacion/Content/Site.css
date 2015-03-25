@@ -211,3 +211,11 @@ td.total
 .income{color:green}
 
 .noborder{border:0}
+
+.editproductlabel {
+	width:120px
+}
+
+.focus {
+color:green
+}

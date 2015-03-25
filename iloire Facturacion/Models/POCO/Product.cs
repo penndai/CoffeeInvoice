@@ -21,15 +21,29 @@ public class Product
 		set;
 	}
 
+	[DataType(DataType.Currency)]
 	[DisplayFormat(DataFormatString = "{0:C}")]
-	public double Price
+	[Required]
+	[Display(Name = "AU Price $")]
+	public decimal Price
 	{
 		get;
 		set;
 	}
 
+	[DataType(DataType.Currency)]
 	[DisplayFormat(DataFormatString="{0:C}")]
-	public double? CNYPrice
+	[Display(Name = "CNY Price ￥")]
+	public decimal? CNYPrice
+	{
+		get;
+		set;
+	}
+
+	[DataType(DataType.Currency)]
+	[DisplayFormat(DataFormatString="{0:C}")]
+	[Display(Name="Sell CNY Price ￥")]
+	public decimal? CNYSellPrice
 	{
 		get;
 		set;
