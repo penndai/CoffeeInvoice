@@ -1,0 +1,21 @@
+﻿<h2>Currency rate for AUD CNY:
+<span id="rate"></span>
+</h2>
+<script type="text/javascript">
+	$(document).ready(function () {
+		// Send an AJAX request
+		$.ajax({
+			url: "../../api/ConvertCurrency/AUD/CNY/1",
+			type: "GET",
+			//data: JSON.stringify(["AUD", "CNY", 2]),
+			contentType: 'application/json; charset=utf-8',
+			success: function (data) {
+				$("#rate").text(data);
+			},
+			error: function (error) {
+				alert('Error:' + error);
+			}
+		});
+	});
+</script>
+

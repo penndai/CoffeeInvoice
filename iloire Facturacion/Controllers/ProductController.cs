@@ -57,22 +57,7 @@ namespace CoffeeInvoice.Controllers
 			return View();
 		}
 
-		public ActionResult Edit(int id)
-		{
-			Product product = db.Products.Find(id);
-			CurrencyConvertYahooController rateController = new CurrencyConvertYahooController();
-
-			_rate = rateController.ConvertCurrency("AUD", "CNY", 1);
-			if (!product.CNYPrice.HasValue)
-			{
-				if (product.Price > 0)
-					product.CNYPrice = product.Price * AUDCNYRate;
-
-			}
-			return View(product);
-		}
-
-		 [HttpPost]
+		[HttpPost]
 		public ActionResult Create(Product product, int? providers)
 		{
 			if (ModelState.IsValid)
@@ -91,5 +76,36 @@ namespace CoffeeInvoice.Controllers
 
 			return View(product);
 		}
+		[HttpPost]
+		public ActionResult Edit(Product product)
+		{
+			if (ModelState.IsValid)
+			{
+				db.Entry<Product>(product).State = EntityState.Modified;
+				
+				db.SaveChanges();
+				return RedirectToAction("Index");
+			}
+
+			ViewBag.ProviderID = new SelectList(db.Providers.OrderBy(x=>x.Name), "ProviderID", "Name", product.ProviderID);
+			return View(product);
+		}
+
+		public ActionResult Edit(int id)
+		{
+			Product product = db.Products.Find(id);
+			CurrencyConvertYahooController rateController = new CurrencyConvertYahooController();
+
+			_rate = rateController.ConvertCurrency("AUD", "CNY", 1);
+			if (!product.CNYPrice.HasValue)
+			{
+				if (product.Price > 0)
+					product.CNYPrice = product.Price * AUDCNYRate;
+
+			}
+
+			ViewBag.ProviderID = new SelectList(db.Providers.OrderBy(x=>x.Name), "ProviderID","Name", product.ProviderID);
+			return View(product);
+		}		 
 	}	 
 }

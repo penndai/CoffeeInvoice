@@ -1,11 +1,4 @@
-﻿@*
-	Iván Loire - www.iloire.com
-	Please readme README file for license terms.
-
-	ASP.NET MVC3 ACME Invocing app (demo app for training purposes)
-*@
-
-@model Purchase
+﻿@model Purchase
 
    <fieldset>
         <legend>@ViewBag.Title</legend>
@@ -22,7 +15,7 @@
 		</div>
 
          <div class="clearfix">
-            @Html.LabelFor(model => model.PurchaseTypeID, "PurchaseType")
+            @Html.LabelFor(model => model.PurchaseTypeID, "Purchase Type")
         
         <div class="input chzn-select">
             @Html.DropDownList("PurchaseTypeID", String.Empty)
@@ -49,7 +42,7 @@
 		</div>
 
         <div class="clearfix">
-            @Html.LabelFor(model => model.ProviderID, "Provider")
+            @Html.LabelFor(model => model.ProviderID, "Provider name")
         
         <div class="input chzn-select">
             @Html.DropDownList("ProviderID", String.Empty)

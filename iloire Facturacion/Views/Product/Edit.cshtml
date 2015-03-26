@@ -1,0 +1,101 @@
+﻿@model Product
+@{
+	ViewBag.Title = "Edit Product";
+}
+@*<h2>Current Rate:
+	<span id="rate"></span></h2>*@
+@Html.Partial("CurrencyRate")
+
+	@using (Html.BeginForm())
+ { 
+	  @Html.ValidationSummary(true)
+		<fieldset>
+			<legend>Product Edition</legend>
+			@Html.HiddenFor(x => Model.ProductID)
+
+			<div class="clearFix">
+				@Html.LabelFor(model => model.ProductName)
+
+				<div class="input">
+					@Html.EditorFor(model => model.ProductName)
+					@Html.ValidationMessageFor(model => model.ProductName)
+				</div>
+			</div>
+
+			<div class="clearFix">
+				@*@Html.LabelFor(model => model.Price, new { @class = "editproductlabel" })*@
+				@Html.LabelFor(model => model.Price)
+				<div class="input">
+					@Html.EditorFor(model => model.Price, "Currency")
+					@Html.ValidationMessageFor(model => model.Price)
+				</div>
+			</div>
+
+			<div class="clearFix">
+				@Html.LabelFor(model => model.CNYPrice)
+				<div class="input">
+					@Html.EditorFor(model => model.CNYPrice, "Currency")
+
+					@Html.ValidationMessageFor(model => model.CNYPrice)
+				</div>
+			</div>
+
+			<div class="clearFix">
+				@Html.LabelFor(model => model.CNYSellPrice)
+				<div class="input">
+					@Html.EditorFor(model => model.CNYSellPrice, "Currency")
+					@Html.ValidationMessageFor(model => model.CNYSellPrice)
+				</div>
+			</div>
+
+			<div class="clearfix">
+				@Html.LabelFor(model => model.ProviderID, "Provider name")
+
+				<div class="input chzn-select">
+					@Html.DropDownList("ProviderID", String.Empty)
+					@Html.ValidationMessageFor(model => model.ProviderID)
+				</div>
+			</div>
+			<div class="actions">
+				<input type="submit" class="btn primary" value="Save" />
+				@Html.ActionLink("Back to List", "Index", null, new { @class = "btn" })
+			</div>
+		</fieldset>
+ }
+
+<script type="text/javascript">
+	//var url = "api/ConvertCurrency/AUD/CNY/1";
+
+	$(document).ready(function () {
+		// Send an AJAX request
+		$.ajax({
+			url: "../../api/ConvertCurrency/AUD/CNY/1",
+			type: "GET",
+			//data: JSON.stringify(["AUD", "CNY", 2]),
+			contentType: 'application/json; charset=utf-8',
+			success: function (data) {
+				$("#rate").text(data);
+			},
+			error: function (error) {
+				alert('Error:' + error);
+			}
+		});
+
+		$("#Price").blur(function (e) {
+
+			if ($("#Price").val() && $("#rate").text()) {
+				var val = parseFloat($("#Price").val()) * parseFloat($("#rate").text());
+				$("#CNYPrice").val(val.toFixed(2));
+				$("#CNYSellPrice").val(val.toFixed(2));
+			}
+		});
+		//$.getJSON(url)
+		//	.done(function (data) {
+		//		$("#rate").text(data);
+		//	});
+	});
+
+
+</script>
+
+

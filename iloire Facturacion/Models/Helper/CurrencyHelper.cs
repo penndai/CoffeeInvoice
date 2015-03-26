@@ -15,7 +15,10 @@ namespace CoffeeInvoice.Models.Helper
 			if (woCurrency || (helper.ViewData["woCurrency"] != null && (bool)helper.ViewData["woCurrency"]))
 				return data.ToString(culture);
 
-			return data.ToString("C", culture);
+			if (data > 0)
+				return data.ToString("C", culture);
+			else
+				return string.Format("<span class=\"negative\">{0}</span>", data.ToString("C", culture));
 		}
 	}
 }

@@ -7,7 +7,8 @@
     ViewBag.Title = "Index";
 }
 
-<script>	
+@Html.Partial("CurrencyRate");
+@*<script>	
 	$(document).ready(function () {
 		var url = "api/ConvertCurrency/AUD/CNY/1";
 		// Send an AJAX request
@@ -17,7 +18,7 @@
 			});
 	});
 </script>
-<h4>Current Rate for AUD/CNY: <span id="rate"></span></h4>
+<h4>Current Rate for AUD/CNY: <span id="rate"></span></h4>*@
 <div id="ajaxResponse">
 	<h1>List <small>of Product</small></h1>
 
@@ -39,7 +40,8 @@
             </th>
 			<th>
 				CNY Price
-			</th>            
+			</th>
+			<th>Sell CNY Price</th>            
             <th>Provider</th>
 			<th width="160px"></th>
         </thead>
@@ -57,6 +59,9 @@
 			<td>
 				@Html.Currency(item.CNYPrice.Value, "zh-CN")
 				@*@Html.DisplayFor(x=>item.CNYPrice)*@			
+			</td>
+			<td>
+				@Html.Raw(@Html.Currency(item.CNYSellPrice.HasValue?item.CNYSellPrice.Value:0, "zh-CN"))
 			</td>
             <td>
 				@Html.DisplayFor(x=>item.Provider.Name)
