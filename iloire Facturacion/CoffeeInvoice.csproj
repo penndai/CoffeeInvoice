@@ -195,6 +195,7 @@
     <Compile Include="Models\POCO\InvoiceDetails.cs" />
     <Compile Include="Models\POCO\Purchase.cs" />
     <Compile Include="Models\POCO\Invoice.cs" />
+    <Compile Include="Models\POCO\PurchaseProduct.cs" />
     <Compile Include="Models\POCO\PurchaseType.cs" />
     <Compile Include="Models\POCO\User.cs" />
     <Compile Include="Models\Security\InvoicingMembershipProvider.cs" />
@@ -712,6 +713,8 @@
     <Content Include="Views\Product\Create.cshtml" />
     <Content Include="Views\Product\Edit.cshtml" />
     <Content Include="Views\Shared\CurrencyRate.cshtml" />
+    <Content Include="Views\Product\Details.cshtml" />
+    <Content Include="Views\Purchase\PurchasesProductsList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

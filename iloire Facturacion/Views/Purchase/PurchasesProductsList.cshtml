@@ -1,0 +1,43 @@
+﻿@model IEnumerable<PurchaseProduct>
+@using CoffeeInvoice.Models.Helper;
+<table class="zebra-striped">
+	<thead>
+		<th width="30%">Customer
+		</th>
+		<th>Product
+		</th>
+		<th>Provider
+		</th>
+		<th>CNY Sell Price
+		</th>
+		<th>Date
+		</th>
+	</thead>
+	@foreach (var item in Model)
+ {
+		<tr>
+			<td nowrap="nowrap">
+				@Html.DisplayFor(x => item.Customer.Name)
+			</td>
+			<td nowrap="nowrap">
+				@Html.DisplayFor(x => item.Product.ProductName)
+			</td>
+			<td nowrap="nowrap">
+				@Html.DisplayFor(x => item.Provider.Name)
+			</td>
+			<td nowrap="nowrap">
+				@Html.Currency(item.Product.CNYSellPrice.Value, "zh-CN")
+				@*@Html.DisplayFor(x => item.Product.CNYSellPrice)*@
+			</td>
+			<td nowrap="nowrap">
+				@Html.DisplayFor(x => item.TimeStamp)
+			</td>
+		</tr>
+ }
+	<tfoot>
+		<tr>
+			<td><span class="label">TOTALS: </span></td>
+			<td colspan="4" nowrap="nowrap">@string.Format("{0:C}", Model.Sum(x => x.Product.CNYSellPrice))</td>
+		</tr>
+	</tfoot>
+</table>

@@ -76,6 +76,14 @@ namespace CoffeeInvoice.Controllers
 
 			return View(product);
 		}
+
+		// Get Proeuct with id 
+		public ActionResult Details(int id)
+		{
+			Product product = db.Products.Find(id);
+			return View(product);
+		}
+
 		[HttpPost]
 		public ActionResult Edit(Product product)
 		{

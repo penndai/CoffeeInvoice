@@ -67,6 +67,12 @@ namespace CoffeeInvoice.Controllers
             return PartialView("PurchasesListPartial", invoices.ToList());
         }
 
+		public PartialViewResult RecentPurcharseByProduct(int? productID)
+		{
+			var purchaseProducts = db.PurchaseProducts.Where(x => x.ProductID == productID).OrderByDescending(x => x.TimeStamp).Take(10);
+			return PartialView("PurchasesProductsList", purchaseProducts.ToList());
+		}
+
         public PartialViewResult RecentPurchasesByCustomer(int? providerID)
         {
             var invoices = db.Purchases.Include(i => i.Provider).Where(p=>p.ProviderID==providerID).OrderByDescending(t => t.TimeStamp).Take(10);

@@ -1,0 +1,69 @@
+﻿@using CoffeeInvoice.Models.Helper;
+
+@model Product
+@{
+	ViewBag.Title = "Product details";	
+}
+
+@section header{
+	<script>
+    var sorter_options = {
+        headers: {
+            2: { sorter: 'decimal' },
+            3: { sorter: 'datetime' },
+            4: { sorter: 'datetime' }
+        }
+    };
+</script>	
+}
+
+<div class="span7">
+	<fieldset>
+		<legend>Product details</legend>
+		<p>
+			<strong>Product name</strong>
+			@Html.DisplayFor(model=>Model.ProductName)
+		</p>
+
+		<p>
+			<strong>Product AUD Price</strong>
+			@Html.Currency(Model.Price,"en-AU")
+		</p>
+
+		<p>
+			<strong>Product CNY Price</strong>
+
+			@if (Model.CNYPrice.HasValue)
+			{
+					@Html.Currency(Model.CNYPrice.Value, "zh-CN");
+			}
+			else
+			{
+					@Html.Currency(-1, "zh-CN");	
+			}				
+		</p>
+
+		<p>
+			<strong>Product Sell CNY Price</strong>
+			@if (Model.CNYSellPrice.HasValue)
+			{
+					@Html.Currency(Model.CNYSellPrice.Value, "zh-CN");
+			}
+			else
+			{
+				@Html.Currency(-1, "zh-CN");
+			}
+		</p>
+	</fieldset>
+
+	<p>
+		@Html.ActionLink("Edit", "Edit", new { id=Model.ProductID }, new { @class = "btn"})
+		@Html.ActionLink("Back to List", "Index", null, new { @class = "btn"})
+	</p>
+</div>
+
+<div class="span12">
+    <h2>Last purchases for this product</h2>
+	
+    @{Html.RenderAction("RecentPurcharseByProduct", "Purchase", new { productID = Model.ProductID });}
+</div>
