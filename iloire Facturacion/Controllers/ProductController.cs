@@ -20,21 +20,40 @@ namespace CoffeeInvoice.Controllers
 			get { return _rate; }			 
 		}
 
-		// GET: /Provider/
+		// GET: /Product/
 		public ViewResult Index(int? page)
 		{
 			CurrencyConvertYahooController rateController = new CurrencyConvertYahooController();
 			_rate = rateController.ConvertCurrency("AUD", "CNY", 1);
 
+			var productsVM = new List<CoffeeInvoice.Models.ViewModel.ProductViewModel>();
 			var products = db.Products.OrderBy(i => i.ProductName).Include("Provider").ToList();
+
 			foreach (var pro in products)
 			{
-				pro.CNYPrice = pro.Price * AUDCNYRate;
+				CoffeeInvoice.Models.ViewModel.ProductViewModel proVM = new Models.ViewModel.ProductViewModel();
+
+				proVM.ProductID = pro.ProductID;
+				proVM.ProductName = pro.ProductName;
+				proVM.Provider = pro.Provider;
+				proVM.ProviderID = pro.ProviderID;
+				proVM.Price = pro.Price;
+				proVM.CNYSellPrice = pro.CNYSellPrice;				
+				proVM.CNYPrice = pro.Price * AUDCNYRate;
+
+				if (db.PurchaseProducts.Where(x => x.ProductID == pro.ProductID).Count() > 0)
+				{
+					proVM.IsProductPurchased = true;
+				}
+				else
+					proVM.IsProductPurchased = false;
+
+				productsVM.Add(proVM);
 			}
 
 			int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
 
-			var productsListPaged = products.ToPagedList(currentPageIndex, defaultPageSize);
+			var productsListPaged = productsVM.ToPagedList(currentPageIndex, defaultPageSize);
 			return View(productsListPaged);
 		}
 
@@ -114,6 +133,12 @@ namespace CoffeeInvoice.Controllers
 
 			ViewBag.ProviderID = new SelectList(db.Providers.OrderBy(x=>x.Name), "ProviderID","Name", product.ProviderID);
 			return View(product);
-		}		 
+		}
+
+		public ActionResult Delete(int id)
+		{
+			Product product = db.Products.Find(id);
+			return View(product);
+		}
 	}	 
 }

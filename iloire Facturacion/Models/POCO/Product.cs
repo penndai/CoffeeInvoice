@@ -61,5 +61,5 @@ public class Product
 	{
 		get;
 		set;
-	}
+	}	
 }

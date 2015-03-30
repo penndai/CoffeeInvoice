@@ -1,7 +1,7 @@
 ﻿@using MvcPaging;
 @using CoffeeInvoice.Models.Helper;
 
-@model IPagedList<Product>
+@model IPagedList<CoffeeInvoice.Models.ViewModel.ProductViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -69,7 +69,15 @@
             <td nowrap>				
                 @Html.ActionLink("Edit", "Edit", new { id = item.ProductID }, new { @class = "btn primary" }) 
                 @Html.ActionLink("Details", "Details", new { id = item.ProductID }, new { @class = "btn" }) 
-                @Html.ActionLink("Delete", "Delete", new { id = item.ProductID }, new { @class = "btn" })
+
+				@if(item.IsProductPurchased.HasValue && item.IsProductPurchased.Value)
+				{
+					@Html.ActionLink("Delete", "Delete", new { id = item.ProductID }, new { @class = "btn disabled", disabled="disabled", title="Can not delete, product purchased" })
+				}
+				else
+				{
+					@Html.ActionLink("Delete", "Delete", new { id = item.ProductID }, new { @class = "btn" })
+				}
 				@Html.ActionLink("Copy", "Copy", new { id=item.ProductID}, new { @class="btn"})
             </td>
         </tr>

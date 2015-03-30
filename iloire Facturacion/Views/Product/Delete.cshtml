@@ -1,0 +1,54 @@
+﻿@model Product
+
+@using CoffeeInvoice.Models.Helper;
+@{
+	ViewBag.Title = "Delete Product";
+}
+
+<h2>Delete Product</h2>
+
+<div class="alert-message warning">
+  <a class="close" href="#">×</a>
+  <p><strong>Are you sure you want to delete this Product?</strong></p>
+</div>
+
+<fieldset>
+	<legend>Product</legend>
+
+	<p>
+		<strong>Name: </strong>
+		@Html.DisplayFor(x=>Model.ProductName)
+	</p>
+
+	<p>
+		<strong>Provider name: </strong>
+		@Html.DisplayFor(x=>x.Provider.Name)
+	</p>
+
+	<p>
+		<strong>AUD Price: </strong>
+		@Html.Currency(Model.Price, "en-AU")
+	</p>
+
+	<p>
+		<strong>CNY Price: </strong>
+		@if(Model.CNYPrice.HasValue)
+		{
+			@Html.Currency(Model.CNYPrice.Value, "zh-CN")
+		}
+	</p>
+
+	<p>
+		<strong>CNY Sell Price: </strong>
+		@if (Model.CNYSellPrice.HasValue)
+		{
+			@Html.Currency(Model.CNYPrice.Value, "zh-CN")
+		}		
+	</p>
+</fieldset>
+@using (Html.BeginForm()) {
+	<div class="actions">
+            <input type="submit" class="btn primary" value="Delete" />
+			@Html.ActionLink("Back to List", "Index", null, new { @class = "btn"})
+    </div>
+}
