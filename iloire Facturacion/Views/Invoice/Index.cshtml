@@ -1,9 +1,4 @@
-﻿@*
-	Iván Loire - www.iloire.com
-	Please readme README file for license terms.
-
-	ASP.NET MVC3 ACME Invocing app (demo app for training purposes)
-*@
+﻿
 
 @model IPagedList<Invoice>
 @using MvcPaging;
@@ -34,7 +29,17 @@
     @Html.ActionLink("[+] Create New ", "Create", new { proposal = ViewBag.IsProposal }, new { @class = "btn primary" })
 </p>
 
-@{Html.RenderPartial("SearchBoxItems", ViewBag.IsProposal ? "Proposal" : "Invoice");}
+@{
+	CoffeeInvoice.Models.ViewModel.SearchModel searchModel = new CoffeeInvoice.Models.ViewModel.SearchModel();
+	searchModel.Action = ViewBag.IsProposal ? "Proposal" : "Invoice";
+	searchModel.from = !string.IsNullOrEmpty(Request["from"])?Convert.ToDateTime(Request["from"]):new Nullable<DateTime>();
+	searchModel.to = !string.IsNullOrEmpty(Request["to"])?Convert.ToDateTime(Request["to"]):new Nullable<DateTime>();
+	searchModel.text = Request["text"];
+
+	Html.RenderPartial("ModelSearchBoxItems", searchModel);
+}
+
+@*@{Html.RenderPartial("SearchBoxItems", ViewBag.IsProposal ? "Proposal" : "Invoice");}*@
 
 <div class="pagingContainer noprint">
     @{

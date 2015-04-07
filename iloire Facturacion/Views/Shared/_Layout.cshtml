@@ -83,6 +83,7 @@
                  format: function (s, table) {
                      s = s.replace(/\-/g, "/");
                      s = s.replace(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/, "$3/$2/$1");
+                     
                      return $.tablesorter.formatFloat(new Date(s).getTime());
                  },
                  type: "numeric"
@@ -104,6 +105,19 @@
                  // set type, either numeric or text 
                  type: 'numeric'
              });
+
+             jQuery.validator.methods.date = function (value, element) {
+             	
+             	if (value) {
+             		try {
+             			alert(value);
+             			$.datepicker.parseDate('dd/mm/yy', value);
+             		} catch (ex) {
+             			return false;
+             		}
+             	}
+             	return true;
+             };
 
              $(".datefield").datepicker({ "dateFormat": 'dd/mm/yy' });
 

@@ -33,7 +33,7 @@ namespace CoffeeInvoice.Controllers
             ViewBag.AdvancePaymentTaxAmountTotal = invoices.Sum(i => i.AdvancePaymentTaxAmount);
         }
 
-        public ViewResultBase Search(string text, string from, string to, int? page,  int? pagesize, bool? proposal = false)
+        public ViewResultBase Search(string text, string from,string noname, string to, int? page,  int? pagesize, bool? proposal = false)
         {
             Session["invoiceText"] = text;
             Session["invoiceFrom"] = from;

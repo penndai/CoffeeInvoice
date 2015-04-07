@@ -1011,12 +1011,14 @@ $.extend($.validator, {
 		},
 
 		// http://docs.jquery.com/Plugins/Validation/Methods/date
-		date: function (value, element) {			
-			return this.optional(element) || !/Invalid|NaN/.test(new Date(value));			
+		date: function (value, element) {
+			
+			//return this.optional(element) || Globalize.parseDate(value, "dd/MM/yyyy") !== null;
+			return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
 		},
 
 		// http://docs.jquery.com/Plugins/Validation/Methods/dateISO
-		dateISO: function(value, element) {
+		dateISO: function (value, element) {			
 			return this.optional(element) || /^\d{4}[\/-]\d{1,2}[\/-]\d{1,2}$/.test(value);			
 		},
 

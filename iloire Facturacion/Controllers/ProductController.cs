@@ -20,6 +20,26 @@ namespace CoffeeInvoice.Controllers
 			get { return _rate; }			 
 		}
 
+		public ActionResult Copy(int id)
+		{
+			Product source = db.Products.Find(id);
+			if(source !=null)
+			{
+				Product p = new Product();
+				p.ProductName = source.ProductName;
+				p.Price = source.Price;
+				p.CNYSellPrice = source.CNYSellPrice;
+				p.CNYPrice = source.CNYPrice;
+				//p.Provider = source.Provider;
+				p.ProviderID = source.ProviderID;
+
+				db.Products.Add(p);
+				db.SaveChanges();
+			}
+
+			return RedirectToAction("Index");
+		}
+
 		// GET: /Product/
 		public ViewResult Index(int? page)
 		{
