@@ -172,9 +172,15 @@
     <Compile Include="Controllers\PurchaseController.cs" />
     <Compile Include="Controllers\PurchaseTypeController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201504081146372_NewTransaction.cs" />
+    <Compile Include="Migrations\201504081146372_NewTransaction.Designer.cs">
+      <DependentUpon>201504081146372_NewTransaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Attributes\HandleErrorAttribute.cs" />
     <Compile Include="Models\Helper\CurrencyHelper.cs" />
@@ -197,6 +203,7 @@
     <Compile Include="Models\POCO\Invoice.cs" />
     <Compile Include="Models\POCO\PurchaseProduct.cs" />
     <Compile Include="Models\POCO\PurchaseType.cs" />
+    <Compile Include="Models\POCO\Transaction.cs" />
     <Compile Include="Models\POCO\User.cs" />
     <Compile Include="Models\Security\InvoicingMembershipProvider.cs" />
     <Compile Include="Models\ViewModel\ProductViewModel.cs" />
@@ -735,6 +742,11 @@
       <LastGenOutput>Print.es.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201504081146372_NewTransaction.resx">
+      <DependentUpon>201504081146372_NewTransaction.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

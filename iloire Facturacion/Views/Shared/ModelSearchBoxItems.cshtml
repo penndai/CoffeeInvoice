@@ -29,10 +29,10 @@
 		Text:
 		@Html.TextBoxFor(x => x.text, new { @placeholder="Search text to look for ..."})
 		From:
-		@Html.EditorFor(x=>x.from,"DateTime",new {@placeholder="start Date from.."})
+		@Html.EditorFor(x=>x.from,"DateTime",new {Placeholder="start Date from.."})
 		@*@Html.TextBoxFor(x=>x.from, new {@placeholder="Start Date from..", @class="datefield small"})*@
 		To:
-		@Html.EditorFor(x => x.to, "DateTime", new { @placeholder = "end Date to.." })
+		@Html.EditorFor(x => x.to, "DateTime", new { Placeholder = "end Date to.." })
 		@*@Html.TextBoxFor(x =>x.to, new { @placeholder="End Date to..", @class="datefield small"})*@
 
 		 <input type="submit" value="Filter" class="btn small primary" />
