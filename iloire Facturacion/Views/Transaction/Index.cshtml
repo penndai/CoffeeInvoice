@@ -1,0 +1,61 @@
+﻿@model IPagedList<Transaction>
+
+@using MvcPaging;
+@{
+    ViewBag.Title = "List of Transactions";
+}
+
+<h1>List <small>of Transactions</small></h1>
+<p class="noprint">
+    @Html.ActionLink("[+] Create New ", "Create", new { @class = "btn primary" })
+</p>
+
+@{
+	CoffeeInvoice.Models.ViewModel.SearchModel searchModel = new CoffeeInvoice.Models.ViewModel.SearchModel();
+	searchModel.Action = "Transaction";
+	searchModel.from = !string.IsNullOrEmpty(Request["from"])?Convert.ToDateTime(Request["from"]):new Nullable<DateTime>();
+	searchModel.to = !string.IsNullOrEmpty(Request["to"])?Convert.ToDateTime(Request["to"]):new Nullable<DateTime>();
+	searchModel.text = Request["text"];
+
+	Html.RenderPartial("ModelSearchBoxItems", searchModel);
+}
+
+<div class="pagingContainer noprint">
+    @{
+        RouteValueDictionary r = new RouteValueDictionary();
+        r.Add("to", Request["to"]);
+        r.Add("from", Request["from"]);
+        r.Add("text", Request["text"]);
+        }
+    @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount, r)
+</div>
+
+<table class="zebra-striped">
+	<thead>
+		<th>
+			ID
+		</th>
+		<th>
+			Customer
+		</th>
+		<th>
+			Product
+		</th>
+	</thead>
+
+
+@foreach (var item in Model)
+{
+	 <tr>
+		 <td>
+			 #@Html.DisplayFor(modelItem => item.TransactionID)
+		 </td>
+		 <td>
+			 @Html.DisplayFor(x=>item.Customer.Name)
+		 </td>
+		 <td>
+			 @Html.DisplayFor(x=>item.Product.ProductName)
+		 </td>
+		 </tr>
+}
+		</table>

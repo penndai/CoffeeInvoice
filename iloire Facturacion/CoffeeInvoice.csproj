@@ -176,9 +176,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201504081146372_NewTransaction.cs" />
-    <Compile Include="Migrations\201504081146372_NewTransaction.Designer.cs">
-      <DependentUpon>201504081146372_NewTransaction.cs</DependentUpon>
+    <Compile Include="Migrations\201504141207007_addtimestampProcedure.cs" />
+    <Compile Include="Migrations\201504141207007_addtimestampProcedure.Designer.cs">
+      <DependentUpon>201504141207007_addtimestampProcedure.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -726,6 +726,9 @@
     <Content Include="Views\Purchase\PurchasesProductsList.cshtml" />
     <Content Include="Views\Product\Delete.cshtml" />
     <Content Include="Views\Shared\ModelSearchBoxItems.cshtml" />
+    <Content Include="Views\Transaction\Index.cshtml" />
+    <Content Include="Views\Transaction\Create.cshtml" />
+    <Content Include="Views\Transaction\EditOrCreateTransactionPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -744,8 +747,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201504081146372_NewTransaction.resx">
-      <DependentUpon>201504081146372_NewTransaction.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201504141207007_addtimestampProcedure.resx">
+      <DependentUpon>201504141207007_addtimestampProcedure.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

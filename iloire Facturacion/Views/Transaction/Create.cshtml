@@ -1,0 +1,13 @@
+﻿@model Transaction
+
+@{
+    ViewBag.Title = "Create Transaction";
+}
+
+@using (Html.BeginForm("Create", "Transaction", FormMethod.Post))
+{
+    @Html.ValidationSummary(true)
+    <text>
+        @{Html.RenderPartial("EditOrCreateTransactionPartial", Model);}
+    </text>
+}

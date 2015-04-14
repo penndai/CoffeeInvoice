@@ -17,6 +17,7 @@ using System.Web;
 		[ForeignKey("Customer")]
 		public int CustomerID { get; set; }
 
+		public DateTime TimeStamp { get; set; }
 		public virtual Product Product { get; set; }
 		public virtual Customer Customer { get; set; }
 	}

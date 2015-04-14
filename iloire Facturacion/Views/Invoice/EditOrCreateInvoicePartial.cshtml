@@ -1,10 +1,4 @@
-﻿@*
-	Iván Loire - www.iloire.com
-	Please readme README file for license terms.
-
-	ASP.NET MVC3 ACME Invocing app (demo app for training purposes)
-*@
-
+﻿
 @model Invoice
 
 @{
@@ -22,13 +16,13 @@
     });
 
     $(function () {
-    	$.validator.methods.date = function (value, element) {
-    		Globalize.culture("en-AU");
-    		// you can alternatively pass the culture to parseDate instead of
-    		// setting the culture above, like so:
-    		// parseDate(value, null, "en-AU")
-    		return this.optional(element) || Globalize.parseDate(value) !== null;
-    	}
+    	//$.validator.methods.date = function (value, element) {
+    	//	Globalize.culture("en-AU");
+    	//	// you can alternatively pass the culture to parseDate instead of
+    	//	// setting the culture above, like so:
+    	//	// parseDate(value, null, "en-AU")
+    	//	return this.optional(element) || Globalize.parseDate(value) !== null;
+    	//}
     });
 </script>
   <fieldset>
