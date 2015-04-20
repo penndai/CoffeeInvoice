@@ -1,1 +1,37 @@
-﻿
+﻿@model Transaction
+<fieldset>
+	<legend>Transaction edition</legend>
+	@Html.HiddenFor(model => model.TransactionID)
+
+	<div class="clearfix">
+		@Html.LabelFor(x => Model.CustomerID, "Customer", new { @class = "control-label col-sm-2" })
+		<div class="input chzn-select">
+			@Html.DropDownListFor(x => Model.CustomerID, (SelectList)ViewBag.Customers, string.Empty)
+			@*@Html.DropDownList("Customers", string.Empty)*@
+			@Html.ValidationMessageFor(x => Model.CustomerID)
+		</div>
+	</div>
+	<div class="clearfix">
+		@Html.LabelFor(x => Model.ProductID, "Product", new { @class = "control-label col-sm-2" })
+		<div class="input chzn-select">
+			@Html.DropDownListFor(x => Model.ProductID, (SelectList)ViewBag.Products, string.Empty)
+			@*@Html.DropDownList("Products", string.Empty)*@
+			@Html.ValidationMessageFor(x => Model.ProductID)
+		</div>
+	</div>
+	<div class="clearfix">
+		@Html.LabelFor(x => x.TimeStamp, "Transaction Date", new { @class = "control-label col-sm-2" })
+		<div class="input">
+			@Html.EditorFor(x => Model.TimeStamp, "DateTime", new { Placeholder = "Transaction date time" })
+		</div>
+	</div>
+	<div class="actions">
+		<input type="submit" class="btn primary" value="Save" />
+
+		@if (Model != null && Model.TransactionID > 0)
+		{   <text>
+			@Html.ActionLink("Delete", "Delete", new { id = Model.TransactionID, proposal = ViewBag.IsProposal }, new { @class = "btn" })
+			</text>
+		}
+	</div>
+</fieldset>

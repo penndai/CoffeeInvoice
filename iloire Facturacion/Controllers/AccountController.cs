@@ -73,36 +73,37 @@ namespace CoffeeInvoice.Controllers
 
         public ActionResult Register()
         {
-            return Content("Registration has been disabled on this app");
-            //return View();
+            //return Content("Registration has been disabled on this app");
+            return View();
         }
 
         //
         // POST: /Account/Register
 
-        //[HttpPost]
-        //public ActionResult Register(RegisterModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // Intento de registrar al usuario
-        //        MembershipCreateStatus createStatus;
-        //        Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
+		[HttpPost]
+		public ActionResult Register(RegisterModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				// Intento de registrar al usuario
+				MembershipCreateStatus createStatus;
+				Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
 
-        //        if (createStatus == MembershipCreateStatus.Success)
-        //        {
-        //            FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
-        //            return RedirectToAction("Index", "Home");
-        //        }
-        //        else
-        //        {
-        //            ModelState.AddModelError("", ErrorCodeToString(createStatus));
-        //        }
-        //    }
+				if (createStatus == MembershipCreateStatus.Success)
+				{
+					FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
+					return RedirectToAction("Index", "Home");
+				}
+				else
+				{
+					//ModelState.AddModelError("", AccountValidation.ErrorCodeToString(createStatus));
+					ModelState.AddModelError("", "Register error:" + createStatus.ToString());
+				}
+			}
 
-        //    // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
-        //    return View(model);
-        //}
+			// Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
+			return View(model);
+		}
 
         //
         // GET: /Account/ChangePassword

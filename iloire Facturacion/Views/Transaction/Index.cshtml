@@ -2,60 +2,91 @@
 
 @using MvcPaging;
 @{
-    ViewBag.Title = "List of Transactions";
+	ViewBag.Title = "List of Transactions";
 }
 
 <h1>List <small>of Transactions</small></h1>
 <p class="noprint">
-    @Html.ActionLink("[+] Create New ", "Create", new { @class = "btn primary" })
+	@Html.ActionLink("[+] Create New ", "Create", new { @class = "btn primary" })
 </p>
 
 @{
 	CoffeeInvoice.Models.ViewModel.SearchModel searchModel = new CoffeeInvoice.Models.ViewModel.SearchModel();
 	searchModel.Action = "Transaction";
-	searchModel.from = !string.IsNullOrEmpty(Request["from"])?Convert.ToDateTime(Request["from"]):new Nullable<DateTime>();
-	searchModel.to = !string.IsNullOrEmpty(Request["to"])?Convert.ToDateTime(Request["to"]):new Nullable<DateTime>();
+	searchModel.from = !string.IsNullOrEmpty(Request["from"]) ? Convert.ToDateTime(Request["from"]) : new Nullable<DateTime>();
+	searchModel.to = !string.IsNullOrEmpty(Request["to"]) ? Convert.ToDateTime(Request["to"]) : new Nullable<DateTime>();
 	searchModel.text = Request["text"];
 
 	Html.RenderPartial("ModelSearchBoxItems", searchModel);
 }
 
 <div class="pagingContainer noprint">
-    @{
-        RouteValueDictionary r = new RouteValueDictionary();
-        r.Add("to", Request["to"]);
-        r.Add("from", Request["from"]);
-        r.Add("text", Request["text"]);
-        }
-    @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount, r)
+	@{
+		RouteValueDictionary r = new RouteValueDictionary();
+		r.Add("to", Request["to"]);
+		r.Add("from", Request["from"]);
+		r.Add("text", Request["text"]);
+	}
+	@Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount, r)
 </div>
 
 <table class="zebra-striped">
 	<thead>
-		<th>
-			ID
+		<th>ID
 		</th>
-		<th>
-			Customer
+		<th>Customer
 		</th>
-		<th>
-			Product
+		<th>Product
 		</th>
+		<th>Date</th>
+		<th>Price</th>
+		<th>CNY Price</th>
+		<th>Sell Price</th>
+		<th></th>
 	</thead>
 
+	@foreach (var item in Model)
+ {
+		<tr>
+			<td>#@Html.DisplayFor(modelItem => item.TransactionID)
+			</td>
+			<td>
+				@Html.DisplayFor(x => item.Customer.Name)
+			</td>
+			<td>
+				@Html.DisplayFor(x => item.Product.ProductName)
+			</td>
+			<td>
+				@Html.DisplayFor(x=>item.TimeStamp)
+			</td>
+			<td>
+				@Html.Raw(@Html.Currency(item.Product.Price))
+				@*@Html.DisplayFor(x=>item.Product.Price)*@
+			</td>
+			<td>
+				@Html.Raw(@Html.Currency(item.Product.CNYPrice.Value,"zh-CN"))
+				@*@Html.DisplayFor(x=>item.Product.CNYPrice)*@
+			</td>
+			<td  class="active red">
+				@Html.Raw(@Html.Currency(item.Product.CNYSellPrice.Value,"zh-CN"))
+				@*@Html.DisplayFor(x=>item.Product.CNYSellPrice)*@
+			</td>
+			<td class="noprint" nowrap>
+				@Html.ActionLink("Edit", "Edit", new { id = item.TransactionID }, new { @class = "btn primary" })
+				@Html.ActionLink("Details", "Details", new { id = item.TransactionID }, new { @class = "btn" })
+				@Html.ActionLink("Delete", "Delete", new { id = item.TransactionID }, new { @class = "btn" })
+			</td>
+		</tr>
+ }
 
-@foreach (var item in Model)
-{
-	 <tr>
-		 <td>
-			 #@Html.DisplayFor(modelItem => item.TransactionID)
-		 </td>
-		 <td>
-			 @Html.DisplayFor(x=>item.Customer.Name)
-		 </td>
-		 <td>
-			 @Html.DisplayFor(x=>item.Product.ProductName)
-		 </td>
-		 </tr>
-}
-		</table>
+	<tfoot>
+    <tr>
+        <td colspan=4>        
+        </td>
+        <td>@String.Format("{0:C}", ViewBag.NetTotal)</td>
+        <td>@String.Format("{0:C}", ViewBag.AdvancePaymentTaxAmountTotal)</td>
+        <td>@String.Format("{0:C}", ViewBag.TotalWithVAT)</td>         
+        <td></td>
+    </tr>
+</tfoot>
+</table>

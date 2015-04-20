@@ -43,7 +43,29 @@ namespace  CoffeeInvoice.Models.Security {
 
         public override System.Web.Security.MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey, out System.Web.Security.MembershipCreateStatus status)
         {
-            throw new NotImplementedException();
+			InvoiceDB db = new InvoiceDB();
+			User usr = new User();
+			usr.Name = username;
+			usr.Password = password;
+			usr.Email = email;
+			usr.Enabled = true;
+			usr.Login = username;
+			
+			db.Users.Add(usr);
+
+			try
+			{
+				db.SaveChanges();
+			}
+			catch (Exception e)
+			{
+				
+				status = System.Web.Security.MembershipCreateStatus.UserRejected;
+			}
+			
+			status = System.Web.Security.MembershipCreateStatus.Success;
+
+			return null;
         }
 
         public override bool DeleteUser(string username, bool deleteAllRelatedData)
@@ -113,7 +135,8 @@ namespace  CoffeeInvoice.Models.Security {
 
         public override int MinRequiredPasswordLength
         {
-            get { throw new NotImplementedException(); }
+			get { return 6; }
+			//get { throw new NotImplementedException(); }
         }
 
         public override int PasswordAttemptWindow

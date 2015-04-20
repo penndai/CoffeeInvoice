@@ -1,0 +1,27 @@
+﻿@model Transaction
+
+
+@{
+	ViewBag.Title = "Edit Transacton";
+}
+
+<table class="noborder">
+	<tr>
+		<td width="40%">
+			@using (Html.BeginForm())
+   {
+    @Html.ValidationSummary(true)
+    <text>
+    @{Html.RenderPartial("EditOrCreateTransactionPartial", Model);}
+    </text>
+   }
+		</td>
+
+		<td width="60%">
+     <p>
+         <a href="@Url.Action("Create", "Transaction", new { id = Model.TransactionID })" id="@Model.TransactionID" class="btn primary newDetailInvoice">Create new Transaction details</a>
+     </p>
+    
+</td>
+	</tr>
+</table>

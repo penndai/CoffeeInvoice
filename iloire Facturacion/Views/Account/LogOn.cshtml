@@ -46,7 +46,9 @@
 
     	    <div class="actions">
                 <input type="submit" class="btn primary" value="Login" />
-            </div>
+				@Html.ActionLink("Register", "Register",null, new{@class = "btn primary"})	
+			</div>
+
         </fieldset>
     </div>
 }

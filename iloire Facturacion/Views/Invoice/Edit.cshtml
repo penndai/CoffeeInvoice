@@ -1,104 +1,91 @@
 ﻿@model Invoice
 
 @{
-    ViewBag.Title = "Edit";
+	ViewBag.Title = "Edit";
 }
 
 @{
-    var entityname = ViewBag.IsProposal ? "Proposal" : "Invoice";
+	var entityname = ViewBag.IsProposal ? "Proposal" : "Invoice";
 }
 
 
 @section Header{
   <script type="text/javascript">
 
-        var sorter_options = {
-            headers: {
-                1: { sorter: 'decimal' },
-                2: { sorter: 'decimal' },
-                3: { sorter: 'decimal' },
-                4: { sorter: 'decimal' },
-                5: { sorter: 'decimal' }
-            }
-        };
+  	var sorter_options = {
+  		headers: {
+  			1: { sorter: 'decimal' },
+  			2: { sorter: 'decimal' },
+  			3: { sorter: 'decimal' },
+  			4: { sorter: 'decimal' },
+  			5: { sorter: 'decimal' }
+  		}
+  	};
 
-      function clearErrors() {
-          $('#msgErrorNewInvoiceDetails').html('');
-          $('#msgError').html('');
-      }
-      
-      function writeError(control, msg) {
-          var err_msg = '<div class="alert-message error"><a class="close" href="#">×</a><p>' + msg + '</p></div>';
-          $('#' + control).html (err_msg);
-      }
+  	function clearErrors() {
+  		$('#msgErrorNewInvoiceDetails').html('');
+  		$('#msgError').html('');
+  	}
 
-      $(document).ready(function () {
+  	function writeError(control, msg) {
+  		var err_msg = '<div class="alert-message error"><a class="close" href="#">×</a><p>' + msg + '</p></div>';
+  		$('#' + control).html(err_msg);
+  	}
 
-          $('.closeModal').live('click', function () {
-              $('#my-modal').modal('hide');
-          });
+  	$(document).ready(function () {
 
-          $('#my-modal form').live('submit', function () {
-              clearErrors();
+  		$('.closeModal').live('click', function () {
+  			$('#my-modal').modal('hide');
+  		});
 
-              $.post($(this).attr('action'), $(this).serialize(), function (data, status) {
-                  $('#my-modal').modal('hide');
-                  $("#invoiceDetailsList").html(data);
+  		$('#my-modal form').live('submit', function () {
+  			clearErrors();
 
-              }).error(function (error, status, a, b) {
-                  writeError('msgError', 'Error processing request. Please check errors and try again!');
-                  $('.modal-body p.body').html(error.responseText);
+  			$.post($(this).attr('action'), $(this).serialize(), function (data, status) {
+  				$('#my-modal').modal('hide');
+  				$("#invoiceDetailsList").html(data);
 
-              });
-              return false;
-          });
+  			}).error(function (error, status, a, b) {
+  				writeError('msgError', 'Error processing request. Please check errors and try again!');
+  				$('.modal-body p.body').html(error.responseText);
 
-          function getRequest(url) {
-              $.ajax({
-                  url: url,
-                  context: document.body,
-                  success: function (data) {
-                      $('.modal-body p.body').html(data);
-                      $(this).addClass("done");
-                      $('#my-modal').modal('show');
-                      $('#Article').focus();
-                  },
-                  error: function (err) {
-                      writeError('msgErrorNewInvoiceDetails', err);
-                  }
-              });
-          }
+  			});
+  			return false;
+  		});
 
-          $('a.newDetailInvoice').live('click', function () {
-              clearErrors();
+  		function getRequest(url) {
+  			$.ajax({
+  				url: url,
+  				context: document.body,
+  				success: function (data) {
+  					$('.modal-body p.body').html(data);
+  					$(this).addClass("done");
+  					$('#my-modal').modal('show');
+  					$('#Article').focus();
+  				},
+  				error: function (err) {
+  					writeError('msgErrorNewInvoiceDetails', err);
+  				}
+  			});
+  		}
 
-              //alert('sdf');
-              var id = $(this).attr("idInvoice");
-              var url = '@Url.Content("~/InvoiceDetails/Create")/' + id;
+  		$('a.newDetailInvoice').live('click', function () {
+  			clearErrors();
+
+  			//alert('sdf');
+  			var id = $(this).attr("idInvoice");
+  			var url = '@Url.Content("~/InvoiceDetails/Create")/' + id;
 
               getRequest(url);
 
               return false;
           });
 
-          $('.deleteInvoiceDetails').live('click', function () {
-              clearErrors();
+      	$('.deleteInvoiceDetails').live('click', function () {
+      		clearErrors();
 
-              var id = $(this).attr("idInvoiceDetails");
-              var url = '@Url.Content("~/InvoiceDetails/Delete")/' + id;
-              
-              getRequest(url);
-
-              return false;
-          });
-
-
-
-          $('.editInvoiceDetails').live('click', function () {
-              clearErrors();
-
-              var id = $(this).attr("idInvoiceDetails");
-              var url = '@Url.Content("~/InvoiceDetails/Edit")/' + id;
+      		var id = $(this).attr("idInvoiceDetails");
+      		var url = '@Url.Content("~/InvoiceDetails/Delete")/' + id;
 
               getRequest(url);
 
@@ -107,8 +94,21 @@
 
 
 
+      	$('.editInvoiceDetails').live('click', function () {
+      		clearErrors();
 
-      }); 
+      		var id = $(this).attr("idInvoiceDetails");
+      		var url = '@Url.Content("~/InvoiceDetails/Edit")/' + id;
+
+              getRequest(url);
+
+              return false;
+          });
+
+
+
+
+      });
     </script>
 }
 
@@ -131,7 +131,7 @@
      <div id="msgErrorNewInvoiceDetails"></div>
 
     <div id="invoiceDetailsList">
-        @{Html.RenderAction("IndexByInvoice", "InvoiceDetails", new { id = Model.InvoiceID, proposal = ViewBag.IsProposal});}
+        @{Html.RenderAction("IndexByInvoice", "InvoiceDetails", new { id = Model.InvoiceID, proposal = ViewBag.IsProposal });}
     </div>
 </td>
 </tr>

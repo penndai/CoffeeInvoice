@@ -109,8 +109,7 @@
              jQuery.validator.methods.date = function (value, element) {
              	
              	if (value) {
-             		try {
-             			alert(value);
+             		try {             			
              			$.datepicker.parseDate('dd/mm/yy', value);
              		} catch (ex) {
              			return false;
