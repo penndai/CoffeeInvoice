@@ -9,7 +9,7 @@ public class PurchaseProduct
 {
 	[Key]
 	public int PurchaseProductID { get; set; }
-
+	public int UserID { get; set; }
 	[Required]
 	public int CustomerID { get; set; }
 	public virtual Customer Customer { get; set; }
@@ -21,6 +21,7 @@ public class PurchaseProduct
 	public int ProviderID { get; set; }
 	public virtual Provider Provider { get; set; }
 
+	public virtual User User { get; set; }
 	[DisplayName("Created")]
 	public DateTime TimeStamp { get; set; }
 }

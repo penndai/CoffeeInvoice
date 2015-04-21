@@ -7,6 +7,8 @@ public class Customer {
  
     public int CustomerID {get;set;}
 
+	public int UserID { get; set; }
+
     [Required (ErrorMessage="Name required")]
     [DisplayName("Name")]
     public string Name { get; set; }
@@ -43,6 +45,7 @@ public class Customer {
     public string Email { get; set; }
 
     public string Notes { get;set; }
-    
+
+	public virtual User User { get; set; }
     public virtual ICollection<Invoice> Invoices { get; set; }
 }

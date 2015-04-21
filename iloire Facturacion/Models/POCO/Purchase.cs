@@ -5,7 +5,7 @@ using System.ComponentModel;
 public class Purchase
 {
     public int PurchaseID { get; set; }
-
+	public int UserID { get; set; }
     [Required]
     public string Article {get;set;}
 
@@ -29,8 +29,9 @@ public class Purchase
 
     [DisplayName("Advance Payment Tax")]
     [Range(0.00, 100.0, ErrorMessage = "Value must be a % between 0 and 100")]
-    public decimal AdvancePaymentTax { get; set; } 
+    public decimal AdvancePaymentTax { get; set; }
 
+	public virtual User User { get; set; }
     #region Calculated fields
     public decimal SubTotal
     {

@@ -1,10 +1,7 @@
 ﻿/*
-Iván Loire - www.iloire.com
-Please readme README file for license terms.
 
-ASP.NET MVC3 ACME Invocing app (demo app for training purposes)
-
-Descripction: Custom Membership proider for this app. This Membership provider validates user agains the User table.
+Descripction: Custom Membership proider for this app. 
+ * This Membership provider validates user agains the User table.
 */
 
 using System;
@@ -18,6 +15,23 @@ using System.Web.Mvc;
 namespace  CoffeeInvoice.Models.Security {
 
     public class InvoicingMembershipProvider : System.Web.Security.MembershipProvider {
+
+		public User LoginUser
+		{
+			get
+			{
+				if (HttpContext.Current.Session["LoginUser"] == null)
+				{
+					return null;
+				}
+
+				return (User)HttpContext.Current.Session["LoginUser"];
+			}
+			set
+			{
+				HttpContext.Current.Session["LoginUser"] = value;
+			}
+		}
 
         public override string ApplicationName
         {
@@ -186,6 +200,7 @@ namespace  CoffeeInvoice.Models.Security {
                         where u.Login == username && u.Password == password
                         select u).FirstOrDefault();
 
+			LoginUser = user;
             return (user != null);
         }
     }

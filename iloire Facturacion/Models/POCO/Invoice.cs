@@ -13,6 +13,8 @@ public class Invoice
 
     public int InvoiceID { get; set; }
 
+	public int UserID { get; set; }
+
     [DisplayName("Invoice Number")]
     public int InvoiceNumber { get; set; }
 
@@ -46,6 +48,7 @@ public class Invoice
 
     public bool Paid { get; set; }
 
+	public virtual User User { get; set; }
     public virtual ICollection<InvoiceDetails> InvoiceDetails { get; set; }
 
     #region Calculated fields

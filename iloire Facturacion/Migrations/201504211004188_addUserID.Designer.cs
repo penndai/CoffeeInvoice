@@ -7,13 +7,13 @@ namespace CoffeeInvoice.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class addtimestampProcedure : IMigrationMetadata
+    public sealed partial class addUserID : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addtimestampProcedure));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(addUserID));
         
         string IMigrationMetadata.Id
         {
-            get { return "201504141207007_addtimestampProcedure"; }
+            get { return "201504211004188_addUserID"; }
         }
         
         string IMigrationMetadata.Source

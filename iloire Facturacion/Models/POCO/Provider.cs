@@ -7,6 +7,7 @@ public class Provider {
 
     public int ProviderID {get;set;}
 
+	public int UserID { get; set; }
     [Required]
     public string Name { get; set; }
 
@@ -36,6 +37,7 @@ public class Provider {
     //[Required]
     [RegularExpression(@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*", ErrorMessage = "Wrong email format")]
     public string Email { get; set; }
-    
+
+	public virtual User User { get; set; }
     public virtual ICollection<Purchase> Purchases { get; set; }
 }

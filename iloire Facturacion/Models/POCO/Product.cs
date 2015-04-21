@@ -13,6 +13,7 @@ public class Product
 		set;
 	}
 
+	public int UserID { get; set; }
 	[Display(Name="Product name")]
 	[Required]
 	public string ProductName
@@ -57,6 +58,11 @@ public class Product
 		set;
 	}
 
+	public virtual User User
+	{
+		get;
+		set;
+	}
 	public virtual Provider Provider
 	{
 		get;

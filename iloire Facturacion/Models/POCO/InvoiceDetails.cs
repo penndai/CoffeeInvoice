@@ -5,7 +5,7 @@ using System.ComponentModel;
 public class InvoiceDetails
 {
     public int InvoiceDetailsID { get; set; }
-    
+	public int UserID { get; set; }
     public int InvoiceID { get; set; }
     public virtual Invoice Invoice { get; set; }
 
@@ -24,6 +24,7 @@ public class InvoiceDetails
     [DisplayName("Created")]
     public DateTime TimeStamp { get; set; }
 
+	public virtual User User { get; set; }
     #region Calculated fields
     public decimal Total {
         get {

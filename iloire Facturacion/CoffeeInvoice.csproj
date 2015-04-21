@@ -71,6 +71,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -176,9 +179,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201504141207007_addtimestampProcedure.cs" />
-    <Compile Include="Migrations\201504141207007_addtimestampProcedure.Designer.cs">
-      <DependentUpon>201504141207007_addtimestampProcedure.cs</DependentUpon>
+    <Compile Include="Migrations\201504211004188_addUserID.cs" />
+    <Compile Include="Migrations\201504211004188_addUserID.Designer.cs">
+      <DependentUpon>201504211004188_addUserID.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -748,8 +751,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201504141207007_addtimestampProcedure.resx">
-      <DependentUpon>201504141207007_addtimestampProcedure.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201504211004188_addUserID.resx">
+      <DependentUpon>201504211004188_addUserID.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

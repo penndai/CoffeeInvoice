@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Web;
 using System.Web.Mvc;
 using MvcPaging;
+using Microsoft.AspNet.Identity;
 
 namespace CoffeeInvoice.Controllers
 {
@@ -79,6 +80,11 @@ namespace CoffeeInvoice.Controllers
 				if (Customers.HasValue)
 					t.CustomerID = Customers.Value;
 
+				if(Session["LoginUser"] !=null)
+				{
+					t.UserID = ((User)Session["LoginUser"]).UserID;
+				}
+				
 				db.Transactions.Add(t);
 				db.SaveChanges();
 				return RedirectToAction("Index");
