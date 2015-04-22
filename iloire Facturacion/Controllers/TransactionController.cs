@@ -18,11 +18,19 @@ namespace CoffeeInvoice.Controllers
 		public ActionResult Index(string filter, int? page, int? pagesize)
 		{
 			int currentPage = page.HasValue ? page.Value - 1 : 0;
+			
 			var transactions = db.Transactions.Include(x => x.Product).Include(x=>x.Customer).ToList();
 
-			IPagedList<Transaction> PagedTransactions = null;
-			PagedTransactions = transactions.OrderByDescending(x => x.TimeStamp).ToPagedList(currentPage, pagesize.HasValue ? pagesize.Value : defaultPageSize);
+			if (Session["LoginUser"] != null)
+			{
+				User user = (User)Session["LoginUser"];
+				transactions = transactions.Where(x => x.UserID == user.UserID).ToList();
+			}
 
+			IPagedList<Transaction> PagedTransactions = null;
+			
+			PagedTransactions =
+					transactions.OrderByDescending(x => x.TimeStamp).ToPagedList(currentPage, pagesize.HasValue ? pagesize.Value : defaultPageSize);
 			return View(PagedTransactions);
 		}
 
@@ -41,6 +49,10 @@ namespace CoffeeInvoice.Controllers
 			if (ModelState.IsValid)
 			{
 				db.Entry<Transaction>(t).State = EntityState.Modified;
+				if (Session["LoginUser"] != null)
+				{
+					t.UserID = ((User)Session["LoginUser"]).UserID;
+				}
 				db.SaveChanges();
 
 				return RedirectToAction("Index");
@@ -72,6 +84,13 @@ namespace CoffeeInvoice.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				PurchaseProduct pp = new PurchaseProduct();
+				pp.CustomerID = t.CustomerID;
+				pp.ProductID = t.ProductID;
+
+				pp.ProviderID = db.Products.Find(t.ProductID).ProviderID;
+				pp.TimeStamp = DateTime.Now;
+				
 				if (Products.HasValue)
 				{
 					t.ProductID = Products.Value;
@@ -83,9 +102,13 @@ namespace CoffeeInvoice.Controllers
 				if(Session["LoginUser"] !=null)
 				{
 					t.UserID = ((User)Session["LoginUser"]).UserID;
+					pp.UserID = t.UserID; 
 				}
-				
+
+				db.PurchaseProducts.Add(pp);
 				db.Transactions.Add(t);
+
+
 				db.SaveChanges();
 				return RedirectToAction("Index");
 			}

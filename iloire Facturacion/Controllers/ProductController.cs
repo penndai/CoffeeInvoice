@@ -49,6 +49,12 @@ namespace CoffeeInvoice.Controllers
 			var productsVM = new List<CoffeeInvoice.Models.ViewModel.ProductViewModel>();
 			var products = db.Products.OrderBy(i => i.ProductName).Include("Provider").ToList();
 
+			if (Session["LoginUser"] != null)
+			{
+				User user = (User)Session["LoginUser"];
+				products = products.Where(x => x.UserID == user.UserID).ToList();
+			}
+
 			foreach (var pro in products)
 			{
 				CoffeeInvoice.Models.ViewModel.ProductViewModel proVM = new Models.ViewModel.ProductViewModel();
@@ -60,6 +66,7 @@ namespace CoffeeInvoice.Controllers
 				proVM.Price = pro.Price;
 				proVM.CNYSellPrice = pro.CNYSellPrice;				
 				proVM.CNYPrice = pro.Price * AUDCNYRate;
+				proVM.UserID = pro.UserID;
 
 				if (db.PurchaseProducts.Where(x => x.ProductID == pro.ProductID).Count() > 0)
 				{
@@ -108,6 +115,11 @@ namespace CoffeeInvoice.Controllers
 				else
 					product.ProviderID = -1;
 
+				if (Session["LoginUser"] != null)
+				{
+					product.UserID = ((User)Session["LoginUser"]).UserID;
+				}
+				
 				db.Products.Add(product);
 				db.SaveChanges();
 				return RedirectToAction("Index");
@@ -129,7 +141,7 @@ namespace CoffeeInvoice.Controllers
 			if (ModelState.IsValid)
 			{
 				db.Entry<Product>(product).State = EntityState.Modified;
-				
+				product.UserID = ((User)Session["LoginUser"]).UserID;
 				db.SaveChanges();
 				return RedirectToAction("Index");
 			}

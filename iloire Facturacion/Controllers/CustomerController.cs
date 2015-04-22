@@ -54,7 +54,14 @@ namespace CoffeeInvoice.Controllers
         public ViewResult Index(int? page)
         {
             int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
-            return View(db.Customers.OrderBy(c=>c.Name).ToPagedList(currentPageIndex, defaultPageSize));
+			var customers = db.Customers.OrderBy(c => c.Name).ToList();
+			if (Session["LoginUser"] != null)
+			{
+				User user = (User)Session["LoginUser"];
+				customers = customers.Where(x => x.UserID == user.UserID).ToList();
+			}
+
+			return View(customers.ToPagedList(currentPageIndex, defaultPageSize));
         }
 
         //
@@ -82,10 +89,15 @@ namespace CoffeeInvoice.Controllers
         {
             if (ModelState.IsValid)
             {
+				if (Session["LoginUser"] != null)
+				{
+					customer.UserID = ((User)Session["LoginUser"]).UserID;
+				}
+
                 db.Customers.Add(customer);
                 db.SaveChanges();
                 //return list of customers as it is ajax request
-                return PartialView("CustomerListPartial", db.Customers.OrderBy(c => c.Name).ToPagedList(0, defaultPageSize));
+				return PartialView("CustomerListPartial", db.Customers.Where(x => x.UserID == customer.UserID).OrderBy(c => c.Name).ToPagedList(0, defaultPageSize));
                 //return RedirectToAction("Index");  
             }
             this.Response.StatusCode = 400;
@@ -110,6 +122,7 @@ namespace CoffeeInvoice.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(customer).State = EntityState.Modified;
+				customer.UserID = ((User)Session["LoginUser"]).UserID;
                 db.SaveChanges();
                 //return RedirectToAction("Index");
                 //return list of customers as it is ajax request
