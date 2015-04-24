@@ -1,4 +1,4 @@
-﻿@model IPagedList<Transaction>
+﻿@model IPagedList<TransactionModel>
 
 @using MvcPaging;
 @{
@@ -38,10 +38,11 @@
 		</th>
 		<th>Product
 		</th>
+		<th>Number</th>
 		<th>Date</th>
-		<th>Price</th>
+		<th>Price(AUD)</th>
 		<th>CNY Price</th>
-		<th>Sell Price</th>
+		<th>Sell Price(CNY)</th>		
 		<th></th>
 	</thead>
 
@@ -57,6 +58,9 @@
 				@Html.DisplayFor(x => item.Product.ProductName)
 			</td>
 			<td>
+				@Html.DisplayFor(x=>item.Number)
+			</td>
+			<td>
 				@Html.DisplayFor(x=>item.TimeStamp)
 			</td>
 			<td>
@@ -68,7 +72,7 @@
 				@*@Html.DisplayFor(x=>item.Product.CNYPrice)*@
 			</td>
 			<td  class="active red">
-				@Html.Raw(@Html.Currency(item.Product.CNYSellPrice.Value,"zh-CN"))
+				@Html.Raw(@Html.Currency(item.TransactionSellAmount,"zh-CN"))
 				@*@Html.DisplayFor(x=>item.Product.CNYSellPrice)*@
 			</td>
 			<td class="noprint" nowrap>
@@ -81,12 +85,11 @@
 
 	<tfoot>
     <tr>
-        <td colspan=4>        
+        <td colspan=5>        
         </td>
-        @*<td>@String.Format("{0:C}", ViewBag.NetTotal)</td>
-        <td>@String.Format("{0:C}", ViewBag.AdvancePaymentTaxAmountTotal)</td>
-        <td>@String.Format("{0:C}", ViewBag.TotalWithVAT)</td>*@         
-        <td></td>
+        <td>@String.Format("{0:C}", ViewBag.AUPrice)</td>
+        <td>@String.Format("{0:C}", ViewBag.CNYPrice)</td>
+        <td class="active red">@String.Format("{0:C}", ViewBag.SellCNYPrice)</td>               
     </tr>
 </tfoot>
 </table>

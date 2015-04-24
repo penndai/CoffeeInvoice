@@ -14,6 +14,10 @@ using System.Web;
 		[ForeignKey("Product")]
 		public int ProductID { get; set; }
 
+		[Range(1,100)]
+		[DisplayFormat(DataFormatString = "{0:D}", ApplyFormatInEditMode = true)]
+		public int Number { get; set; }
+
 		[ForeignKey("Customer")]
 		public int CustomerID { get; set; }
 

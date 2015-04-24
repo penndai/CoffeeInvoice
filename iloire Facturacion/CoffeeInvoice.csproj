@@ -183,6 +183,10 @@
     <Compile Include="Migrations\201504211004188_addUserID.Designer.cs">
       <DependentUpon>201504211004188_addUserID.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201504241122063_addNumberTransaction.cs" />
+    <Compile Include="Migrations\201504241122063_addNumberTransaction.Designer.cs">
+      <DependentUpon>201504241122063_addNumberTransaction.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Attributes\HandleErrorAttribute.cs" />
@@ -209,6 +213,7 @@
     <Compile Include="Models\POCO\Transaction.cs" />
     <Compile Include="Models\POCO\User.cs" />
     <Compile Include="Models\Security\InvoicingMembershipProvider.cs" />
+    <Compile Include="Models\ViewModel\TransactionModel.cs" />
     <Compile Include="Models\ViewModel\ProductViewModel.cs" />
     <Compile Include="Models\ViewModel\SearchModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -753,6 +758,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201504211004188_addUserID.resx">
       <DependentUpon>201504211004188_addUserID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504241122063_addNumberTransaction.resx">
+      <DependentUpon>201504241122063_addNumberTransaction.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
