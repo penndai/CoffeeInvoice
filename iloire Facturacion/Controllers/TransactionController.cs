@@ -71,7 +71,10 @@ namespace CoffeeInvoice.Controllers
 			tm.TransactionID = t.TransactionID;
 			tm.User = t.User;
 			tm.UserID = t.UserID;
-
+			if (t.Number > 0 && t.Product.CNYSellPrice.HasValue)
+			{
+				tm.TransactionSellAmount = t.Number * t.Product.CNYSellPrice.Value;
+			}
 			ViewBag.Products = new SelectList(db.Products.OrderByDescending(x => x.ProductName), "ProductID", "ProductName", t.ProductID);
 			ViewBag.Customers = new SelectList(db.Customers.OrderByDescending(x => x.Name), "CustomerID", "Name", t.CustomerID);
 
@@ -110,6 +113,7 @@ namespace CoffeeInvoice.Controllers
 			t.CustomerID = -1;
 			t.ProductID = -1;
 			t.Number = 1;
+			
 			ViewBag.Products = new SelectList(db.Products.OrderByDescending(x => x.ProductName), "ProductID", "ProductName", t.ProductID);
 			ViewBag.Customers = new SelectList(db.Customers.OrderByDescending(x => x.Name), "CustomerID", "Name", t.CustomerID);
 
