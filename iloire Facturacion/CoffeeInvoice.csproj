@@ -225,6 +225,7 @@
     <Content Include="Content\bootstrap.print.css" />
     <Content Include="Content\chosen.css" />
     <Content Include="Content\images\chosen-sprite.png" />
+    <Content Include="Content\images\coffeeinvoice.jpg" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\jquery.cleditor.css" />
     <Content Include="Content\Site.print.css" />

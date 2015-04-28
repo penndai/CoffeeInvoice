@@ -22,7 +22,7 @@ namespace CoffeeInvoice.Models.Helper
 			var fullName = htmlHelper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(fieldName);
 
 			// build simple textbox html
-			var tag = new TagBuilder("input");
+			var tag = new TagBuilder("input");			
 			tag.Attributes.Add("type", "text");
 			tag.Attributes.Add("name", fullName);
 			// get value

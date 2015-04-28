@@ -68,11 +68,11 @@
 				@*@Html.DisplayFor(x=>item.Product.Price)*@
 			</td>
 			<td>
-				@Html.Raw(@Html.Currency(item.Product.CNYPrice.Value,"zh-CN"))
+				@Html.Raw(@Html.Currency(item.Product.CNYSellPrice.Value,"zh-CN"))
 				@*@Html.DisplayFor(x=>item.Product.CNYPrice)*@
 			</td>
 			<td  class="active red">
-				@Html.Raw(@Html.Currency(item.TransactionSellAmount,"zh-CN"))
+				@Html.Raw(@Html.Currency(item.TransactionSellAmount.Value,"zh-CN"))
 				@*@Html.DisplayFor(x=>item.Product.CNYSellPrice)*@
 			</td>
 			<td class="noprint" nowrap>

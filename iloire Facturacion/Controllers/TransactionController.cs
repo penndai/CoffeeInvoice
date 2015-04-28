@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using MvcPaging;
 using Microsoft.AspNet.Identity;
+using CoffeeInvoice.Models.Helper;
 
 namespace CoffeeInvoice.Controllers
 {
@@ -18,8 +19,8 @@ namespace CoffeeInvoice.Controllers
 		public ActionResult Index(string filter, int? page, int? pagesize)
 		{
 			int currentPage = page.HasValue ? page.Value - 1 : 0;
-			
-			var transactions = db.Transactions.Include(x => x.Product).Include(x=>x.Customer).ToList();
+
+			var transactions = db.Transactions.Include(x => x.Product).Include(x => x.Customer).ToList();
 
 			if (Session["LoginUser"] != null)
 			{
@@ -42,7 +43,7 @@ namespace CoffeeInvoice.Controllers
 				tm.User = t.User;
 				tm.UserID = t.UserID;
 
-				if (t.Number > 0 && t.Product.CNYSellPrice.HasValue)  
+				if (t.Number > 0 && t.Product.CNYSellPrice.HasValue)
 				{
 					tm.TransactionSellAmount = t.Number * t.Product.CNYSellPrice.Value;
 				}
@@ -50,11 +51,11 @@ namespace CoffeeInvoice.Controllers
 			}
 
 			PagedTransactions = PagedTransactions.OrderByDescending(x => x.TimeStamp).ToPagedList(currentPage, pagesize.HasValue ? pagesize.Value : defaultPageSize);
-					//transactions.OrderByDescending(x => x.TimeStamp).ToPagedList(currentPage, pagesize.HasValue ? pagesize.Value : defaultPageSize);
+			//transactions.OrderByDescending(x => x.TimeStamp).ToPagedList(currentPage, pagesize.HasValue ? pagesize.Value : defaultPageSize);
 
 			ViewBag.AUPrice = PagedTransactions.Sum(x => x.Product.Price);
-			ViewBag.CNYPrice = PagedTransactions.Sum(x=>x.Product.CNYPrice);
-			ViewBag.SellCNYPrice = PagedTransactions.Sum(x=>x.Product.CNYSellPrice);
+			ViewBag.CNYPrice = PagedTransactions.Sum(x => x.Product.CNYPrice);
+			ViewBag.SellCNYPrice = PagedTransactions.Sum(x => x.Product.CNYSellPrice);
 			return View(PagedTransactions);
 		}
 
@@ -87,6 +88,7 @@ namespace CoffeeInvoice.Controllers
 			if (ModelState.IsValid)
 			{
 				Transaction t = db.Transactions.Find(tm.TransactionID);
+				t.ProductID = tm.ProductID;
 				t.Number = tm.Number;
 				db.Entry<Transaction>(t).State = EntityState.Modified;
 				if (Session["LoginUser"] != null)
@@ -106,14 +108,28 @@ namespace CoffeeInvoice.Controllers
 			}
 		}
 
+		public JsonResult GetProductPrice(int? ProductID, int Number, string culture)
+		{
+			decimal? price = 0;
+			decimal totalPrice = 0;
+
+			var culInfo = new System.Globalization.CultureInfo(culture);
+			price = db.Products.Find(ProductID).CNYSellPrice;
+			totalPrice = (price.Value * Number);
+			var data = new { UnitPrice = price.Value.ToString("C", culInfo), TransactionTotalPrice = totalPrice.ToString("C", culInfo) };
+			return Json(data, JsonRequestBehavior.AllowGet);
+		}
+
 		public ActionResult Create()
 		{
 			TransactionModel t = new TransactionModel();
 			t.TimeStamp = DateTime.Now;
 			t.CustomerID = -1;
-			t.ProductID = -1;
+			t.ProductID = 1;
 			t.Number = 1;
-			
+
+			t.Product = db.Products.Find(t.ProductID);
+			t.TransactionSellAmount = t.Number * t.Product.CNYSellPrice;
 			ViewBag.Products = new SelectList(db.Products.OrderByDescending(x => x.ProductName), "ProductID", "ProductName", t.ProductID);
 			ViewBag.Customers = new SelectList(db.Customers.OrderByDescending(x => x.Name), "CustomerID", "Name", t.CustomerID);
 
@@ -121,40 +137,40 @@ namespace CoffeeInvoice.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult Create(TransactionModel tm, int? Products, int? Customers)
+		public ActionResult Create(TransactionModel tm, int? ProductID, int? CustomerID)
 		{
 			if (ModelState.IsValid)
 			{
 				PurchaseProduct pp = new PurchaseProduct();
 				Transaction t = new Transaction();
 
-				t.Customer = tm.Customer;
+				//t.Customer = tm.Customer;
 				t.CustomerID = tm.CustomerID;
 				t.Number = tm.Number;
-				t.Product = tm.Product;
+				//t.Product = tm.Product;
 				t.ProductID = tm.ProductID;
 				t.TimeStamp = tm.TimeStamp;
 				t.TransactionID = tm.TransactionID;
-				t.User = tm.User;
+				//t.User = tm.User;
 				t.UserID = tm.UserID;
 				pp.CustomerID = tm.CustomerID;
 				pp.ProductID = tm.ProductID;
-				
+
 				pp.ProviderID = db.Products.Find(tm.ProductID).ProviderID;
 				pp.TimeStamp = DateTime.Now;
-				
-				if (Products.HasValue)
+
+				if (ProductID.HasValue)
 				{
-					t.ProductID = Products.Value;
+					t.ProductID = ProductID.Value;
 				}
 
-				if (Customers.HasValue)
-					t.CustomerID = Customers.Value;
+				if (CustomerID.HasValue)
+					t.CustomerID = CustomerID.Value;
 
-				if(Session["LoginUser"] !=null)
+				if (Session["LoginUser"] != null)
 				{
 					t.UserID = ((User)Session["LoginUser"]).UserID;
-					pp.UserID = t.UserID; 
+					pp.UserID = t.UserID;
 				}
 
 				db.PurchaseProducts.Add(pp);
@@ -167,7 +183,7 @@ namespace CoffeeInvoice.Controllers
 			else
 			{
 				return View(tm);
-			}				
+			}
 		}
 	}
 }
