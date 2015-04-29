@@ -740,6 +740,7 @@
     <Content Include="Views\Transaction\Create.cshtml" />
     <Content Include="Views\Transaction\EditOrCreateTransactionPartial.cshtml" />
     <Content Include="Views\Transaction\Edit.cshtml" />
+    <Content Include="Views\Transaction\TransactionListPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

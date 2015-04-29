@@ -18,6 +18,8 @@
         <h3>Unpaid invoices</h3>
         @{Html.RenderAction("UnPaidInvoices","Invoice");}
 
+		<h3>Latest Transatcions</h3>
+		@{Html.RenderAction("LatestTransactions", "Transaction");}
         <h3>Latest proposals</h3>
         @{Html.RenderAction("LatestProposals","Invoice");}
     </td>

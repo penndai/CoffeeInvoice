@@ -16,7 +16,12 @@ namespace CoffeeInvoice.Models.Helper
 				return data.ToString(culture);
 
 			if (data > 0)
-				return data.ToString("C", culture);
+			{
+				if (data < 800)
+					return data.ToString("C", culture);
+				else
+					return string.Format("<p class=\"green\">{0}</p>", data.ToString("C", culture));
+			}
 			else
 				return string.Format("<span class=\"negative\">{0}</span>", data.ToString("C", culture));
 		}

@@ -1,6 +1,6 @@
 ﻿@model TransactionModel
 <fieldset>
-	@Html.ValidationSummary(true)
+	@Html.ValidationSummary(false)
 	<legend>Transaction edition</legend>
 	@Html.HiddenFor(model => model.TransactionID)
 	@Html.HiddenFor(model=>model.Product.ProductName)
@@ -73,5 +73,15 @@
 			}
 		});
 		
+		$("#Number").change(function (args) {
+			var number = $("#Number").val();
+			var unit = $("#CNYPrice").val().substring(0,1)
+			var unitPrice = $("#CNYPrice").val().substring(1);
+
+			if (number && unitPrice) {				
+				$("#TransactionSellAmount").val(unit + number * unitPrice);
+			}
+
+		});
 	});
 </script>

@@ -41,7 +41,7 @@
 		<th>Number</th>
 		<th>Date</th>
 		<th>Price(AUD)</th>
-		<th>CNY Price</th>
+		<th>CNY Sell Price</th>
 		<th>Sell Price(CNY)</th>		
 		<th></th>
 	</thead>
@@ -87,9 +87,11 @@
     <tr>
         <td colspan=5>        
         </td>
-        <td>@String.Format("{0:C}", ViewBag.AUPrice)</td>
-        <td>@String.Format("{0:C}", ViewBag.CNYPrice)</td>
-        <td class="active red">@String.Format("{0:C}", ViewBag.SellCNYPrice)</td>               
+        <td>
+			@Html.Currency((decimal)ViewBag.AUPrice)
+			@*@String.Format("{0:C}", ViewBag.AUPrice)*@</td>
+        <td>@Html.Currency((decimal)ViewBag.CNYPrice, "zh-CN")@*@String.Format("{0:C}", ViewBag.CNYPrice)*@</td>
+        <td class="active red">@Html.Currency((decimal)ViewBag.SellCNYPrice, "zh-CN")@*@String.Format("{0:C}", ViewBag.SellCNYPrice)*@</td>               
     </tr>
 </tfoot>
 </table>

@@ -16,6 +16,22 @@ namespace CoffeeInvoice.Controllers
 		private InvoiceDB db = new InvoiceDB();
 		private int defaultPageSize = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["DefaultPaginationSize"]);
 
+		public PartialViewResult LatestTransactions()
+		{
+			List<Transaction> trans = new List<Transaction>();
+			if (Session["LoginUser"] != null)
+			{
+				User user = (User)Session["LoginUser"];
+				trans = 
+					db.Transactions.Include(x => x.Customer).Include(x => x.Product).Where(x => x.UserID == user.UserID).OrderByDescending(x => x.TimeStamp).ToList();
+				return PartialView("TransactionListPartial", trans);
+			}
+			else
+			{
+				return PartialView("TransactionListPartial", trans);
+			}
+		}
+
 		public ActionResult Index(string filter, int? page, int? pagesize)
 		{
 			int currentPage = page.HasValue ? page.Value - 1 : 0;
@@ -54,8 +70,8 @@ namespace CoffeeInvoice.Controllers
 			//transactions.OrderByDescending(x => x.TimeStamp).ToPagedList(currentPage, pagesize.HasValue ? pagesize.Value : defaultPageSize);
 
 			ViewBag.AUPrice = PagedTransactions.Sum(x => x.Product.Price);
-			ViewBag.CNYPrice = PagedTransactions.Sum(x => x.Product.CNYPrice);
-			ViewBag.SellCNYPrice = PagedTransactions.Sum(x => x.Product.CNYSellPrice);
+			ViewBag.CNYPrice = PagedTransactions.Sum(x => x.Product.CNYSellPrice);
+			ViewBag.SellCNYPrice = PagedTransactions.Sum(x =>x.Number * x.Product.CNYSellPrice);
 			return View(PagedTransactions);
 		}
 
@@ -129,7 +145,7 @@ namespace CoffeeInvoice.Controllers
 			t.Number = 1;
 
 			t.Product = db.Products.Find(t.ProductID);
-			t.TransactionSellAmount = t.Number * t.Product.CNYSellPrice;
+			t.TransactionSellAmount = t.Number * t.Product.CNYSellPrice.Value;
 			ViewBag.Products = new SelectList(db.Products.OrderByDescending(x => x.ProductName), "ProductID", "ProductName", t.ProductID);
 			ViewBag.Customers = new SelectList(db.Customers.OrderByDescending(x => x.Name), "CustomerID", "Name", t.CustomerID);
 
