@@ -17,6 +17,7 @@
         <th  width="80">
             Date
         </th>
+		<th>Paid</th>
         <th  width="80">
             Pay Date
         </th>               
@@ -24,7 +25,9 @@
 	@foreach (var item in Model)
  {
 	 <tr>
-		 <td>#@item.TransactionID</td>
+		 <td>
+			 <a href="@Url.Action("Edit", "Transaction", new { id=item.TransactionID})"> #@item.TransactionID</a>			
+		 </td>
 		 <td>
          <a href="@Url.Action("Details", "Customer", new { id=item.CustomerID})">
             @Html.DisplayFor(modelItem => item.Customer.Name)
@@ -40,9 +43,38 @@
            @* @String.Format("{0:C}", item.Number*item.Product.CNYSellPrice)*@
         </td>
 		 <td>
-            @Html.DisplayFor(modelItem => item.TimeStamp)
+			 @if (!item.IsPaid && item.TimeStamp < DateTime.Now.AddDays(-7))
+	{
+		<span class="label important">@Html.DisplayFor(modelItem => item.TimeStamp)</span>
+	}
+			 else if (!item.IsPaid && item.TimeStamp < DateTime.Now.AddDays(-5))
+			 {
+				<span class="label warning">@Html.DisplayFor(modelItem => item.TimeStamp)</span>
+	}
+			 else
+			 {
+				 @Html.DisplayFor(modelItem => item.TimeStamp,"ShortDate")
+			 }
         </td>
-		 <td></td>
+		 <td>
+			 @if (item.IsPaid)
+	{
+		<span class="label success">Yes</span>
+	}
+	else{
+		<span class="label important">No</span>
+	}
+			 @*@Html.CheckBoxFor(modelItem => item.IsPaid, new { @disabled = "disabled"})*@
+		 </td>
+		 <td>
+			 @if(item.IsPaid)
+	{
+		
+				@Html.DisplayFor(modelItem=>item.PaidDateTime,"ShortDate")
+	}
+			
+			 
+		 </td>
 	 </tr>
  }
 
@@ -51,9 +83,8 @@
             <td colspan=3><span class="label">TOTALS: </span></td>
             <td nowrap="nowrap">
 				@Html.Raw(@Html.Currency((decimal)Model.Sum(i => i.Number*i.Product.CNYSellPrice),"zh-CN"))
-				@*@String.Format("{0:C}", Model.Sum(i => i.Number*i.Product.CNYSellPrice))*@</td>
-            <td></td>
-            <td></td>
+				@*@String.Format("{0:C}", Model.Sum(i => i.Number*i.Product.CNYSellPrice))*@</td>            
+            <td colspan="3"></td>
         </tr>
     </tfoot>
 </table>

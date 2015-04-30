@@ -187,6 +187,10 @@
     <Compile Include="Migrations\201504241122063_addNumberTransaction.Designer.cs">
       <DependentUpon>201504241122063_addNumberTransaction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201504301140471_add_PaidColumns.cs" />
+    <Compile Include="Migrations\201504301140471_add_PaidColumns.Designer.cs">
+      <DependentUpon>201504301140471_add_PaidColumns.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Attributes\HandleErrorAttribute.cs" />
@@ -741,6 +745,7 @@
     <Content Include="Views\Transaction\EditOrCreateTransactionPartial.cshtml" />
     <Content Include="Views\Transaction\Edit.cshtml" />
     <Content Include="Views\Transaction\TransactionListPartial.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ShortDate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -764,6 +769,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201504241122063_addNumberTransaction.resx">
       <DependentUpon>201504241122063_addNumberTransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504301140471_add_PaidColumns.resx">
+      <DependentUpon>201504301140471_add_PaidColumns.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -91,7 +91,7 @@
 			@Html.Currency((decimal)ViewBag.AUPrice)
 			@*@String.Format("{0:C}", ViewBag.AUPrice)*@</td>
         <td>@Html.Currency((decimal)ViewBag.CNYPrice, "zh-CN")@*@String.Format("{0:C}", ViewBag.CNYPrice)*@</td>
-        <td class="active red">@Html.Currency((decimal)ViewBag.SellCNYPrice, "zh-CN")@*@String.Format("{0:C}", ViewBag.SellCNYPrice)*@</td>               
+        <td class="active red">@Html.Raw(@Html.Currency((decimal)ViewBag.SellCNYPrice, "zh-CN"))@*@String.Format("{0:C}", ViewBag.SellCNYPrice)*@</td>               
     </tr>
 </tfoot>
 </table>
