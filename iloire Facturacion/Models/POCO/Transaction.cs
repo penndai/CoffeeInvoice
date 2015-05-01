@@ -21,7 +21,7 @@ using System.Web;
 		[ForeignKey("Customer")]
 		public int CustomerID { get; set; }
 		public bool IsPaid { get;set;}
-		public DateTime PaidDateTime { get; set; }
+		public DateTime? PaidDateTime { get; set; }
 		public DateTime TimeStamp { get; set; }
 
 		public virtual User User { get; set; }

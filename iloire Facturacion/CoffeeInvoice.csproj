@@ -191,6 +191,10 @@
     <Compile Include="Migrations\201504301140471_add_PaidColumns.Designer.cs">
       <DependentUpon>201504301140471_add_PaidColumns.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505011317409_setPaidDateNullable.cs" />
+    <Compile Include="Migrations\201505011317409_setPaidDateNullable.Designer.cs">
+      <DependentUpon>201505011317409_setPaidDateNullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Attributes\HandleErrorAttribute.cs" />
@@ -772,6 +776,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201504301140471_add_PaidColumns.resx">
       <DependentUpon>201504301140471_add_PaidColumns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505011317409_setPaidDateNullable.resx">
+      <DependentUpon>201505011317409_setPaidDateNullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

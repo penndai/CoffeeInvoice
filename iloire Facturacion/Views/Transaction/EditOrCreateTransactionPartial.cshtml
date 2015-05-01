@@ -6,7 +6,7 @@
 	@Html.HiddenFor(model=>model.Product.ProductName)
 
 	<div class="clearfix">
-		@Html.LabelFor(x => Model.CustomerID, "Customer", new { @class = "control-label col-sm-2" })
+		@Html.LabelFor(x => Model.CustomerID, "Customer", new { @class = "control-label col-sm-3" })
 		<div class="input chzn-select">
 			@Html.DropDownListFor(x => Model.CustomerID, (SelectList)ViewBag.Customers, string.Empty)
 			@*@Html.DropDownList("Customers", string.Empty)*@
@@ -14,7 +14,7 @@
 		</div>
 	</div>
 	<div class="clearfix">
-		@Html.LabelFor(x => Model.ProductID, "Product", new { @class = "control-label col-sm-2" })
+		@Html.LabelFor(x => Model.ProductID, "Product", new { @class = "control-label col-sm-3" })
 		<div class="input chzn-select">
 			@Html.DropDownListFor(x => Model.ProductID, (SelectList)ViewBag.Products, string.Empty)
 			@*@Html.DropDownList("Products", string.Empty)*@
@@ -22,31 +22,41 @@
 		</div>
 	</div>
 	<div class="clearfix">
-		@Html.LabelFor(x => Model.Product.CNYPrice, "Price/each", new {@class="control-label col-sm-2" })
+		@Html.LabelFor(x => Model.Product.CNYPrice, "Price/each", new {@class="control-label col-sm-3" })
 		<div class="input chzn-results">
 			@Html.TextBoxCurrencyReadOnly(x=>Model.Product.CNYSellPrice.Value, new { @readonly="readonly", @id="CNYPrice"})
-			@Html.ValidationMessageFor(x=>Model.Product.CNYSellPrice)
-			
+			@Html.ValidationMessageFor(x=>Model.Product.CNYSellPrice)			
 		</div>
 	</div>
 	<div class="clearfix">
-		@Html.LabelFor(x => Model.Number, "Number", new { @class = "control-label col-sm-2" })
+		@Html.LabelFor(x => Model.Number, "Number", new { @class = "control-label col-sm-3" })
 		<div class="input">
 			@Html.TextBoxFor(x=>Model.Number,new { @type = "number" })
 		</div>
 	</div>
 	<div class="clearfix">
-		@Html.LabelFor(x => Model.TransactionSellAmount, "Total Price", new { @class="control-label col-sm-2"})
+		@Html.LabelFor(x => Model.TransactionSellAmount, "Total Price", new { @class="control-label col-sm-3"})
 		<div class="input">
 		@Html.TextBoxCurrencyReadOnly(x=>Model.TransactionSellAmount.Value, new{@readonly="readonly", @id="TransactionSellAmount"})
 			@Html.ValidationMessageFor(x=>Model.TransactionSellAmount)
 		</div>
 	</div>
 	<div class="clearfix">
-		@Html.LabelFor(x => x.TimeStamp, "Transaction Date", new { @class = "control-label col-sm-2" })
+		@Html.LabelFor(x => x.TimeStamp, "Transaction Date", new { @class = "control-label col-sm-3" })
 		<div class="input">
 			@Html.EditorFor(x => Model.TimeStamp, "DateTime", new { Placeholder = "Transaction date time" })
 		</div>
+	</div>
+	<div class="clearfix">
+		@Html.LabelFor(x => x.IsPaid, "Paid", new { @class="control-label col-sm-3"})
+		<div class="input">
+		@Html.CheckBoxFor(x => Model.IsPaid, new { @class="checkbox"})
+			</div>
+	</div>
+	<div class="clearfix">
+		@Html.LabelFor(x => x.PaidDateTime, "Paid Date", new { @class="control-label col-sm-3"})
+		<div class="input">
+		@Html.EditorFor(x => x.PaidDateTime, "PaidDateTime", new { Placeholder="Paid Date"})</div>
 	</div>
 	<div class="actions">
 		<input type="submit" class="btn primary" value="Save" />
@@ -76,8 +86,10 @@
 		$("#Number").change(function (args) {
 			var number = $("#Number").val();
 			var unit = $("#CNYPrice").val().substring(0,1)
-			var unitPrice = $("#CNYPrice").val().substring(1);
-
+			var unitPrice = parseFloat($("#CNYPrice").val().substring(1).replace(',', '').replace(' ', ''));
+			console.log(number);
+			console.log("Unit: " + unit);
+			console.log("UnitPrice: " + number * unitPrice)
 			if (number && unitPrice) {				
 				$("#TransactionSellAmount").val(unit + number * unitPrice);
 			}

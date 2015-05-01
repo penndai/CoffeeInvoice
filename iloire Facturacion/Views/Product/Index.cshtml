@@ -53,11 +53,11 @@
                 @Html.DisplayFor(modelItem => item.ProductName)
             </td>
             <td>
-				@Html.Currency(item.Price, "en-AU")
+				@Html.Raw(@Html.Currency(item.Price, "en-AU"))
                @* @Html.DisplayFor(modelItem => item.Price)*@
             </td>
 			<td>
-				@Html.Currency(item.CNYPrice.Value, "zh-CN")
+				@Html.Raw(@Html.Currency(item.CNYPrice.Value, "zh-CN"))
 				@*@Html.DisplayFor(x=>item.CNYPrice)*@			
 			</td>
 			<td>

@@ -29,6 +29,11 @@ namespace CoffeeInvoice.Models.Helper
 			if (fieldmetadata.Model != null && Convert.ToDecimal(fieldmetadata.Model)>0)
 			{
 				var value = fieldmetadata.Model.ToString();
+				if (Convert.ToDecimal(value) > 800)
+				{
+					tag.Attributes.Add("class", "green");
+				}
+
 				tag.Attributes.Add("value", CurrencyHelper.Currency(htmlHelper, Convert.ToDecimal(value), "zh-CN"));
 			}
 			else

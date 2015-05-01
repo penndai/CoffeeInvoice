@@ -58,10 +58,18 @@ namespace CoffeeInvoice.Controllers
 
         public ViewResult Index(int? page)
         {
-            var providers = db.Providers.OrderBy(i => i.Name).ToList();
-            int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
-            var providersListPaged = providers.ToPagedList(currentPageIndex, defaultPageSize);
-            return View(providersListPaged);
+			int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
+			var providersListPaged = new List<Provider>().ToPagedList(currentPageIndex, defaultPageSize);
+			if (Session["LoginUser"] != null)
+			{
+				int UserID = ((User)Session["LoginUser"]).UserID;
+			
+				var providers = db.Providers.Where(i=>i.UserID == UserID).OrderBy(i => i.Name).ToList();
+            
+				providersListPaged = providers.ToPagedList(currentPageIndex, defaultPageSize);				
+			}
+
+			return View(providersListPaged);
         }
 
         //
@@ -89,6 +97,11 @@ namespace CoffeeInvoice.Controllers
         {
             if (ModelState.IsValid)
             {
+				if (Session["LoginUser"] != null)
+				{
+					provider.UserID = ((User)Session["LoginUser"]).UserID;					
+				}
+
                 db.Providers.Add(provider);
                 db.SaveChanges();
                 return RedirectToAction("Index");  
@@ -110,7 +123,7 @@ namespace CoffeeInvoice.Controllers
 			newProvider.Address = provider.Address;
 			newProvider.City = provider.City;
 			newProvider.CompanyNumber = provider.CompanyNumber;
-
+			newProvider.UserID = provider.UserID;
 			db.Providers.Add(newProvider);
 			db.SaveChanges();
 			return RedirectToAction("Index");

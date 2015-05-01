@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using MvcPaging;
 using Microsoft.AspNet.Identity;
 using CoffeeInvoice.Models.Helper;
+using System.Data.Entity.Core.Objects;
 
 namespace CoffeeInvoice.Controllers
 {
@@ -88,6 +89,8 @@ namespace CoffeeInvoice.Controllers
 			tm.TransactionID = t.TransactionID;
 			tm.User = t.User;
 			tm.UserID = t.UserID;
+			tm.IsPaid = t.IsPaid;
+			tm.PaidDateTime = t.PaidDateTime;
 			if (t.Number > 0 && t.Product.CNYSellPrice.HasValue)
 			{
 				tm.TransactionSellAmount = t.Number * t.Product.CNYSellPrice.Value;
@@ -106,6 +109,9 @@ namespace CoffeeInvoice.Controllers
 				Transaction t = db.Transactions.Find(tm.TransactionID);
 				t.ProductID = tm.ProductID;
 				t.Number = tm.Number;
+				t.IsPaid = tm.IsPaid;
+				if(t.IsPaid)
+					t.PaidDateTime = tm.PaidDateTime;
 				db.Entry<Transaction>(t).State = EntityState.Modified;
 				if (Session["LoginUser"] != null)
 				{
@@ -167,11 +173,15 @@ namespace CoffeeInvoice.Controllers
 				t.ProductID = tm.ProductID;
 				t.TimeStamp = tm.TimeStamp;
 				t.TransactionID = tm.TransactionID;
+				t.IsPaid = tm.IsPaid;
+
+				if (t.IsPaid)
+					t.PaidDateTime = tm.PaidDateTime;
 				//t.User = tm.User;
 				t.UserID = tm.UserID;
 				pp.CustomerID = tm.CustomerID;
 				pp.ProductID = tm.ProductID;
-
+				
 				pp.ProviderID = db.Products.Find(tm.ProductID).ProviderID;
 				pp.TimeStamp = DateTime.Now;
 
@@ -200,6 +210,19 @@ namespace CoffeeInvoice.Controllers
 			{
 				return View(tm);
 			}
+		}
+
+		public PartialViewResult OverDueTransaction()
+		{
+			var overdueTrans = new List<Transaction>();
+			if (Session["LoginUser"] != null)
+			{
+				int userid = ((User)Session["LoginUser"]).UserID;
+
+				overdueTrans = db.Transactions.Where(x => x.UserID == userid && !x.IsPaid && EntityFunctions.AddDays(x.TimeStamp,3) <= DateTime.Now).OrderBy(x=>x.TimeStamp).ToList();
+			}
+
+			return PartialView("TransactionListPartial",overdueTrans);
 		}
 	}
 }

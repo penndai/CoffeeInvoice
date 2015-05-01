@@ -12,9 +12,9 @@
 <table width="100%" class="dashboard">
 <tr>
     <td width="50%">
-        <h3>Invoices Overdue</h3>
-        @{Html.RenderAction("OverDueInvoices","Invoice");}
-
+        <h3>Transaction Overdue</h3>
+       @* @{Html.RenderAction("OverDueInvoices","Invoice");}*@
+		@{Html.RenderAction("OverDueTransaction", "Transaction");}
         <h3>Unpaid invoices</h3>
         @{Html.RenderAction("UnPaidInvoices","Invoice");}
 
