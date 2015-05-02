@@ -63,7 +63,7 @@
 </div>
 
 <div class="span12">
-    <h2>Last purchases for this product</h2>
-	
-    @{Html.RenderAction("RecentPurcharseByProduct", "Purchase", new { productID = Model.ProductID });}
+    <h2>Last Transactions for this product</h2>
+	@{Html.RenderAction("RecendTransactionByProduct","Transaction",new{productId = Model.ProductID});}
+    @*@{Html.RenderAction("RecentPurcharseByProduct", "Purchase", new { productID = Model.ProductID });}*@
 </div>

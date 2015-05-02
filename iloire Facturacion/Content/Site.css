@@ -219,3 +219,8 @@ td.total
 .focus {
 color:green
 }
+
+div .table-responsive {
+	height: 300px !important;
+    overflow: scroll;
+}

@@ -167,6 +167,21 @@ namespace CoffeeInvoice.Controllers
 			return View(product);
 		}
 
+		public PartialViewResult MostPopularProducts(int top)
+		{
+			List<PopularProduct> products = new List<PopularProduct>();
+			if (Session["LoginUser"] != null)
+			{
+				User user = (User)Session["LoginUser"];
+				var mostPopularProds =
+					db.Transactions.Where(x => x.UserID == user.UserID).GroupBy(x => new { ProductID=x.ProductID, Product=x.Product.ProductName}).Select(x => new PopularProduct { ProductID = x.Key.ProductID,Product=x.Key.Product, TotalValue = x.Sum(y => y.Product.CNYSellPrice.Value), Count = x.Count() }).ToList();
+
+				products = mostPopularProds.OrderByDescending(x => x.TotalValue).Take(10).ToList();
+			}
+
+			return PartialView("TopProductsPartial", products);
+		}
+
 		public ActionResult Delete(int id)
 		{
 			Product product = db.Products.Find(id);

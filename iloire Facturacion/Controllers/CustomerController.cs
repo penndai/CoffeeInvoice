@@ -64,6 +64,19 @@ namespace CoffeeInvoice.Controllers
 			return View(customers.ToPagedList(currentPageIndex, defaultPageSize));
         }
 
+		public PartialViewResult MostTop10Customers(int top)
+		{
+			List<MostTopCustomer> topCustomers = new List<MostTopCustomer>();
+			if (Session["LoginUser"] != null)
+			{
+				User user = (User)Session["LoginUser"];
+				var mostPopularProds =
+					db.Transactions.Where(x => x.UserID == user.UserID).GroupBy(x => new { CustomerID = x.CustomerID, CustomerName = x.Customer.Name }).Select(x => new MostTopCustomer { CustomerID = x.Key.CustomerID, CustomerName = x.Key.CustomerName, TotalPaid = x.Sum(y => y.Product.CNYSellPrice.Value) }).ToList();
+
+				topCustomers = mostPopularProds.OrderByDescending(x => x.TotalPaid).Take(10).ToList();
+			}
+			return PartialView("TopCustomersPartial", topCustomers);
+		}
         //
         // GET: /Customer/Details/5
 

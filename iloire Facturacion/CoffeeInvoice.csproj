@@ -222,6 +222,8 @@
     <Compile Include="Models\POCO\Transaction.cs" />
     <Compile Include="Models\POCO\User.cs" />
     <Compile Include="Models\Security\InvoicingMembershipProvider.cs" />
+    <Compile Include="Models\ViewModel\MostTopCustomer.cs" />
+    <Compile Include="Models\ViewModel\PopularProduct.cs" />
     <Compile Include="Models\ViewModel\TransactionModel.cs" />
     <Compile Include="Models\ViewModel\ProductViewModel.cs" />
     <Compile Include="Models\ViewModel\SearchModel.cs" />
@@ -750,6 +752,8 @@
     <Content Include="Views\Transaction\Edit.cshtml" />
     <Content Include="Views\Transaction\TransactionListPartial.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ShortDate.cshtml" />
+    <Content Include="Views\Product\TopProductsPartial.cshtml" />
+    <Content Include="Views\Customer\TopCustomersPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

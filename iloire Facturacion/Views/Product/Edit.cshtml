@@ -68,18 +68,18 @@
 
 	$(document).ready(function () {
 		// Send an AJAX request
-		$.ajax({
-			url: "../../api/ConvertCurrency/AUD/CNY/1",
-			type: "GET",
-			//data: JSON.stringify(["AUD", "CNY", 2]),
-			contentType: 'application/json; charset=utf-8',
-			success: function (data) {
-				$("#rate").text(data);
-			},
-			error: function (error) {
-				alert('Error:' + error);
-			}
-		});
+		//$.ajax({
+		//	url: "../../api/ConvertCurrency/AUD/CNY/1",
+		//	type: "GET",
+		//	//data: JSON.stringify(["AUD", "CNY", 2]),
+		//	contentType: 'application/json; charset=utf-8',
+		//	success: function (data) {
+		//		$("#rate").text(data);
+		//	},
+		//	error: function (error) {
+		//		alert('On Edit Product ajax get rate Error:' + error);
+		//	}
+		//});
 
 		$("#Price").blur(function (e) {
 

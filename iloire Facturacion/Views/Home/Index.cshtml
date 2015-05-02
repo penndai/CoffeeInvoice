@@ -15,17 +15,24 @@
         <h3>Transaction Overdue</h3>
        @* @{Html.RenderAction("OverDueInvoices","Invoice");}*@
 		@{Html.RenderAction("OverDueTransaction", "Transaction");}
-        <h3>Unpaid invoices</h3>
-        @{Html.RenderAction("UnPaidInvoices","Invoice");}
+       @* <h3>Unpaid invoices</h3>
+        @{Html.RenderAction("UnPaidInvoices","Invoice");}*@
 
 		<h3>Latest Transatcions</h3>
 		@{Html.RenderAction("LatestTransactions", "Transaction");}
-        <h3>Latest proposals</h3>
-        @{Html.RenderAction("LatestProposals","Invoice");}
+
+
+       @* <h3>Latest proposals</h3>
+        @{Html.RenderAction("LatestProposals","Invoice");}*@
     </td>
     <td>
-        <h3>Recent purchases</h3>
-        @{Html.RenderAction("RecentPurchases","Purchase", new {top=5});}
+		<h3>Most Popular Products</h3>
+		@{Html.RenderAction("MostPopularProducts", "Product", new { top = 10 });}
+
+		<h3>Most Top 10 Customers</h3>
+		@{Html.RenderAction("MostTop10Customers", "Customer", new { top=10});}
+       @* <h3>Recent purchases</h3>
+        @{Html.RenderAction("RecentPurchases","Purchase", new {top=5});}*@
 
         <h3>This Quarter</h3>
         <div style="padding:20px;">        

@@ -224,5 +224,29 @@ namespace CoffeeInvoice.Controllers
 
 			return PartialView("TransactionListPartial",overdueTrans);
 		}
+
+		public PartialViewResult LastTransactionByCustomer(int id)
+		{
+			var trans = new List<Transaction>();
+			if (Session["LoginUser"] != null)
+			{
+				int userid = ((User)Session["LoginUser"]).UserID;
+				trans = db.Transactions.Where(x => x.UserID == userid && x.CustomerID == id).OrderByDescending(x => x.TimeStamp).ToList();
+			}
+
+			return PartialView("TransactionListPartial", trans);
+		}
+
+		public PartialViewResult RecendTransactionByProduct(int productId)
+		{
+			var trans = new List<Transaction>();
+			if (Session["LoginUser"] != null)
+			{
+				int userid = ((User)Session["LoginUser"]).UserID;
+				trans = db.Transactions.Where(x => x.UserID == userid && x.ProductID == productId).OrderByDescending(x => x.TimeStamp).ToList();
+			}
+
+			return PartialView("TransactionListPartial", trans);
+		}
 	}
 }

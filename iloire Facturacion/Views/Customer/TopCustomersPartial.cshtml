@@ -1,0 +1,32 @@
+﻿@model IEnumerable<MostTopCustomer>
+<div class="table-responsive">
+	<table class="zebra-striped">
+		 <thead>
+        <th width="40">
+            ID
+        </th>
+        <th>
+            Customer
+        </th>
+        <th width="35%">
+            Total Price
+        </th>
+                            
+    </thead>
+		@foreach (var item in Model)
+  {
+	   <tr>
+		  <td>
+			   <a href="@Url.Action("Details", "Custom", new { id=item.CustomerID})"># @item.CustomerID</a>
+		  </td>
+		  <td>
+			  <a href="@Url.Action("Details", "Product", new { id=item.CustomerName})">
+            @Html.DisplayFor(modelItem => item.CustomerName)
+         </a>
+		  </td>
+		 
+		  <td>@Html.Raw(@Html.Currency(@item.TotalPaid,"zh-CN"))</td>
+		  </tr>
+  }
+		</table>
+	</div>

@@ -1,0 +1,34 @@
+﻿@model IEnumerable<PopularProduct>
+<div class="table-responsive">
+<table class="zebra-striped">
+    <thead>
+        <th width="40">
+            ID
+        </th>
+        <th>
+            Product
+        </th>
+        <th width="35%">
+            Count
+        </th>
+         <th width="80">
+            Total
+        </th>                      
+    </thead>
+	@foreach (var item in Model)
+ {
+	  <tr>
+		  <td>
+			   <a href="@Url.Action("Details", "Product", new { id=item.ProductID})"># @item.ProductID</a>
+		  </td>
+		  <td>
+			  <a href="@Url.Action("Details", "Product", new { id=item.ProductID})">
+            @Html.DisplayFor(modelItem => item.Product)
+         </a>
+		  </td>
+		  <td>@item.Count</td>
+		  <td>@Html.Raw(@Html.Currency(@item.TotalValue,"zh-CN"))</td>
+		  </tr>
+ }
+	</table>
+</div>
