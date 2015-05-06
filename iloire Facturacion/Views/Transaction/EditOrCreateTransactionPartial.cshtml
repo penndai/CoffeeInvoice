@@ -37,7 +37,8 @@
 	<div class="clearfix">
 		@Html.LabelFor(x => Model.TransactionSellAmount, "Total Price", new { @class="control-label col-sm-3"})
 		<div class="input">
-		@Html.TextBoxCurrencyReadOnly(x=>Model.TransactionSellAmount.Value, new{@readonly="readonly", @id="TransactionSellAmount"})
+			@*@Html.TextBoxFor(x=>Model.TransactionSellAmount,new{@readonly="readonly", @id="TransactionSellAmount"})*@
+		@Html.TextBoxCurrencyReadOnly(x=>Model.TransactionSellAmount, new{@readonly="readonly", @id="TransactionSellAmount"})
 			@Html.ValidationMessageFor(x=>Model.TransactionSellAmount)
 		</div>
 	</div>

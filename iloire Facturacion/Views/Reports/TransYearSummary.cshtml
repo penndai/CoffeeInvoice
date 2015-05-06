@@ -1,0 +1,54 @@
+﻿@model TransYearSummary
+@functions{ 
+    private string PrintQty(decimal qty){
+        var sign = (qty>0) ? "positive" : "negative";
+        return "<span class=\"" + sign + "\">" + String.Format("{0:C}", qty) + "</span>";
+    }
+}
+
+<table>
+<tr>
+    <td width="15%" style="background-color:#f5f5f5"></td>
+    <td width="15%"><strong>@Html.ActionLink("Q1", "TransQuarterDetails", "Reports", new { quarter = 1, year = Model.Q1.Year }, null)</strong></td>
+    <td width="15%"><strong>@Html.ActionLink("Q2", "TransQuarterDetails", "Reports", new { quarter = 2, year = Model.Q2.Year }, null)</strong></td>
+    <td width="15%"><strong>@Html.ActionLink("Q3", "TransQuarterDetails", "Reports", new { quarter = 3, year = Model.Q3.Year }, null)</strong></td>
+    <td width="15%"><strong>@Html.ActionLink("Q4", "TransQuarterDetails", "Reports", new { quarter = 4, year = Model.Q4.Year }, null)</strong></td>
+    <td width="25%"><strong>TOTAL</strong></td>
+</tr>
+	<tr>
+    <td><strong>Net Income:</strong></td>
+    <td>@String.Format("{0:C}", Model.Q1.Income)</td>
+    <td>@String.Format("{0:C}", Model.Q2.Income)</td>
+    <td>@String.Format("{0:C}", Model.Q3.Income)</td>
+    <td>@String.Format("{0:C}", Model.Q4.Income)</td>      
+    <td style="background-color:#f5f5f5">@String.Format("{0:C}", Model.Q1.Income + Model.Q2.Income + Model.Q3.Income + Model.Q4.Income)</td>    
+</tr>
+
+<tr>
+    <td><strong>Net Expense:</strong></td>
+    <td><span class="expense">@String.Format("{0:C}", Model.Q1.Expense)</span></td>
+    <td><span class="expense">@String.Format("{0:C}", Model.Q2.Expense)</span></td>
+    <td><span class="expense">@String.Format("{0:C}", Model.Q3.Expense)</span></td>
+    <td><span class="expense">@String.Format("{0:C}", Model.Q4.Expense)</span></td>
+    <td style="background-color:#f5f5f5"><span class="expense">@String.Format("{0:C}", Model.Q1.Expense + Model.Q2.Expense + Model.Q3.Expense + Model.Q4.Expense)</span></td>
+</tr>
+	<tr>
+		<td><strong>Net Benefit:</strong></td>
+<td>
+    @Html.Raw(PrintQty(Model.Q1.Benefit))
+</td>
+<td>
+    @Html.Raw(PrintQty(Model.Q2.Benefit))
+</td>
+<td>
+    @Html.Raw(PrintQty(Model.Q3.Benefit))    
+</td>
+<td>
+    @Html.Raw(PrintQty(Model.Q4.Benefit))
+</td>
+<td style="background-color:#f5f5f5">
+    @{var total_benefit = Model.Q1.Benefit + Model.Q2.Benefit + Model.Q3.Benefit + Model.Q4.Benefit;}
+    @Html.Raw(PrintQty(total_benefit))
+</td>
+	</tr>
+</table>

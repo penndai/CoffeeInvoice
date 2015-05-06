@@ -33,6 +33,28 @@ namespace CoffeeInvoice.Controllers
 			}
 		}
 
+		// Get Proeuct with id 
+		public ActionResult Details(int id)
+		{
+			Transaction t = db.Transactions.Find(id);
+			TransactionModel tm = new TransactionModel();
+			tm.Customer = t.Customer;
+			tm.CustomerID = t.CustomerID;
+			tm.Number = t.Number;
+			tm.Product = t.Product;
+			tm.ProductID = t.ProductID;
+			tm.TimeStamp = t.TimeStamp;
+			tm.TransactionID = t.TransactionID;
+			tm.User = t.User;
+			tm.UserID = t.UserID;
+
+			if (t.Number > 0 && t.Product.CNYSellPrice.HasValue)
+			{
+				tm.TransactionSellAmount = (t.Number * t.Product.CNYSellPrice.Value).ToString();
+			}
+			return View(tm);
+		}
+
 		public ActionResult Index(string filter, int? page, int? pagesize)
 		{
 			int currentPage = page.HasValue ? page.Value - 1 : 0;
@@ -62,7 +84,7 @@ namespace CoffeeInvoice.Controllers
 
 				if (t.Number > 0 && t.Product.CNYSellPrice.HasValue)
 				{
-					tm.TransactionSellAmount = t.Number * t.Product.CNYSellPrice.Value;
+					tm.TransactionSellAmount = (t.Number * t.Product.CNYSellPrice.Value).ToString();
 				}
 				PagedTransactions.Add(tm);
 			}
@@ -93,7 +115,7 @@ namespace CoffeeInvoice.Controllers
 			tm.PaidDateTime = t.PaidDateTime;
 			if (t.Number > 0 && t.Product.CNYSellPrice.HasValue)
 			{
-				tm.TransactionSellAmount = t.Number * t.Product.CNYSellPrice.Value;
+				tm.TransactionSellAmount = (t.Number * t.Product.CNYSellPrice.Value).ToString();
 			}
 			ViewBag.Products = new SelectList(db.Products.OrderByDescending(x => x.ProductName), "ProductID", "ProductName", t.ProductID);
 			ViewBag.Customers = new SelectList(db.Customers.OrderByDescending(x => x.Name), "CustomerID", "Name", t.CustomerID);
@@ -108,7 +130,12 @@ namespace CoffeeInvoice.Controllers
 			{
 				Transaction t = db.Transactions.Find(tm.TransactionID);
 				t.ProductID = tm.ProductID;
+				tm.Product = db.Products.Find(tm.ProductID);
 				t.Number = tm.Number;
+				t.Income = Convert.ToDecimal(tm.TransactionSellAmount.Substring(1));
+				t.Expense = tm.Number * tm.Product.CNYPrice.Value;
+				t.Benefit = t.Income - t.Expense;
+
 				t.IsPaid = tm.IsPaid;
 				if(t.IsPaid)
 					t.PaidDateTime = tm.PaidDateTime;
@@ -151,7 +178,7 @@ namespace CoffeeInvoice.Controllers
 			t.Number = 1;
 
 			t.Product = db.Products.Find(t.ProductID);
-			t.TransactionSellAmount = t.Number * t.Product.CNYSellPrice.Value;
+			t.TransactionSellAmount = (t.Number * t.Product.CNYSellPrice.Value).ToString();
 			ViewBag.Products = new SelectList(db.Products.OrderByDescending(x => x.ProductName), "ProductID", "ProductName", t.ProductID);
 			ViewBag.Customers = new SelectList(db.Customers.OrderByDescending(x => x.Name), "CustomerID", "Name", t.CustomerID);
 
@@ -174,6 +201,9 @@ namespace CoffeeInvoice.Controllers
 				t.TimeStamp = tm.TimeStamp;
 				t.TransactionID = tm.TransactionID;
 				t.IsPaid = tm.IsPaid;
+				t.Expense = tm.Number * db.Products.Find(t.ProductID).CNYPrice.Value;
+				t.Income = Convert.ToDecimal(tm.TransactionSellAmount.Substring(1));
+				t.Benefit = t.Income - t.Expense;
 
 				if (t.IsPaid)
 					t.PaidDateTime = tm.PaidDateTime;

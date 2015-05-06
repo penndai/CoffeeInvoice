@@ -11,7 +11,9 @@ public class TransactionModel : Transaction
 	/// <summary>
 	/// total amount for this transaction
 	/// </summary>
-	[DataType(DataType.Currency)]
-	[DisplayFormat(DataFormatString = "{0:C}")]
-	public decimal? TransactionSellAmount { get; set; }
+	//[DataType(DataType.Currency)]
+	//[DisplayFormat(DataFormatString = "{0:C}")]
+	//public decimal? TransactionSellAmount { get; set; }
+
+	public string TransactionSellAmount { get; set; }
 }

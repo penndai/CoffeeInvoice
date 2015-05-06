@@ -27,9 +27,9 @@
 			<li>               
 		</text>
 		}
-		@Html.ActionLink("Proposals", "Index", "Invoice", new { proposal = true }, null)</li>
+		@Html.ActionLink("Proposals", "Index", "Invoice", new { proposal = true }, new {@style="visibility: hidden"})</li>
            
-		<li>@Html.ActionLink("( + )", "Create", "Invoice", new { proposal = true }, null) </li>
+		<li>@Html.ActionLink("( + )", "Create", "Invoice", new { proposal = true }, new {@style="visibility: hidden"}) </li>
 
 		@if (Request.RawUrl.Contains("/Invoice"))
   {
@@ -44,9 +44,9 @@
                
 			</text>
   }
-		@Html.ActionLink("Invoices", "Index", "Invoice", new { proposal = false }, null)</li>
+		@Html.ActionLink("Invoices", "Index", "Invoice", new { proposal = false }, new {@style="visibility: hidden"})</li>
            
-		<li>@Html.ActionLink("( + )", "Create", "Invoice", new { proposal = false }, null)</li>
+		<li>@Html.ActionLink("( + )", "Create", "Invoice", new { proposal = false }, new {@style="visibility: hidden"})</li>
 
 		@if (Request.RawUrl.Contains("/Purchase"))
   {
@@ -61,9 +61,9 @@
                
 			</text>
   }
-		@Html.ActionLink("Expenses", "Index", "Purchase")</li>
+		@Html.ActionLink("Expenses", "Index", "Purchase",new {@style="visibility: hidden"})</li>
            
-		<li>@Html.ActionLink("( + )", "Create", "Purchase") </li>
+		<li>@Html.ActionLink("( + )", "Create", "Purchase",new {@style="visibility: hidden"}) </li>
 	</ul>
 	<ul class="nav" id="adminmenu">
 		<li class="dropdown" data-dropdown="dropdown">
@@ -72,7 +72,7 @@
 				<li><a href="@Url.Action("Index", "Provider")">Edit providers</a></li>
 				<li><a href="@Url.Action("Index", "Product")">Edit products</a></li>
 				<li><a href="@Url.Action("Index", "Customer")">Edit customers</a></li>
-				<li><a href="@Url.Action("Index", "PurchaseType")">Edit expense types</a></li>
+				<li><a href="@Url.Action("Index", "PurchaseType")" style="visibility:hidden">Edit expense types</a></li>
 			</ul>
 		</li>
 	</ul>
@@ -83,7 +83,7 @@
 			<ul class="dropdown-menu">
 				<li><a href="@Url.Action("ByYear", "Reports", new { id = DateTime.Now.Year })">@DateTime.Now.Year</a></li>
 				<li><a href="@Url.Action("ByYear", "Reports", new { id = DateTime.Now.Year - 1 })">@(DateTime.Now.Year - 1)</a></li>
-				<li><a href="@Url.Action("QuarterDetails", "Reports")">Details by quarter</a></li>
+				<li><a href="@Url.Action("TransQuarterDetails", "Reports")">Details by quarter</a></li>
 			</ul>
 		</li>
 	</ul>

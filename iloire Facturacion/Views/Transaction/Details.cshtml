@@ -1,0 +1,45 @@
+﻿@model TransactionModel
+@{
+	ViewBag.Title = "Transaction details";	
+}
+
+@section header{
+	<script>
+    var sorter_options = {
+        headers: {
+            2: { sorter: 'decimal' },
+            3: { sorter: 'datetime' },
+            4: { sorter: 'datetime' }
+        }
+    };
+</script>	
+}
+
+<div class="span7">
+	<fieldset>
+		<legend>Transaction details</legend>
+		<p>
+			<strong>Product name</strong>
+			@Html.DisplayFor(model=>Model.Product.ProductName)
+		</p>
+
+		<p>
+			<strong>Customer name</strong>
+			@Html.DisplayFor(model=>Model.Customer.Name)
+		</p>
+		<p>
+			<strong>Sell Price</strong>
+			@Html.Currency(Convert.ToDecimal(Model.TransactionSellAmount),"zh-CN")
+		</p>
+
+		<p>
+			<strong>Number</strong>
+			@Html.DisplayFor(model=>Model.Number)
+		</p>
+	</fieldset>
+
+	<p>
+		@Html.ActionLink("Edit", "Edit", new { id=Model.TransactionID }, new { @class = "btn"})
+		@Html.ActionLink("Back to List", "Index", null, new { @class = "btn"})
+	</p>
+</div>

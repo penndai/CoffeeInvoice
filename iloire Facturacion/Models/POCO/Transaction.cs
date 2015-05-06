@@ -24,6 +24,10 @@ using System.Web;
 		public DateTime? PaidDateTime { get; set; }
 		public DateTime TimeStamp { get; set; }
 
+		public decimal Expense { get; set; }
+		public decimal Income { get; set; }
+		public decimal Benefit { get; set; }
+
 		public virtual User User { get; set; }
 		public virtual Product Product { get; set; }
 		public virtual Customer Customer { get; set; }

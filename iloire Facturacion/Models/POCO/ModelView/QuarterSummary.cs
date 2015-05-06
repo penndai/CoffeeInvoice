@@ -11,3 +11,12 @@ public class QuarterSummary
     public Summary Month2 { get; set; }
     public Summary Month3 { get; set; }
 }
+
+public class TransQuarterSummary
+{
+	public int Year { get; set; }
+
+	public TSummary Month1 { get; set; }
+	public TSummary Month2 { get; set; }
+	public TSummary Month3 { get; set; }
+}

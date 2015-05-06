@@ -1,6 +1,4 @@
-﻿@model Summary
-
-
+﻿@model TSummary
 @{
     var chart_name = Model.GetHashCode();  
     }
@@ -16,9 +14,9 @@
             data.addColumn('number', 'Hours per Day');
             data.addRows(2);
             data.setValue(0, 0, 'Income');
-            data.setValue(0, 1, @Model.NetIncome);
+            data.setValue(0, 1, @Model.Income);
             data.setValue(1, 0, 'Expenses');
-            data.setValue(1, 1, @Model.NetExpense);
+            data.setValue(1, 1, @Model.Expense);
             var chart = new google.visualization.PieChart(document.getElementById('@chart_name'));
             chart.draw(data, { width: 350, height: 150, title: 'Income vs expenses' });
         }
@@ -30,28 +28,19 @@
     <h4>
     @String.Format("{0:d}", Model.From)  -  @String.Format("{0:d}", Model.To)         
     </h4>
-
-    <p>
-        <strong>NET Income:</strong> <span class="income big">@String.Format("{0:C}", Model.NetIncome)</span>
-        +
-        <strong>VAT received:</strong> <span class="income big">@String.Format("{0:C}", Model.VATReceived)</span>
-        =
-        <strong>Gross Income:</strong> <span class="income big">@String.Format("{0:C}", Model.GrossIncome) </span>
+	<p>
+        <strong>NET Income:</strong> <span class="income big">@String.Format("{0:C}", Model.Income)</span>
+                
         <br />
-        <strong>NET Expense:</strong><span class="expense big"> @String.Format("{0:C}", Model.NetExpense)</span>
-        +
-        <strong>VAT Paid:</strong> <span class="expense big">@String.Format("{0:C}", Model.VATPaid)</span>
-        =
-        <strong>Total Paid:</strong> <span class="expense big">@String.Format("{0:C}", Model.GrossExpense)</span>
+        <strong>NET Expense:</strong><span class="expense big"> @String.Format("{0:C}", Model.Expense)</span>
+        
         <hr />
         <strong>Benefit:</strong> 
         <span class=expense>
-        @{Html.RenderPartial("Money", Model.NetBenefit);}
+        @{Html.RenderPartial("Money", Model.Benefit);}
         </span>    
         <br />
-        <strong>VAT Balance:</strong> @String.Format("{0:C}", Model.VATBalance)
+        <strong>VAT Balance:</strong> @String.Format("{0:C}", Model.Benefit)
     
     </p>
 </div>
-
-

@@ -1,7 +1,6 @@
-﻿@model QuarterSummary
+﻿@model TransQuarterSummary
 
-
-@using (Html.BeginForm("QuarterDetails", "Reports", null, FormMethod.Get))
+@using (Html.BeginForm("TransQuarterDetails", "Reports", null, FormMethod.Get))
 {
     <div class="searchBox">   
           Quarter: @Html.DropDownList("quarter", new SelectList(new string[] { "1", "2", "3", "4" }, ViewBag.Quarter), new { @class="small"})
@@ -17,4 +16,4 @@
     </div>
 }
 
-@{Html.RenderAction("QuarterDetailsPartial", Model);}
+@{Html.RenderAction("TransQuarterDetailsPartial", Model);}

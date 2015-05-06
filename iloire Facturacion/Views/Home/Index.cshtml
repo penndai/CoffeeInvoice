@@ -1,13 +1,14 @@
 ﻿@{
-    ViewBag.Title = "Jessica Invoice";
+	ViewBag.Title = "Jessica Invoice";
 }
 
-<p align="right" style="float:right">
-    @Html.ActionLink("[+] Create new Invoice", "Create","Invoice", null, new { @class = "btn primary" })
-    @Html.ActionLink("[+] Create new expense", "Create", "Purchase", null, new { @class = "btn primary" })
+<p style="float:right">
+	@Html.ActionLink("[+] Create new Transtraction", "Create", "Transaction", null, new { @class = "btn primary" })
+   @* @Html.ActionLink("[+] Create new Invoice", "Create", "Invoice", null, new { @class = "btn primary" })
+    @Html.ActionLink("[+] Create new expense", "Create", "Purchase", null, new { @class = "btn primary" })*@
 </p>
 
-<h2>Invoice Summary</h2>
+<h2>Summary</h2>
 
 <table width="100%" class="dashboard">
 <tr>
@@ -30,20 +31,27 @@
 		@{Html.RenderAction("MostPopularProducts", "Product", new { top = 10 });}
 
 		<h3>Most Top 10 Customers</h3>
-		@{Html.RenderAction("MostTop10Customers", "Customer", new { top=10});}
+		@{Html.RenderAction("MostTop10Customers", "Customer", new { top = 10 });}
        @* <h3>Recent purchases</h3>
         @{Html.RenderAction("RecentPurchases","Purchase", new {top=5});}*@
-
+	</td>
+</tr>
+<tr>
+	<td>
         <h3>This Quarter</h3>
         <div style="padding:20px;">        
-        @{Html.RenderAction("ThisQuarterSummary", "Reports");}
+        @*@{Html.RenderAction("ThisQuarterSummary", "Reports");}*@
+			@{Html.RenderAction("ThisQuarterTransSummary", "Reports");}
         </div>
- 
+	</td>
+	<td>
         <h3>This year</h3>
-        @{Html.RenderAction("YearSummary", "Reports", new {id=DateTime.Now.Year});}
+		@{Html.RenderAction("TransYearSummary", "Reports", new { id = DateTime.Now.Year });}
+       @* @{Html.RenderAction("YearSummary", "Reports", new { id = DateTime.Now.Year });}*@
 
         <h3>Last year</h3>
-        @{Html.RenderAction("YearSummary", "Reports", new { id = DateTime.Now.Year-1 });}
+		@{Html.RenderAction("TransYearSummary", "Reports", new { id = DateTime.Now.Year -1 });}
+        @*@{Html.RenderAction("YearSummary", "Reports", new { id = DateTime.Now.Year - 1 });}*@
     </td>
 </tr>
 </table>

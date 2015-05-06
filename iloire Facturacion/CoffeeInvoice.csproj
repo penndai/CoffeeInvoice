@@ -176,6 +176,8 @@
     <Compile Include="Controllers\PurchaseTypeController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\TransactionController.cs" />
+    <Compile Include="CustomBinder\CurrencyModelBinder.cs" />
+    <Compile Include="CustomBinder\CurrencyStringModelBinder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -195,6 +197,10 @@
     <Compile Include="Migrations\201505011317409_setPaidDateNullable.Designer.cs">
       <DependentUpon>201505011317409_setPaidDateNullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505041227346_addIncomeExpenseInTransaction.cs" />
+    <Compile Include="Migrations\201505041227346_addIncomeExpenseInTransaction.Designer.cs">
+      <DependentUpon>201505041227346_addIncomeExpenseInTransaction.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Attributes\HandleErrorAttribute.cs" />
@@ -210,6 +216,8 @@
     <Compile Include="Models\Paging\PagingExtensions.cs" />
     <Compile Include="Models\POCO\Customer.cs" />
     <Compile Include="Models\POCO\ModelView\QuarterSummary.cs" />
+    <Compile Include="Models\POCO\ModelView\TransYearSummary.cs" />
+    <Compile Include="Models\POCO\ModelView\TSummary.cs" />
     <Compile Include="Models\POCO\ModelView\YearSummary.cs" />
     <Compile Include="Models\POCO\ModelView\Summary.cs" />
     <Compile Include="Models\POCO\Product.cs" />
@@ -754,6 +762,11 @@
     <Content Include="Views\Shared\DisplayTemplates\ShortDate.cshtml" />
     <Content Include="Views\Product\TopProductsPartial.cshtml" />
     <Content Include="Views\Customer\TopCustomersPartial.cshtml" />
+    <Content Include="Views\Transaction\Details.cshtml" />
+    <Content Include="Views\Reports\PeriodTransSummary.cshtml" />
+    <Content Include="Views\Reports\TransYearSummary.cshtml" />
+    <Content Include="Views\Reports\TransQuarterDetails.cshtml" />
+    <Content Include="Views\Reports\TransQuarterDetailsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -783,6 +796,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505011317409_setPaidDateNullable.resx">
       <DependentUpon>201505011317409_setPaidDateNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505041227346_addIncomeExpenseInTransaction.resx">
+      <DependentUpon>201505041227346_addIncomeExpenseInTransaction.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

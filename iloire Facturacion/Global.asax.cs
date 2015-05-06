@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using CoffeeInvoice.CustomBinder;
 
 namespace CoffeeInvoice
 {
@@ -59,7 +60,7 @@ namespace CoffeeInvoice
 
 			
             AreaRegistration.RegisterAllAreas();
-			
+			//ModelBinders.Binders.Add(typeof(string), new CurrencyStringModelBinder());
 			GlobalConfiguration.Configure(WebApiConfig.Register);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
 			RegisterGlobalFilters(GlobalFilters.Filters);

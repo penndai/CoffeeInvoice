@@ -1,0 +1,76 @@
+﻿@model TransQuarterSummary
+<table class="zebra-striped" cellspacing="0" cellpadding="0" width="100%">
+	<colgroup>
+			    <col style="width: 156px;">
+				<col style="width:201px">
+				<col style="width:201px">
+				<col style="width:201px">
+				<col style="width:201px">
+				<col style="width:201px">
+		</colgroup>
+	<thead>
+			<tr>
+			<th>@Model.Year</th>
+			<th>@Model.Month1.From.ToString("MMMM")</th>
+			<th>@Model.Month2.From.ToString("MMMM")</th>
+			<th>@Model.Month3.From.ToString("MMMM")</th>
+			<th>Total for Quarter</th>
+			</tr>
+		</thead>
+	<tbody>			
+			<tr class="section-title">
+			<td colspan="5"><h4>Income</h4></td>
+			</tr>		
+			<tr>
+				<td>
+                @Html.ActionLink("Incom from sales", "Search", "Transaction", new { from = Model.Month1.From.ToShortDateString(), to = Model.Month3.From.AddMonths(1).AddDays(-1).ToShortDateString()}, null)                
+                </td>
+				<td>
+                @Html.ActionLink(String.Format("{0:C}", Model.Month1.Income), "Search", "Transaction", new { from = Model.Month1.From.ToShortDateString(), to = Model.Month1.From.AddMonths(1).AddDays(-1).ToShortDateString()}, null)                
+                </td>
+				<td class="ta_right">						
+                @Html.ActionLink(String.Format("{0:C}", Model.Month2.Income), "Search", "Transaction", new { from = Model.Month2.From.ToShortDateString(), to = Model.Month2.From.AddMonths(1).AddDays(-1).ToShortDateString()}, null)                
+				</td>
+				<td class="ta_right">
+                @Html.ActionLink(String.Format("{0:C}", Model.Month3.Income), "Search", "Transaction", new { from = Model.Month3.From.ToShortDateString(), to = Model.Month3.From.AddMonths(1).AddDays(-1).ToShortDateString()}, null)
+                 </td>
+				<td class="ta_right total">
+				@Html.ActionLink(String.Format("{0:C}", (Model.Month1.Income + Model.Month2.Income + Model.Month3.Income)), "Search", "Transaction", new { from = Model.Month1.From.ToShortDateString(), to = Model.Month3.From.AddMonths(1).AddDays(-1).ToShortDateString() }, null)                
+				</td>
+		    </tr>
+		<tr>
+				<td>
+                Expense
+                </td>
+				<td>
+                 @String.Format("{0:C}", Model.Month1.Expense)
+                </td>
+				<td class="ta_right">						
+                   @String.Format("{0:C}", Model.Month2.Expense)
+				</td>
+				<td class="ta_right">
+				 @String.Format("{0:C}", Model.Month3.Expense)									
+                 </td>
+				<td class="ta_right total">
+				@String.Format("{0:C}", (Model.Month1.Expense + Model.Month2.Expense + Model.Month3.Expense))
+				</td>
+		    </tr>
+		<tr>
+			<td>
+				Benefit
+			</td>
+			<td>
+                 @String.Format("{0:C}", Model.Month1.Benefit)
+                </td>
+				<td class="ta_right">						
+                   @String.Format("{0:C}", Model.Month2.Benefit)
+				</td>
+				<td class="ta_right">
+				 @String.Format("{0:C}", Model.Month3.Benefit)									
+                 </td>
+				<td class="ta_right total">
+				@String.Format("{0:C}", (Model.Month1.Benefit + Model.Month2.Benefit + Model.Month3.Benefit))
+				</td>
+		</tr>
+	</tbody>
+</table>

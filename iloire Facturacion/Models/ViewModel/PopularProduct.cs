@@ -5,7 +5,6 @@ using System.Linq;
 using System.Web;
 
 
-	[NotMapped]
 	public class PopularProduct
 	{
 		public int ProductID { get; set; }

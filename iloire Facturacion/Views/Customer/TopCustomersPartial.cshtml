@@ -17,10 +17,10 @@
   {
 	   <tr>
 		  <td>
-			   <a href="@Url.Action("Details", "Custom", new { id=item.CustomerID})"># @item.CustomerID</a>
+			   <a href="@Url.Action("Details", "Customer", new { id=item.CustomerID})"># @item.CustomerID</a>
 		  </td>
 		  <td>
-			  <a href="@Url.Action("Details", "Product", new { id=item.CustomerName})">
+			  <a href="@Url.Action("Details", "Customer", new { id=item.CustomerID})">
             @Html.DisplayFor(modelItem => item.CustomerName)
          </a>
 		  </td>
