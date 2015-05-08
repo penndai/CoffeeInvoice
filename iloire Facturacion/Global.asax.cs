@@ -26,6 +26,8 @@ namespace CoffeeInvoice
 			
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+			
+
             routes.MapRoute(
             "Invoice",
             "Invoice/{action}/{id}", 
@@ -33,13 +35,20 @@ namespace CoffeeInvoice
 			new[] { "CoffeeInvoice.Controllers" }
             );
 
+
             routes.MapRoute(
               "Proposal",
               "Proposal/{action}/{id}", 
               new { controller = "Invoice", action = "Index", id = UrlParameter.Optional, proposal=true }, // Valores predeterminados de parámetro
 			  new[] { "CoffeeInvoice.Controllers" }
           );
-        
+
+			routes.MapRoute(
+			 "Localization", // Route name
+			 "{lang}/{controller}/{action}/{id}", // URL with parameters
+			 new { lang="zh",controller = "Home", action = "Index", id = UrlParameter.Optional }, // Parameter defaults
+			 new[] { "CoffeeInvoice.Controllers" }
+			);
 
             routes.MapRoute(
                 "Default", 

@@ -1,4 +1,5 @@
-﻿/*
+﻿using CoffeeInvoice.Controllers.AttributeExtend;
+/*
 	Iván Loire - www.iloire.com
 	Please readme README file for license terms.
 
@@ -13,6 +14,7 @@ using System.Web.Mvc;
 namespace CoffeeInvoice.Controllers
 {
     [Authorize]
+	[Localization]
     public class HomeController : Controller
     {
         public ActionResult Index()

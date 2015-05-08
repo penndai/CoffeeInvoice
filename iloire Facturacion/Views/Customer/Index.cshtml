@@ -70,7 +70,9 @@
             clearErrors();
 
             var id = $(this).attr("idCustomer");
-            var url = '@Url.Content("~/Customer/Edit")/' + id;
+            
+			
+            var url = '@Url.Content("~/" + ViewContext.RouteData.Values["lang"] + "/Customer/Edit")/' + id;
 
             getRequest(url);
 
@@ -80,7 +82,7 @@
 
         $('a.newCustomer').live('click', function () {
             clearErrors();
-            var url = '@Url.Content("~/Customer/Create")';
+            var url = '@Url.Content("~/" + ViewContext.RouteData.Values["lang"] + "/Customer/Create")';
 
             getRequest(url);
 

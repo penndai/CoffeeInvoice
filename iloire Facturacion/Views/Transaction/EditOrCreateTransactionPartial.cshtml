@@ -76,7 +76,8 @@
 			var number = $("#Number").val();
 			var selectedProductID = $("#ProductID option:selected").val();
 			if (selectedProductID && selectedProductID > 0) {
-				$.getJSON("/Transaction/GetProductPrice", { ProductID: selectedProductID,Number:number, culture:"zh-CN" }, function (data) {
+				var lang = '/@ViewContext.RouteData.Values["lang"]';
+				$.getJSON(lang+"/Transaction/GetProductPrice", { ProductID: selectedProductID, Number: number, culture: "zh-CN" }, function (data) {
 					
 					$("#CNYPrice").val(data.UnitPrice);
 					$("#TransactionSellAmount").val(data.TransactionTotalPrice);
