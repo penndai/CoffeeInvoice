@@ -117,73 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Invoice_AdvancePaymentTax" xml:space="preserve">
-    <value>Advance Payment Tax</value>
-  </data>
-  <data name="Invoice_AdvancePTComment" xml:space="preserve">
-    <value>To be paid to the Tax agency in behalf of {0}</value>
-  </data>
-  <data name="Invoice_CompanyNumber" xml:space="preserve">
-    <value>Company Number</value>
-  </data>
-  <data name="Invoice_Email" xml:space="preserve">
-    <value>Email</value>
-  </data>
-  <data name="Invoice_Item" xml:space="preserve">
-    <value>Item</value>
-  </data>
-  <data name="Invoice_Number" xml:space="preserve">
-    <value>Invoice number {1}# {0} #</value>
-  </data>
-  <data name="Invoice_PaymentDetails" xml:space="preserve">
-    <value>Bank wire</value>
-  </data>
-  <data name="Invoice_PaymentDetailsTitle" xml:space="preserve">
-    <value>Payment details</value>
-  </data>
-  <data name="Invoice_Phone" xml:space="preserve">
-    <value>Phone</value>
-  </data>
-  <data name="Invoice_Price" xml:space="preserve">
-    <value>Price</value>
-  </data>
-  <data name="Invoice_Qty" xml:space="preserve">
-    <value>Qty</value>
-  </data>
-  <data name="Invoice_Service" xml:space="preserve">
-    <value>Service</value>
-  </data>
-  <data name="Invoice_SubTotal" xml:space="preserve">
-    <value>SubTotal</value>
-  </data>
-  <data name="Invoice_To" xml:space="preserve">
-    <value>To</value>
-  </data>
-  <data name="Invoice_Total" xml:space="preserve">
-    <value>Total</value>
-  </data>
-  <data name="Invoice_TotalToPay" xml:space="preserve">
-    <value>Total to Pay</value>
-  </data>
-  <data name="Invoice_VAT" xml:space="preserve">
-    <value>VAT</value>
-  </data>
-  <data name="Proposal" xml:space="preserve">
-    <value>Proposal</value>
-  </data>
-  <data name="ProposalDetails" xml:space="preserve">
-    <value>Proposal Details</value>
-  </data>
-  <data name="Proposal_Total" xml:space="preserve">
-    <value>Total</value>
-  </data>
-  <data name="Quote" xml:space="preserve">
-    <value>Quote</value>
-  </data>
-  <data name="VAT_Not_Included" xml:space="preserve">
-    <value>VAT is not included</value>
-  </data>
   <data name="TransactionOverdue" xml:space="preserve">
-    <value>Overdue Transaction</value>
+    <value>过期交易</value>
   </data>
 </root>
