@@ -1,0 +1,45 @@
+﻿@using MvcPaging;
+@model IPagedList<SystemConstants>
+
+@{
+	ViewBag.Title = "System Constants";
+}
+
+@Html.Partial("CurrencyRate");
+
+<p>
+	@Html.ActionLink("[+] Create New", "Create", null, new { @class = "btn primary" })
+</p>
+
+<div class="pagingContainer">
+	@Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount)
+</div>
+
+<table class="zebra-striped">
+	<thead>
+		<th>Constant Name
+		</th>
+		<th>Value
+		</th>
+		<th></th>
+	</thead>
+	@foreach (var item in Model)
+ {
+		<tr>
+			<td>
+				@Html.DisplayFor(x => item.Constant)
+			</td>
+			<td>
+				@Html.DisplayFor(x => item.ConstrantValue)
+			</td>
+			<td nowrap>				
+                @Html.ActionLink("Edit", "Edit", new { id = item.ConstantID }, new { @class = "btn primary" }) 
+                
+
+				
+				@Html.ActionLink("Delete", "Delete", new { id = item.ConstantID }, new { @class = "btn" })
+								
+            </td>
+		</tr>
+ }
+</table>

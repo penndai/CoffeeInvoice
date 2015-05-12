@@ -1,0 +1,35 @@
+﻿@model SystemConstants
+
+@{
+	ViewBag.Title = "Create System Constant";
+}
+
+@using (Html.BeginForm())
+{
+	@Html.ValidationSummary(true)
+	<fieldset>
+		<legend>
+			Create System Constant
+		</legend>
+		 <div class="clearfix">
+			 @Html.LabelFor(x=>Model.Constant)
+			 <div class="input">
+				 @Html.EditorFor(x=>Model.Constant)
+				 @Html.ValidationMessageFor(x=>Model.Constant)
+			 </div>
+		 </div>
+
+		<div class="clearfix">
+			@Html.LabelFor(x=>Model.ConstrantValue)
+			<div class="input">
+				@Html.EditorFor(x=>Model.ConstrantValue)
+				@Html.ValidationMessageFor(x=>Model.ConstrantValue)
+			</div>
+		</div>
+
+		<div class="actions">
+            <input type="submit" class="btn primary" value="Create" />
+			@Html.ActionLink("Back to List", "Index", null, new { @class = "btn" })
+        </div>
+		</fieldset>
+}
