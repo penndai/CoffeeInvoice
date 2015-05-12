@@ -17,6 +17,12 @@ namespace CoffeeInvoice.Controllers
 		private InvoiceDB db = new InvoiceDB();
 		private int defaultPageSize = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["DefaultPaginationSize"]);
 
+		private decimal _rate;
+		private decimal AUDCNYRate
+		{
+			get { return _rate; }
+		}
+
 		public PartialViewResult LatestTransactions()
 		{
 			List<Transaction> trans = new List<Transaction>();
@@ -50,13 +56,14 @@ namespace CoffeeInvoice.Controllers
 
 			if (t.Number > 0 && t.Product.CNYSellPrice.HasValue)
 			{
-				tm.TransactionSellAmount = (t.Number * t.Product.CNYSellPrice.Value).ToString();
+				//tm.TransactionSellAmount = (t.Number * t.Product.CNYSellPrice.Value).ToString();
+				tm.TransactionSellAmount = (t.Number * t.CNYSellPrice).ToString();
 			}
 			return View(tm);
 		}
 
 		public ActionResult Index(string filter, int? page, int? pagesize)
-		{
+		{			
 			int currentPage = page.HasValue ? page.Value - 1 : 0;
 
 			var transactions = db.Transactions.Include(x => x.Product).Include(x => x.Customer).ToList();
@@ -72,6 +79,9 @@ namespace CoffeeInvoice.Controllers
 			foreach (Transaction t in transactions)
 			{
 				TransactionModel tm = new TransactionModel();
+				tm.CNYSellPrice = t.CNYSellPrice;
+				tm.CNYPrice = t.CNYPrice;
+				tm.Price = t.Price;
 				tm.Customer = t.Customer;
 				tm.CustomerID = t.CustomerID;
 				tm.Number = t.Number;
@@ -81,25 +91,34 @@ namespace CoffeeInvoice.Controllers
 				tm.TransactionID = t.TransactionID;
 				tm.User = t.User;
 				tm.UserID = t.UserID;
-
+				tm.TransPortPrice = t.TransPortPrice;
+				tm.TransportCharge = t.TransPortPrice.ToString();
+				tm.Benefit = t.Benefit;
 				if (t.Number > 0 && t.Product.CNYSellPrice.HasValue)
 				{
-					tm.TransactionSellAmount = (t.Number * t.Product.CNYSellPrice.Value).ToString();
+					tm.TransactionSellAmount = (t.Number * t.CNYSellPrice).ToString();
+					tm.TransactionBenefit = t.Benefit.ToString();//(t.Number * (t.CNYSellPrice - t.CNYPrice)).ToString();
+					//tm.TransactionSellAmount = (t.Number * t.Product.CNYSellPrice.Value).ToString();
 				}
 				PagedTransactions.Add(tm);
 			}
 
 			PagedTransactions = PagedTransactions.OrderByDescending(x => x.TimeStamp).ToPagedList(currentPage, pagesize.HasValue ? pagesize.Value : defaultPageSize);
 			//transactions.OrderByDescending(x => x.TimeStamp).ToPagedList(currentPage, pagesize.HasValue ? pagesize.Value : defaultPageSize);
-
-			ViewBag.AUPrice = PagedTransactions.Sum(x => x.Product.Price);
-			ViewBag.CNYPrice = PagedTransactions.Sum(x => x.Product.CNYSellPrice);
-			ViewBag.SellCNYPrice = PagedTransactions.Sum(x =>x.Number * x.Product.CNYSellPrice);
+			decimal v = PagedTransactions.Sum(x=>x.TransPortPrice);
+			ViewBag.TransportSum = PagedTransactions.Sum(x => x.TransPortPrice);
+			ViewBag.AUPrice = PagedTransactions.Sum(x=>x.Price); //PagedTransactions.Sum(x => x.Product.Price);
+			ViewBag.CNYPrice = PagedTransactions.Sum(x => x.CNYSellPrice); //PagedTransactions.Sum(x => x.Product.CNYSellPrice);
+			ViewBag.SellCNYPrice = PagedTransactions.Sum(x => x.Number * x.CNYSellPrice); //PagedTransactions.Sum(x =>x.Number * x.Product.CNYSellPrice);
+			ViewBag.SumBenefit = PagedTransactions.Sum(x => x.Benefit);
 			return View(PagedTransactions);
 		}
 
 		public ActionResult Edit(int id)
 		{
+			CurrencyConvertYahooController rateController = new CurrencyConvertYahooController();
+			_rate = rateController.ConvertCurrency("AUD", "CNY", 1);
+
 			Transaction t = db.Transactions.Find(id);
 			TransactionModel tm = new TransactionModel();
 			tm.Customer = t.Customer;
@@ -113,9 +132,16 @@ namespace CoffeeInvoice.Controllers
 			tm.UserID = t.UserID;
 			tm.IsPaid = t.IsPaid;
 			tm.PaidDateTime = t.PaidDateTime;
-			if (t.Number > 0 && t.Product.CNYSellPrice.HasValue)
+			tm.CNYPrice = t.CNYPrice;
+			tm.CNYSellPrice = t.CNYSellPrice;
+			tm.Price = t.Price;
+			tm.Weight = t.Weight;
+
+			tm.TransportCharge =  (tm.Weight * db.SystemConstants.Where(x => x.ConstantID == 1).Select(x=>x.ConstrantValue).First() * AUDCNYRate).ToString();
+
+			if (t.Number > 0)
 			{
-				tm.TransactionSellAmount = (t.Number * t.Product.CNYSellPrice.Value).ToString();
+				tm.TransactionSellAmount = (t.Number * t.CNYSellPrice).ToString();
 			}
 			ViewBag.Products = new SelectList(db.Products.OrderByDescending(x => x.ProductName), "ProductID", "ProductName", t.ProductID);
 			ViewBag.Customers = new SelectList(db.Customers.OrderByDescending(x => x.Name), "CustomerID", "Name", t.CustomerID);
@@ -131,11 +157,15 @@ namespace CoffeeInvoice.Controllers
 				Transaction t = db.Transactions.Find(tm.TransactionID);
 				t.ProductID = tm.ProductID;
 				tm.Product = db.Products.Find(tm.ProductID);
+				//t.CNYPrice = tm.CNYPrice;
+				//t.CNYSellPrice = tm.CNYSellPrice;
+				//t.Price = tm.Price;
 				t.Number = tm.Number;
 				t.Income = Convert.ToDecimal(tm.TransactionSellAmount.Substring(1));
-				t.Expense = tm.Number * tm.Product.CNYPrice.Value;
+				t.Expense = tm.Number * t.CNYPrice;
 				t.Benefit = t.Income - t.Expense;
-
+				t.Weight = tm.Weight;
+				t.TransPortPrice = Convert.ToDecimal(tm.TransportCharge.Substring(1));
 				t.IsPaid = tm.IsPaid;
 				if(t.IsPaid)
 					t.PaidDateTime = tm.PaidDateTime;
@@ -155,6 +185,27 @@ namespace CoffeeInvoice.Controllers
 
 				return View(tm);
 			}
+		}
+
+		public JsonResult GetTransportPrice(decimal Weight)
+		{
+
+			if (Session["LoginUser"] != null)
+			{
+				int userid = ((User)Session["LoginUser"]).UserID;
+				SystemConstants weightrate = db.SystemConstants.Where(x => x.ConstantID == 1 && x.UserID == userid).First();
+				if(weightrate!=null)
+				{
+					decimal transportUnit = weightrate.ConstrantValue;
+					CurrencyConvertYahooController rateController = new CurrencyConvertYahooController();
+					decimal rate = rateController.ConvertCurrency("AUD", "CNY", 1);
+					var value = new { TransportPrice = Decimal.Round(transportUnit * Weight * rate,2, MidpointRounding.AwayFromZero) };
+					return Json(value, JsonRequestBehavior.AllowGet);
+				}				
+			}
+			var data = new { TransportPrice = 0 };
+			return Json(data, JsonRequestBehavior.AllowGet);
+						
 		}
 
 		public JsonResult GetProductPrice(int? ProductID, int Number, string culture)
@@ -202,9 +253,13 @@ namespace CoffeeInvoice.Controllers
 				t.TransactionID = tm.TransactionID;
 				t.IsPaid = tm.IsPaid;
 				t.Expense = tm.Number * db.Products.Find(t.ProductID).CNYPrice.Value;
+				t.Price = db.Products.Find(t.ProductID).Price;
+				t.CNYPrice = db.Products.Find(t.ProductID).CNYPrice.Value;
+				t.CNYSellPrice = db.Products.Find(t.ProductID).CNYSellPrice.Value;
 				t.Income = Convert.ToDecimal(tm.TransactionSellAmount.Substring(1));
 				t.Benefit = t.Income - t.Expense;
-
+				t.Weight = tm.Weight;
+				t.TransPortPrice = Convert.ToDecimal(tm.TransportCharge.Substring(1));
 				if (t.IsPaid)
 					t.PaidDateTime = tm.PaidDateTime;
 				//t.User = tm.User;

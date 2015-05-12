@@ -42,7 +42,9 @@
 		<th>Date</th>
 		<th>Price(AUD)</th>
 		<th>CNY Sell Price</th>
-		<th>Sell Price(CNY)</th>		
+		<th>Sell Price(CNY)</th>
+		<th>Transport (CNY)</th>
+		<th>Benefit (CNY)</th>		
 		<th></th>
 	</thead>
 
@@ -75,6 +77,12 @@
 				@Html.Raw(@Html.Currency(Convert.ToDecimal(item.TransactionSellAmount),"zh-CN"))
 				@*@Html.DisplayFor(x=>item.Product.CNYSellPrice)*@
 			</td>
+			<td  class="active red">
+				@Html.Raw(@Html.Currency(Convert.ToDecimal(item.TransportCharge),"zh-CN"))				
+			</td>
+			<td class="active green">
+				@Html.Raw(@Html.Currency(Convert.ToDecimal(item.TransactionBenefit),"zh-CN"))
+			</td>
 			<td class="noprint" nowrap>
 				@Html.ActionLink("Edit", "Edit", new { id = item.TransactionID }, new { @class = "btn primary" })
 				@Html.ActionLink("Details", "Details", new { id = item.TransactionID }, new { @class = "btn" })
@@ -92,6 +100,8 @@
 			@*@String.Format("{0:C}", ViewBag.AUPrice)*@</td>
         <td>@Html.Currency((decimal)ViewBag.CNYPrice, "zh-CN")@*@String.Format("{0:C}", ViewBag.CNYPrice)*@</td>
         <td class="active red">@Html.Raw(@Html.Currency((decimal)ViewBag.SellCNYPrice, "zh-CN"))@*@String.Format("{0:C}", ViewBag.SellCNYPrice)*@</td>               
+		<td>@Html.Currency((decimal)ViewBag.TransportSum, "zh-CN")</td>
+		<td>@Html.Currency((decimal)ViewBag.SumBenefit,"zh-CN")</td>
     </tr>
 </tfoot>
 </table>

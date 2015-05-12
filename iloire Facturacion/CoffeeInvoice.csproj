@@ -181,6 +181,7 @@
     <Compile Include="Controllers\PurchaseController.cs" />
     <Compile Include="Controllers\PurchaseTypeController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\SystemConstantController.cs" />
     <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="CustomBinder\CurrencyModelBinder.cs" />
     <Compile Include="CustomBinder\CurrencyStringModelBinder.cs" />
@@ -206,6 +207,22 @@
     <Compile Include="Migrations\201505041227346_addIncomeExpenseInTransaction.cs" />
     <Compile Include="Migrations\201505041227346_addIncomeExpenseInTransaction.Designer.cs">
       <DependentUpon>201505041227346_addIncomeExpenseInTransaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505111127171_addTransport.cs" />
+    <Compile Include="Migrations\201505111127171_addTransport.Designer.cs">
+      <DependentUpon>201505111127171_addTransport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505111139352_addUserIDinSystemContents.cs" />
+    <Compile Include="Migrations\201505111139352_addUserIDinSystemContents.Designer.cs">
+      <DependentUpon>201505111139352_addUserIDinSystemContents.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505111234229_addProductPriceForTransaction.cs" />
+    <Compile Include="Migrations\201505111234229_addProductPriceForTransaction.Designer.cs">
+      <DependentUpon>201505111234229_addProductPriceForTransaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505111302510_addProductWeightPriceForTransaction.cs" />
+    <Compile Include="Migrations\201505111302510_addProductWeightPriceForTransaction.Designer.cs">
+      <DependentUpon>201505111302510_addProductWeightPriceForTransaction.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -233,6 +250,7 @@
     <Compile Include="Models\POCO\Invoice.cs" />
     <Compile Include="Models\POCO\PurchaseProduct.cs" />
     <Compile Include="Models\POCO\PurchaseType.cs" />
+    <Compile Include="Models\POCO\SystemConstants.cs" />
     <Compile Include="Models\POCO\Transaction.cs" />
     <Compile Include="Models\POCO\User.cs" />
     <Compile Include="Models\Security\InvoicingMembershipProvider.cs" />
@@ -774,6 +792,9 @@
     <Content Include="Views\Reports\TransYearSummary.cshtml" />
     <Content Include="Views\Reports\TransQuarterDetails.cshtml" />
     <Content Include="Views\Reports\TransQuarterDetailsPartial.cshtml" />
+    <Content Include="Views\SystemConstant\Index.cshtml" />
+    <Content Include="Views\SystemConstant\Edit.cshtml" />
+    <Content Include="Views\SystemConstant\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -810,6 +831,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505041227346_addIncomeExpenseInTransaction.resx">
       <DependentUpon>201505041227346_addIncomeExpenseInTransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505111127171_addTransport.resx">
+      <DependentUpon>201505111127171_addTransport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505111139352_addUserIDinSystemContents.resx">
+      <DependentUpon>201505111139352_addUserIDinSystemContents.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505111234229_addProductPriceForTransaction.resx">
+      <DependentUpon>201505111234229_addProductPriceForTransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505111302510_addProductWeightPriceForTransaction.resx">
+      <DependentUpon>201505111302510_addProductWeightPriceForTransaction.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

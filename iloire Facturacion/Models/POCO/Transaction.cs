@@ -14,6 +14,24 @@ using System.Web;
 		[ForeignKey("Product")]
 		public int ProductID { get; set; }
 
+		public decimal Price
+		{
+			get;
+			set;
+		}
+		public decimal CNYPrice
+		{
+			get;
+			set;
+		}
+
+		public decimal CNYSellPrice
+		{
+			get;
+			set;
+		}
+	
+
 		[Range(1,100)]
 		[DisplayFormat(DataFormatString = "{0:D}", ApplyFormatInEditMode = true)]
 		public int Number { get; set; }
@@ -24,6 +42,8 @@ using System.Web;
 		public DateTime? PaidDateTime { get; set; }
 		public DateTime TimeStamp { get; set; }
 
+		public decimal Weight { get; set; }
+		public decimal TransPortPrice { get; set; }
 		public decimal Expense { get; set; }
 		public decimal Income { get; set; }
 		public decimal Benefit { get; set; }

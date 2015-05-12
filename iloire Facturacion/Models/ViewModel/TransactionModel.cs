@@ -14,6 +14,7 @@ public class TransactionModel : Transaction
 	//[DataType(DataType.Currency)]
 	//[DisplayFormat(DataFormatString = "{0:C}")]
 	//public decimal? TransactionSellAmount { get; set; }
-
+	public string TransactionBenefit { get; set; }
 	public string TransactionSellAmount { get; set; }
+	public string TransportCharge { get; set; }
 }

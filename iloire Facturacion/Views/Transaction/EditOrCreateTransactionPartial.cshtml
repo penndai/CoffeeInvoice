@@ -35,6 +35,18 @@
 		</div>
 	</div>
 	<div class="clearfix">
+		@Html.LabelFor(x => Model.Weight, "Weight", new { @class = "control-label col-sm-3" })
+		<div class="input">
+			@Html.TextBoxFor(x=>Model.Weight)
+		</div>
+	</div>
+	<div class="clearfix">
+		@Html.LabelFor(x => Model.TransPortPrice, "Transport Expense", new { @class = "control-label col-sm-3" })
+		<div class="input">
+			@Html.TextBoxCurrencyReadOnly(x=>Model.TransportCharge,new{@readonly="readonly", @id="TransPortPrice"})
+		</div>
+	</div>
+	<div class="clearfix">
 		@Html.LabelFor(x => Model.TransactionSellAmount, "Total Price", new { @class="control-label col-sm-3"})
 		<div class="input">
 			@*@Html.TextBoxFor(x=>Model.TransactionSellAmount,new{@readonly="readonly", @id="TransactionSellAmount"})*@
@@ -85,6 +97,16 @@
 			}
 		});
 		
+		$("#Weight").change(function (args) {
+			var weight = $("#Weight").val();
+			var unit = $("#CNYPrice").val().substring(0, 1)
+			var lang = '/@ViewContext.RouteData.Values["lang"]';
+			$.getJSON(lang + '/Transaction/GetTransportPrice', { Weight: weight }, function (data) {
+				$("#TransPortPrice").val(unit + data.TransportPrice);
+				
+			});
+		});
+
 		$("#Number").change(function (args) {
 			var number = $("#Number").val();
 			var unit = $("#CNYPrice").val().substring(0,1)
@@ -92,8 +114,10 @@
 			console.log(number);
 			console.log("Unit: " + unit);
 			console.log("UnitPrice: " + number * unitPrice)
-			if (number && unitPrice) {				
-				$("#TransactionSellAmount").val(unit + number * unitPrice);
+			if (number && unitPrice) {
+				var price = number * unitPrice;
+
+				$("#TransactionSellAmount").val(unit + price);
 			}
 
 		});
