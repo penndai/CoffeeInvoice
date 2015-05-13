@@ -86,20 +86,25 @@ namespace CoffeeInvoice.Controllers
 
 		public ViewResult Create()
 		{
-			var providers = db.Providers.OrderBy(x => x.Name).ToList();
-
-			List<SelectListItem> items = new List<SelectListItem>();
-
-			foreach(var pro in providers)
+			if (Session["LoginUser"] != null)
 			{
-				SelectListItem item = new SelectListItem();
-				item.Text = pro.Name;
-				item.Value = pro.ProviderID.ToString();
+				User user = (User)Session["LoginUser"];
 
-				items.Add(item);
+				var providers = db.Providers.Where(x=>x.UserID == user.UserID).OrderBy(x => x.Name).ToList();
+
+				List<SelectListItem> items = new List<SelectListItem>();
+
+				foreach (var pro in providers)
+				{
+					SelectListItem item = new SelectListItem();
+					item.Text = pro.Name;
+					item.Value = pro.ProviderID.ToString();
+
+					items.Add(item);
+				}
+
+				ViewBag.providers = items;
 			}
-
-			ViewBag.providers = items;
 			return View();
 		}
 
@@ -146,7 +151,12 @@ namespace CoffeeInvoice.Controllers
 				return RedirectToAction("Index");
 			}
 
-			ViewBag.ProviderID = new SelectList(db.Providers.OrderBy(x=>x.Name), "ProviderID", "Name", product.ProviderID);
+			if (Session["LoginUser"] != null)
+			{
+				User user = (User)Session["LoginUser"];
+			
+				ViewBag.ProviderID = new SelectList(db.Providers.OrderBy(x=>x.Name), "ProviderID", "Name", product.ProviderID);
+			}
 			return View(product);
 		}
 
@@ -163,7 +173,11 @@ namespace CoffeeInvoice.Controllers
 
 			}
 
-			ViewBag.ProviderID = new SelectList(db.Providers.OrderBy(x=>x.Name), "ProviderID","Name", product.ProviderID);
+			if (Session["LoginUser"] != null)
+			{
+				User user = (User)Session["LoginUser"];				
+				ViewBag.ProviderID = new SelectList(db.Providers.Where(x => x.UserID == user.UserID).OrderBy(x => x.Name), "ProviderID", "Name", product.ProviderID);
+			}
 			return View(product);
 		}
 

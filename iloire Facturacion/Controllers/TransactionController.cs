@@ -230,16 +230,22 @@ namespace CoffeeInvoice.Controllers
 		public ActionResult Create()
 		{
 			TransactionModel t = new TransactionModel();
+
+			if (Session["LoginUser"] != null)
+			{
+				int userid = ((User)Session["LoginUser"]).UserID;
+			
 			t.TimeStamp = DateTime.Now;
 			t.CustomerID = -1;
-			t.ProductID = 1;
+			t.ProductID = db.Products.Where(x => x.UserID == userid).First().ProductID;
 			t.Number = 1;
 
-			t.Product = db.Products.Find(t.ProductID);
+			t.Product = db.Products.Where(x => x.UserID == userid).First();
 			t.TransactionSellAmount = (t.Number * t.Product.CNYSellPrice.Value).ToString();
 			ViewBag.Products = new SelectList(db.Products.OrderByDescending(x => x.ProductName), "ProductID", "ProductName", t.ProductID);
 			ViewBag.Customers = new SelectList(db.Customers.OrderByDescending(x => x.Name), "CustomerID", "Name", t.CustomerID);
 
+			}
 			return View(t);
 		}
 
@@ -300,6 +306,9 @@ namespace CoffeeInvoice.Controllers
 			}
 			else
 			{
+				ViewBag.Products = new SelectList(db.Products.OrderByDescending(x => x.ProductName), "ProductID", "ProductName", tm.ProductID);
+				ViewBag.Customers = new SelectList(db.Customers.OrderByDescending(x => x.Name), "CustomerID", "Name", tm.CustomerID);
+
 				return View(tm);
 			}
 		}

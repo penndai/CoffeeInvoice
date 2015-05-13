@@ -15,11 +15,16 @@ namespace CoffeeInvoice.Controllers
 			TSummary ts = new TSummary();
 			ts.From = fromDate;
 			ts.To = toDate;
+			if (Session["LoginUser"] != null)
+			{
+				User user = (User)Session["LoginUser"];				
 
-			ts.Transactions = db.Transactions.Where(x => x.TimeStamp >= fromDate && x.TimeStamp <= toDate && x.IsPaid).ToList();
+				ts.Transactions = db.Transactions.Where(x =>x.UserID == user.UserID && x.TimeStamp >= fromDate && x.TimeStamp <= toDate && x.IsPaid).ToList();
 
-			ts.Expense = ts.Transactions.Sum(x => x.Expense);
-			ts.Income = ts.Transactions.Sum(x=>x.Income);
+				ts.Expense = ts.Transactions.Sum(x => x.Expense);
+				ts.Income = ts.Transactions.Sum(x => x.Income);
+			}
+
 			return ts;
 		}
 
