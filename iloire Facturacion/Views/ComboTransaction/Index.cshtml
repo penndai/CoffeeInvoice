@@ -1,0 +1,84 @@
+﻿@model IPagedList<ComboTransaction>
+
+@using MvcPaging;
+@{
+	ViewBag.Title = "List of Combo Transaction";
+}
+
+<h1>List <small>of Combo Transactions</small></h1>
+<p class="noprint">
+	@Html.ActionLink("[+] Create New ", "Create", new { @class = "btn primary" })
+</p>
+
+@{
+	CoffeeInvoice.Models.ViewModel.SearchModel searchModel = new CoffeeInvoice.Models.ViewModel.SearchModel();
+	searchModel.Action = "ComboTransaction";
+	searchModel.from = !string.IsNullOrEmpty(Request["from"]) ? Convert.ToDateTime(Request["from"]) : new Nullable<DateTime>();
+	searchModel.to = !string.IsNullOrEmpty(Request["to"]) ? Convert.ToDateTime(Request["to"]) : new Nullable<DateTime>();
+	searchModel.text = Request["text"];
+
+	Html.RenderPartial("ModelSearchBoxItems", searchModel);
+}
+
+<div class="pagingContainer noprint">
+	@{
+		RouteValueDictionary r = new RouteValueDictionary();
+		r.Add("to", Request["to"]);
+		r.Add("from", Request["from"]);
+		r.Add("text", Request["text"]);
+	}
+	@Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount, r)
+</div>
+
+<table class="zebra-striped">
+	<thead>
+		<th>ID
+		</th>
+		<th>Customer
+		</th>			
+		<th>Date</th>
+		<th>Paid</th>
+		<th>Paid Date</th>
+		<th>Total Price</th>
+		<th>Benefit</th>		
+		<th></th>
+	</thead>
+
+	@foreach (var item in Model)
+ {
+	 <tr>
+		 <td>
+			 #@Html.DisplayFor(x=>item.ComboTransactionID)
+		 </td>
+		 <td>
+			 @Html.DisplayFor(x=>item.Customer.Name)
+		 </td>
+		 <td>
+			 @Html.DisplayFor(x=>item.TimeStamp)
+		 </td>
+		 <td>
+			 @if (item.IsPaid)
+	{
+		<span class="label success">Yes</span>
+	}
+	else{
+		<span class="label important">No</span>
+	}
+		 </td>
+		 <td>
+			 @if (item.IsPaid)
+	{
+		<span class="label success">@item.PaidDateTime</span>
+	}
+		 </td>
+		 <td>@Html.Raw(@Html.Currency(item.Income))</td> @* Total Paid by customer*@
+		 <td>@Html.Raw(@Html.Currency(item.Benefit))</td> @*The benefit of this transaction*@
+		 <td class="noprint" nowrap>
+				@Html.ActionLink("Edit", "Edit", new { id = item.ComboTransactionID }, new { @class = "btn primary" })
+				@Html.ActionLink("Details", "Details", new { id = item.ComboTransactionID }, new { @class = "btn" })
+				@Html.ActionLink("Delete", "Delete", new { id = item.ComboTransactionID }, new { @class = "btn" })
+			</td>
+	 </tr>
+ }
+	</table>
+

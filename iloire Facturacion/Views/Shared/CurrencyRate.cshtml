@@ -3,9 +3,10 @@
 </h2>
 <script type="text/javascript">
 	$(document).ready(function () {
+		var BASE_URL = '@Url.Content("~/")'
 		// Send an AJAX request
 		$.ajax({
-			url: "../../api/ConvertCurrency/AUD/CNY/1",
+			url: BASE_URL+"api/ConvertCurrency/AUD/CNY/1",
 			type: "GET",
 			//data: JSON.stringify(["AUD", "CNY", 2]),
 			contentType: 'application/json; charset=utf-8',

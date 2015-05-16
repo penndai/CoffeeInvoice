@@ -3,7 +3,7 @@
 	@Html.ValidationSummary(false)
 	<legend>Transaction edition</legend>
 	@Html.HiddenFor(model => model.TransactionID)
-	@Html.HiddenFor(model=>model.Product.ProductName)
+	
 
 	<div class="clearfix">
 		@Html.LabelFor(x => Model.CustomerID, "Customer", new { @class = "control-label col-sm-3" })
@@ -22,6 +22,7 @@
 		</div>
 	</div>
 	<div class="clearfix">
+		@Html.HiddenFor(model=>model.Product.ProductName)
 		@Html.LabelFor(x => Model.Product.CNYPrice, "Price/each", new {@class="control-label col-sm-3" })
 		<div class="input chzn-results">
 			@Html.TextBoxCurrencyReadOnly(x=>Model.Product.CNYSellPrice.Value, new { @readonly="readonly", @id="CNYPrice"})

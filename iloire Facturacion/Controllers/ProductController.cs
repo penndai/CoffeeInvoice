@@ -32,7 +32,7 @@ namespace CoffeeInvoice.Controllers
 				p.CNYPrice = source.CNYPrice;
 				//p.Provider = source.Provider;
 				p.ProviderID = source.ProviderID;
-
+				p.UserID = source.UserID;
 				db.Products.Add(p);
 				db.SaveChanges();
 			}

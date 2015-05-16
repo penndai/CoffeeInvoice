@@ -4,20 +4,20 @@
     ViewBag.Title = "Register";
 }
 
-<h2>Crear una nueva cuenta</h2>
+<h2>Create new user</h2>
 <p>
-    Use el formulario siguiente para crear una cuenta nueva. 
+    User register. 
 </p>
 <p>
-    Es necesario que las contraseñas tengan al menos @Membership.MinRequiredPasswordLength caracteres.
+    Password should be more than @Membership.MinRequiredPasswordLength characters.
 </p>
 
 
 @using (Html.BeginForm()) {
-    @Html.ValidationSummary(true, "No se creó la cuenta. Corrija los errores e inténtelo de nuevo.")
+    @Html.ValidationSummary(true, "")
     <div>
         <fieldset>
-            <legend>Información de cuenta</legend>
+            <legend>User Information</legend>
 
             <div class="clearfix">
                 @Html.LabelFor(m => m.UserName)

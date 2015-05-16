@@ -9,6 +9,8 @@ public class InvoiceDB : DbContext {
         
     }
 
+	public DbSet<ComboTransaction> ComboTransactions { get; set; }
+	public DbSet<IndividualProductTransaction> IndividualProductTransactions { get; set; }
 	public DbSet<PurchaseProduct> PurchaseProducts { get; set; }
     public DbSet<Customer> Customers {get; set;}
     public DbSet<Provider> Providers { get; set; }

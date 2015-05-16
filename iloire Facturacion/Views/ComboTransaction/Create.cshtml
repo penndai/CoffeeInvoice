@@ -1,0 +1,13 @@
+﻿@model ComboTransactionModel
+
+@{
+    ViewBag.Title = "Create Combo Transaction";
+}
+
+@using (Html.BeginForm("Create", "ComboTransactionController", FormMethod.Post))
+{
+    @Html.ValidationSummary(true)
+    <text>
+        @{Html.RenderPartial("EditOrCreateComboTransactionPartial", Model);}
+    </text>
+}

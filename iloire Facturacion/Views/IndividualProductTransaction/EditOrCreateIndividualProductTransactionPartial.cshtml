@@ -1,0 +1,70 @@
+﻿@model IndividualProductTransaction
+
+<fieldset>
+	@Html.ValidationSummary(false)
+	<legend>Individual Product edition</legend>
+	@Html.HiddenFor(model => model.IndividualProductTransactionID)
+	@Html.HiddenFor(model=>model.CustomerID)
+	@Html.HiddenFor(model=>model.ComboTransactionID)
+	<div class="clearfix">
+		@Html.LabelFor(x => Model.ProductID, "Product", new { @class = "control-label col-sm-3" })
+		<div class="input chzn-select">
+			@Html.DropDownListFor(x => Model.ProductID, (SelectList)ViewBag.Products, string.Empty)
+			@*@Html.DropDownList("Products", string.Empty)*@
+			@Html.ValidationMessageFor(x => Model.ProductID)		
+		</div>
+	</div>
+
+	<div class="clearfix">
+		
+		@Html.LabelFor(x => Model.CNYPrice, "Price/each", new {@class="control-label col-sm-3" })
+		<div class="input chzn-results">
+			@Html.TextBoxCurrencyReadOnly(x=>Model.CNYSellPrice.Value, new { @readonly="readonly", @id="CNYPrice"})
+			@Html.ValidationMessageFor(x=>Model.CNYSellPrice)			
+		</div>
+	</div>
+
+	<div class="clearfix">
+		@Html.LabelFor(x => Model.Number, "Number", new { @class = "control-label col-sm-3" })
+		<div class="input">
+			@Html.TextBoxFor(x=>Model.Number,new { @type = "number" })
+		</div>
+	</div>
+	<div class="clearfix">
+		@Html.LabelFor(x => Model.TotalPrice, "Total Price", new { @class="control-label col-sm-3"})
+		<div class="input">
+			@Html.TextBoxFor(x => Model.TotalPrice, new { @readonly="readonly", @id="TotalPrice"})			
+		
+			@Html.ValidationMessageFor(x=>Model.TotalPrice)
+		</div>
+	</div>
+
+	<div class="actions">
+		<input type="submit" class="btn primary" value="Save" />
+
+		@if (Model != null && Model.IndividualProductTransactionID > 0)
+		{   <text>
+			@Html.ActionLink("Delete", "Delete", new { id = Model.IndividualProductTransactionID, proposal = ViewBag.IsProposal }, new { @class = "btn" })
+			</text>
+		}
+	</div>
+	</fieldset>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#Number").change(function (args) {
+			var number = $("#Number").val();
+			var unit = $("#CNYPrice").val().substring(0, 1)
+			var unitPrice = parseFloat($("#CNYPrice").val().substring(1).replace(',', '').replace(' ', ''));
+			console.log(number);
+			console.log("Unit: " + unit);
+			console.log("UnitPrice: " + number * unitPrice)
+			if (number && unitPrice) {
+				var price = number * unitPrice;
+
+				$("#TotalPrice").val(price);
+			}
+
+		});
+	});
+	</script>

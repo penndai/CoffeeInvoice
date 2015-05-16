@@ -23,6 +23,24 @@ namespace CoffeeInvoice.Controllers
 			get { return _rate; }
 		}
 
+		private const string SessionKeyCurrentPage = "HomeController_CurrentPage";
+
+		private int CurrentPage
+		{
+			get
+			{
+				if (Session[SessionKeyCurrentPage] == null)
+				{
+					Session[SessionKeyCurrentPage] = 0;
+				}
+				return int.Parse(Session[SessionKeyCurrentPage].ToString());
+			}
+			set
+			{
+				Session[SessionKeyCurrentPage] = value;
+			}
+		}
+
 		public PartialViewResult LatestTransactions()
 		{
 			List<Transaction> trans = new List<Transaction>();
@@ -38,6 +56,27 @@ namespace CoffeeInvoice.Controllers
 				return PartialView("TransactionListPartial", trans);
 			}
 		}
+
+		public ActionResult Delete(int id)
+		{
+			Transaction t = db.Transactions.Find(id);
+			db.Transactions.Remove(t);
+			db.SaveChanges();
+
+			return RedirectToAction("Index");
+		}
+
+		//public ActionResult GridView(int? page)
+		//{
+		//	CurrentPage = page.HasValue ? page.Value : CurrentPage;
+		//	GridViewData<Transaction> viewData = new GridViewData<Transaction>
+		//	{
+		//		 PagedList = db.Transactions.OrderBy(x=>x.TransactionID).ToPagedList<Transaction>(CurrentPage, 4)
+		//	};
+
+		//	return View("GridViewPage", viewData);
+		//}
+
 
 		// Get Proeuct with id 
 		public ActionResult Details(int id)
@@ -116,10 +155,6 @@ namespace CoffeeInvoice.Controllers
 
 		public ActionResult Edit(int id)
 		{
-
-
-
-
 			CurrencyConvertYahooController rateController = new CurrencyConvertYahooController();
 			_rate = rateController.ConvertCurrency("AUD", "CNY", 1);
 
@@ -237,11 +272,12 @@ namespace CoffeeInvoice.Controllers
 			
 			t.TimeStamp = DateTime.Now;
 			t.CustomerID = -1;
-			t.ProductID = db.Products.Where(x => x.UserID == userid).First().ProductID;
+			Product product = db.Products.Where(x => x.UserID == userid).First();
+			t.ProductID = product.ProductID;
 			t.Number = 1;
 
 			t.Product = db.Products.Where(x => x.UserID == userid).First();
-			t.TransactionSellAmount = (t.Number * t.Product.CNYSellPrice.Value).ToString();
+			t.TransactionSellAmount = (t.Number * product.CNYSellPrice.Value).ToString();
 			ViewBag.Products = new SelectList(db.Products.OrderByDescending(x => x.ProductName), "ProductID", "ProductName", t.ProductID);
 			ViewBag.Customers = new SelectList(db.Customers.OrderByDescending(x => x.Name), "CustomerID", "Name", t.CustomerID);
 
@@ -320,7 +356,7 @@ namespace CoffeeInvoice.Controllers
 			{
 				int userid = ((User)Session["LoginUser"]).UserID;
 
-				overdueTrans = db.Transactions.Where(x => x.UserID == userid && !x.IsPaid && EntityFunctions.AddDays(x.TimeStamp, 3) <= DateTime.Now).OrderBy(x => x.TimeStamp).ToList();
+				overdueTrans = db.Transactions.Where(x => x.UserID == userid && !x.IsPaid && DbFunctions.AddDays(x.TimeStamp, 3) <= DateTime.Now).OrderBy(x => x.TimeStamp).ToList();
 			}
 
 			return PartialView("TransactionListPartial", overdueTrans);

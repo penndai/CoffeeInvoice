@@ -171,9 +171,11 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AttributeExtend\LocalizationAttribute.cs" />
+    <Compile Include="Controllers\ComboTransactionController.cs" />
     <Compile Include="Controllers\CurrencyConvertGoogleController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IndividualProductTransactionController.cs" />
     <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\InvoiceDetailsController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -224,6 +226,30 @@
     <Compile Include="Migrations\201505111302510_addProductWeightPriceForTransaction.Designer.cs">
       <DependentUpon>201505111302510_addProductWeightPriceForTransaction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505160557012_addComboTransaction.cs" />
+    <Compile Include="Migrations\201505160557012_addComboTransaction.Designer.cs">
+      <DependentUpon>201505160557012_addComboTransaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505160702206_ChangeSomething.cs" />
+    <Compile Include="Migrations\201505160702206_ChangeSomething.Designer.cs">
+      <DependentUpon>201505160702206_ChangeSomething.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505160741318_addProductIDinIndividualTransactionProduct.cs" />
+    <Compile Include="Migrations\201505160741318_addProductIDinIndividualTransactionProduct.Designer.cs">
+      <DependentUpon>201505160741318_addProductIDinIndividualTransactionProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505160748396_addTotalPriceinIndividualTransactionProduct.cs" />
+    <Compile Include="Migrations\201505160748396_addTotalPriceinIndividualTransactionProduct.Designer.cs">
+      <DependentUpon>201505160748396_addTotalPriceinIndividualTransactionProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505160911372_setPriceNullable.cs" />
+    <Compile Include="Migrations\201505160911372_setPriceNullable.Designer.cs">
+      <DependentUpon>201505160911372_setPriceNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505160945506_addCustomerIDinIndividualProductTrans.cs" />
+    <Compile Include="Migrations\201505160945506_addCustomerIDinIndividualProductTrans.Designer.cs">
+      <DependentUpon>201505160945506_addCustomerIDinIndividualProductTrans.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Attributes\HandleErrorAttribute.cs" />
@@ -237,7 +263,9 @@
     <Compile Include="Models\Paging\PagedList.cs" />
     <Compile Include="Models\Paging\Pager.cs" />
     <Compile Include="Models\Paging\PagingExtensions.cs" />
+    <Compile Include="Models\POCO\ComboTransaction.cs" />
     <Compile Include="Models\POCO\Customer.cs" />
+    <Compile Include="Models\POCO\IndividualProductTransaction.cs" />
     <Compile Include="Models\POCO\ModelView\QuarterSummary.cs" />
     <Compile Include="Models\POCO\ModelView\TransYearSummary.cs" />
     <Compile Include="Models\POCO\ModelView\TSummary.cs" />
@@ -254,6 +282,7 @@
     <Compile Include="Models\POCO\Transaction.cs" />
     <Compile Include="Models\POCO\User.cs" />
     <Compile Include="Models\Security\InvoicingMembershipProvider.cs" />
+    <Compile Include="Models\ViewModel\ComboTransactionModel.cs" />
     <Compile Include="Models\ViewModel\MostTopCustomer.cs" />
     <Compile Include="Models\ViewModel\PopularProduct.cs" />
     <Compile Include="Models\ViewModel\TransactionModel.cs" />
@@ -699,6 +728,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Error\" />
+    <Folder Include="Models\GridViewExtension\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -795,6 +825,12 @@
     <Content Include="Views\SystemConstant\Index.cshtml" />
     <Content Include="Views\SystemConstant\Edit.cshtml" />
     <Content Include="Views\SystemConstant\Create.cshtml" />
+    <Content Include="Views\ComboTransaction\Index.cshtml" />
+    <Content Include="Views\ComboTransaction\Create.cshtml" />
+    <Content Include="Views\ComboTransaction\EditOrCreateComboTransactionPartial.cshtml" />
+    <Content Include="Views\IndividualProductTransaction\Create.cshtml" />
+    <Content Include="Views\IndividualProductTransaction\EditOrCreateIndividualProductTransactionPartial.cshtml" />
+    <Content Include="Views\ComboTransaction\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -843,6 +879,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505111302510_addProductWeightPriceForTransaction.resx">
       <DependentUpon>201505111302510_addProductWeightPriceForTransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505160557012_addComboTransaction.resx">
+      <DependentUpon>201505160557012_addComboTransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505160702206_ChangeSomething.resx">
+      <DependentUpon>201505160702206_ChangeSomething.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505160741318_addProductIDinIndividualTransactionProduct.resx">
+      <DependentUpon>201505160741318_addProductIDinIndividualTransactionProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505160748396_addTotalPriceinIndividualTransactionProduct.resx">
+      <DependentUpon>201505160748396_addTotalPriceinIndividualTransactionProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505160911372_setPriceNullable.resx">
+      <DependentUpon>201505160911372_setPriceNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505160945506_addCustomerIDinIndividualProductTrans.resx">
+      <DependentUpon>201505160945506_addCustomerIDinIndividualProductTrans.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

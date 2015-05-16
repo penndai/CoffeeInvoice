@@ -1,0 +1,111 @@
+﻿@model ComboTransactionModel
+<fieldset>
+	@Html.ValidationSummary(false)
+	<legend>Combo Transaction edition</legend>
+	@Html.HiddenFor(model => model.ComboTransactionID)
+
+	<div class="clearfix">
+		@Html.LabelFor(x => Model.CustomerID, "Customer", new { @class = "control-label col-sm-3" })
+		<div class="input chzn-select">
+			@Html.DropDownListFor(x => Model.CustomerID, (SelectList)ViewBag.Customers, string.Empty)			
+			@Html.ValidationMessageFor(x => Model.CustomerID)
+		</div>
+	</div>
+
+	<div class="clearfix">
+		<h1>List <small>of Products</small></h1>
+		<p class="noprint">
+		
+			@Html.ActionLink("[+] New Product","Create", "IndividualProductTransaction",new {ComboTransactionID=Model.ComboTransactionID, CustomerID=Model.CustomerID}, new { @class = "btn primary", id="selectedCustomerID"})
+		</p>
+		<table class="zebra-striped" >
+			<thead>
+				<th>ID</th>
+				<th>Product</th>
+				<th>Number</th>
+				<th>进价(AUD)</th>
+				<th>进价(CNY)</th>
+				<th>售价(CNY)</th>
+				<th>小计金额 (CNY)</th>
+				<th></th>
+			</thead>
+			@foreach(var item in Model.IndividualTransactions)
+   {
+			<tr>
+				<td>#@Html.DisplayFor(x=>item.IndividualProductTransactionID)</td>
+				<td>@Html.DisplayFor(x=>item.Product.ProductName)</td>
+				<td>@Html.DisplayFor(x=>item.Number)</td>
+				<td>@Html.Raw(@Html.Currency(item.Price))</td>
+				<td>@Html.Raw(@Html.Currency(item.CNYPrice.Value, "zh-CN"))</td>
+				<td>@Html.Raw(@Html.Currency(item.CNYSellPrice.Value,"zh-CN"))</td>
+				<td>@Html.Raw(@Html.Currency(item.TotalPrice,"zh-CN"))</td>
+				<td class="noprint" nowrap>
+				@Html.ActionLink("Edit", "Edit", "Individual", new { id = item.IndividualProductTransactionID }, new { @class = "btn primary" })
+				@Html.ActionLink("Details", "Details", "Individual", new { id = item.IndividualProductTransactionID }, new { @class = "btn" })
+				@Html.ActionLink("Delete", "Delete", "Individual",new { id = item.IndividualProductTransactionID }, new { @class = "btn" })
+			</td>
+			</tr>
+   }
+		</table>
+	</div>
+
+	<div class="clearfix">
+		@Html.LabelFor(x => Model.Weight, "Weight", new { @class = "control-label col-sm-3" })
+		<div class="input">
+			@Html.TextBoxFor(x=>Model.Weight)
+		</div>
+		</div>
+	<div class="clearfix">
+		@Html.LabelFor(x => Model.TransPortPrice, "Transport Expense", new { @class = "control-label col-sm-3" })
+		<div class="input">
+			@Html.TextBoxCurrencyReadOnly(x=>Model.TransPortPrice,new{@readonly="readonly", @id="TransPortPrice"})
+		</div>
+	</div>
+
+	<div class="clearfix">
+		@Html.LabelFor(x => x.TimeStamp, "Transaction Date", new { @class = "control-label col-sm-3" })
+		<div class="input">
+			@Html.EditorFor(x => Model.TimeStamp, "DateTime", new { Placeholder = "Transaction date time" })
+		</div>
+	</div>
+
+	<div class="clearfix">
+		@Html.LabelFor(x => x.IsPaid, "Paid", new { @class="control-label col-sm-3"})
+		<div class="input">
+		@Html.CheckBoxFor(x => Model.IsPaid, new { @class="checkbox"})
+	</div>		
+		<div class="clearfix"></div>
+		@Html.LabelFor(x => x.PaidDateTime, "Paid Date", new { @class="control-label col-sm-3"})
+		<div class="input">
+		@Html.EditorFor(x => x.PaidDateTime, "PaidDateTime", new { Placeholder="Paid Date"})</div>
+	</div>
+
+	<div class="actions">
+		<input type="submit" class="btn primary" value="Save" />
+
+		@if (Model != null && Model.ComboTransactionID > 0)
+		{   <text>
+			@Html.ActionLink("Delete", "Delete", new { id = Model.ComboTransactionID }, new { @class = "btn" })
+			</text>
+		}
+	</div>
+	</fieldset>
+<script type="text/javascript">
+	$(function () {
+		$('#CustomerID').change(function () {
+			var value = this.value;
+			
+
+			var hrefvalue = $("#selectedCustomerID").attr('href');
+			if (hrefvalue.indexOf("CustomerID") == -1) {
+				
+				hrefvalue = hrefvalue + "&CustomerID=" + value;
+			}
+			else {
+				var idx = hrefvalue.indexOf("CustomerID");
+				hrefvalue =hrefvalue.substring(0, idx) + "CustomerID=" + value;
+			}
+			$("#selectedCustomerID").attr('href', hrefvalue);
+		});
+	});
+</script>
