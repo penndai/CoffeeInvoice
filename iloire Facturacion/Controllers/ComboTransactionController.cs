@@ -76,13 +76,28 @@ namespace CoffeeInvoice.Controllers
 			return View(ctranVM);
 		}
 
-		//[HttpPost]
-		//public ActionResult Edit(ComboTransactionModel ctranVM)
-		//{
-		//	if (ModelState.IsValid)
-		//	{
+		[HttpPost]
+		public ActionResult Edit(ComboTransactionModel ctranVM)
+		{
+			if (ModelState.IsValid)
+			{
+				ComboTransaction ctran = db.ComboTransactions.Find(ctranVM.ComboTransactionID);
+				if (ctran != null)
+				{
+					ctran.Weight = ctranVM.Weight;
+					ctran.TransPortPrice = ctranVM.TransPortPrice;
+					ctran.IsPaid = ctranVM.IsPaid;
+					ctran.PaidDateTime = ctranVM.PaidDateTime;
+					ctran.Benefit = ctran.Income - ctran.Expense - ctran.TransPortPrice;
+					db.Entry(ctran).State = System.Data.Entity.EntityState.Modified;
+					db.SaveChanges();
+				}
+			}
+			
+			ViewBag.Customers = new SelectList(db.Customers.OrderByDescending(x => x.Name), "CustomerID", "Name", ctranVM.CustomerID);
+			ctranVM.IndividualTransactions = db.IndividualProductTransactions.Where(x => x.ComboTransactionID == ctranVM.ComboTransactionID).OrderByDescending(x => x.IndividualProductTransactionID).ToList();
 
-		//	}
-		//}
+			return View(ctranVM);
+		}
 	}
 }

@@ -99,5 +99,17 @@ namespace CoffeeInvoice.Controllers
 
 			return View(ipTran);
 		}
+
+		public JsonResult GetProductPrice(int? ProductID, int Number)
+		{
+			decimal? price = 0;
+			decimal totalPrice = 0;
+
+			
+			price = db.Products.Find(ProductID).CNYSellPrice;
+			totalPrice = (price.Value * Number);
+			var data = new { UnitPrice = price.Value, TransactionTotalPrice = totalPrice};
+			return Json(data, JsonRequestBehavior.AllowGet);
+		}
 	}
 }

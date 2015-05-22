@@ -58,7 +58,8 @@
 	<div class="clearfix">
 		@Html.LabelFor(x => Model.TransPortPrice, "Transport Expense", new { @class = "control-label col-sm-3" })
 		<div class="input">
-			@Html.TextBoxCurrencyReadOnly(x=>Model.TransPortPrice,new{@readonly="readonly", @id="TransPortPrice"})
+			@*@Html.TextBoxCurrencyReadOnly(x=>Model.TransPortPrice,new{@readonly="readonly", @id="TransPortPrice"})*@
+			@System.Globalization.CultureInfo.GetCultureInfo("zh-CN").NumberFormat.CurrencySymbol @Html.TextBoxFor(x => Model.TransPortPrice, new { @readonly="readonly", @id="TransPortPrice"})
 		</div>
 	</div>
 
@@ -106,6 +107,15 @@
 				hrefvalue =hrefvalue.substring(0, idx) + "CustomerID=" + value;
 			}
 			$("#selectedCustomerID").attr('href', hrefvalue);
+		});
+
+		$("#Weight").change(function (args) {
+			var weight = $("#Weight").val();
+			
+			var lang = '/@ViewContext.RouteData.Values["lang"]';
+			$.getJSON(lang + '/Transaction/GetTransportPrice', { Weight: weight }, function (data) {
+				$("#TransPortPrice").val(data.TransportPrice);
+			});
 		});
 	});
 </script>

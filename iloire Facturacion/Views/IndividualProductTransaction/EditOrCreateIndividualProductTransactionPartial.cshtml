@@ -19,7 +19,8 @@
 		
 		@Html.LabelFor(x => Model.CNYPrice, "Price/each", new {@class="control-label col-sm-3" })
 		<div class="input chzn-results">
-			@Html.TextBoxCurrencyReadOnly(x=>Model.CNYSellPrice.Value, new { @readonly="readonly", @id="CNYPrice"})
+			@System.Globalization.CultureInfo.GetCultureInfo("zh-CN").NumberFormat.CurrencySymbol @Html.TextBoxFor(x=>x.CNYSellPrice,new { @readonly="readonly", @id="CNYPrice"})
+			@*@Html.TextBoxCurrencyReadOnly(x=>Model.CNYSellPrice.Value, new { @readonly="readonly", @id="CNYPrice"})*@
 			@Html.ValidationMessageFor(x=>Model.CNYSellPrice)			
 		</div>
 	</div>
@@ -31,10 +32,10 @@
 		</div>
 	</div>
 	<div class="clearfix">
-		@Html.LabelFor(x => Model.TotalPrice, "Total Price", new { @class="control-label col-sm-3"})
+		@Html.LabelFor(x => Model.TotalPrice, "Total Price", new { @class = "control-label col-sm-3" }) 
 		<div class="input">
-			@Html.TextBoxFor(x => Model.TotalPrice, new { @readonly="readonly", @id="TotalPrice"})			
-		
+			@System.Globalization.CultureInfo.GetCultureInfo("zh-CN").NumberFormat.CurrencySymbol @Html.TextBoxFor(x => Model.TotalPrice, new { @readonly = "readonly", @id = "TotalPrice" })
+
 			@Html.ValidationMessageFor(x=>Model.TotalPrice)
 		</div>
 	</div>
@@ -54,17 +55,27 @@
 	$(document).ready(function () {
 		$("#Number").change(function (args) {
 			var number = $("#Number").val();
-			var unit = $("#CNYPrice").val().substring(0, 1)
-			var unitPrice = parseFloat($("#CNYPrice").val().substring(1).replace(',', '').replace(' ', ''));
-			console.log(number);
-			console.log("Unit: " + unit);
-			console.log("UnitPrice: " + number * unitPrice)
+			
+			var unitPrice = parseFloat($("#CNYPrice").val());
+			
 			if (number && unitPrice) {
 				var price = number * unitPrice;
 
 				$("#TotalPrice").val(price);
 			}
+		});
 
+		$("#ProductID").change(function (args) {
+			var number = $("#Number").val();
+			var selectedProductID = $("#ProductID option:selected").val();
+			if (selectedProductID && selectedProductID > 0) {
+				var lang = '/@ViewContext.RouteData.Values["lang"]';
+				$.getJSON(lang + "/IndividualProductTransaction/GetProductPrice", { ProductID: selectedProductID, Number: number }, function (data) {
+
+					$("#CNYPrice").val(data.UnitPrice);
+					$("#TotalPrice").val(data.TransactionTotalPrice);
+				});
+			}
 		});
 	});
 	</script>
