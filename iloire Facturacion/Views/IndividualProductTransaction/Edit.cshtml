@@ -1,0 +1,12 @@
+﻿@model IndividualProductTransaction
+@{
+    ViewBag.Title = "Edit Individual Transaction Product";
+}
+
+@using (Html.BeginForm("Edit", "IndividualProductTransaction", FormMethod.Post))
+{
+    @Html.ValidationSummary(true)
+    <text>
+        @{Html.RenderPartial("EditOrCreateIndividualProductTransactionPartial", Model);}
+    </text>
+}

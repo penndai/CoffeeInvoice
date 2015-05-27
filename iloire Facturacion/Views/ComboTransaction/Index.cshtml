@@ -77,8 +77,8 @@
 				<td>@System.Globalization.CultureInfo.GetCultureInfo("zh-CN").NumberFormat.CurrencySymbol @Html.DisplayFor(x=>item.Benefit)</td> @*The benefit of this transaction*@
 		 <td class="noprint" nowrap>
 				@Html.ActionLink("Edit", "Edit", new { id = item.ComboTransactionID }, new { @class = "btn primary" })
-				@Html.ActionLink("Details", "Details", new { id = item.ComboTransactionID }, new { @class = "btn" })
-				@Html.ActionLink("Delete", "Delete", new { id = item.ComboTransactionID }, new { @class = "btn" })
+				@Html.ActionLink("Details", "Details", new { id = item.ComboTransactionID }, new { @class = "btn", @disabled = "disabled"})
+				@Html.ActionLink("Delete", "Delete", new { id = item.ComboTransactionID }, new { @class = "btn",onclick = "return confirm('Are you sure you wish to delete this combo transaction?');" })
 			</td>
 	 </tr>
  }

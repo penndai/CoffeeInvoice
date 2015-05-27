@@ -9,7 +9,7 @@
 	<div class="clearfix">
 		@Html.LabelFor(x => Model.ProductID, "Product", new { @class = "control-label col-sm-3" })
 		<div class="input chzn-select">
-			@Html.DropDownListFor(x => Model.ProductID, (SelectList)ViewBag.Products, string.Empty)
+			@Html.DropDownListFor(x => Model.ProductID, (SelectList)ViewBag.Products, Model.ProductID)
 			@*@Html.DropDownList("Products", string.Empty)*@
 			@Html.ValidationMessageFor(x => Model.ProductID)		
 		</div>

@@ -100,6 +100,76 @@ namespace CoffeeInvoice.Controllers
 			return View(ipTran);
 		}
 
+		public ActionResult Delete(int IndividualProductTransactionID, int ComboTransactionID)
+		{
+			if (Session["LoginUser"] != null)
+			{
+				IndividualProductTransaction ipTran = db.IndividualProductTransactions.Find(IndividualProductTransactionID);
+				if (ipTran != null)
+				{
+					ComboTransaction comboTran = db.ComboTransactions.Find(ComboTransactionID);
+					
+					comboTran.Benefit -= (ipTran.CNYSellPrice.Value - ipTran.CNYPrice.Value) * ipTran.Number;
+					comboTran.Expense -= ipTran.CNYPrice.Value * ipTran.Number;//output
+					comboTran.Income -= ipTran.TotalPrice;//income
+
+					db.IndividualProductTransactions.Remove(ipTran);
+					db.Entry(comboTran).State = System.Data.Entity.EntityState.Modified;
+					db.SaveChanges();
+				}
+			}
+
+			return RedirectToAction("Edit", "ComboTransaction", new { id = ComboTransactionID });
+		}		
+
+		[HttpPost]
+		public ActionResult Edit(IndividualProductTransaction ipTranVM, int ProductID)
+		{
+			if (Session["LoginUser"] != null)
+			{
+				if (ModelState.IsValid)
+				{
+					IndividualProductTransaction ipTranDB = db.IndividualProductTransactions.Find(ipTranVM.IndividualProductTransactionID);
+					if (ipTranDB != null)
+					{
+						ipTranDB.Number = ipTranVM.Number;
+						ipTranDB.TotalPrice = ipTranVM.TotalPrice;
+
+						db.Entry(ipTranDB).State = System.Data.Entity.EntityState.Modified;
+						db.SaveChanges();
+
+						return RedirectToAction("Edit", "ComboTransaction", new { id =ipTranDB.ComboTransactionID}); ;
+					}
+					else
+						return RedirectToAction("Index");
+				}
+				else
+				{
+					ViewBag.Products = new SelectList(db.Products.OrderByDescending(x => x.ProductName), "ProductID", "ProductName", ProductID);
+					return RedirectToAction("Index");
+				}
+			}
+			else
+			{
+				return RedirectToAction("Index","ComboTransaction");
+			}
+		}
+
+		public ActionResult Edit(int IndividualProductTransactionID)
+		{
+			IndividualProductTransaction ipTran = new IndividualProductTransaction();
+			if (Session["LoginUser"] != null)
+			{
+				ipTran = db.IndividualProductTransactions.Find(IndividualProductTransactionID);
+				if (ipTran != null)
+				{
+					ViewBag.Products = new SelectList(db.Products.OrderByDescending(x => x.ProductName), "ProductID", "ProductName", ipTran.ProductID);
+				}
+			}
+
+			return View(ipTran);
+		}
+
 		public JsonResult GetProductPrice(int? ProductID, int Number)
 		{
 			decimal? price = 0;

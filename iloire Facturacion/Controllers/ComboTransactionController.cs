@@ -35,6 +35,24 @@ namespace CoffeeInvoice.Controllers
 			return View(comboTrans);
 		}
 
+		public ActionResult Delete(int id)
+		{
+			if (Session["LoginUser"] != null)
+			{
+				ComboTransaction comboTran = db.ComboTransactions.Find(id);
+				if (comboTran != null)
+				{
+					List<IndividualProductTransaction> ipTrans = db.IndividualProductTransactions.Where(x => x.ComboTransactionID == id).ToList();
+					db.IndividualProductTransactions.RemoveRange(ipTrans);
+
+					db.ComboTransactions.Remove(comboTran);
+					db.SaveChanges();
+				}
+			}
+
+			return RedirectToAction("Index");
+		}
+
 		public ActionResult Create()
 		{
 			ComboTransactionModel ctModel = new ComboTransactionModel();
@@ -97,7 +115,7 @@ namespace CoffeeInvoice.Controllers
 			ViewBag.Customers = new SelectList(db.Customers.OrderByDescending(x => x.Name), "CustomerID", "Name", ctranVM.CustomerID);
 			ctranVM.IndividualTransactions = db.IndividualProductTransactions.Where(x => x.ComboTransactionID == ctranVM.ComboTransactionID).OrderByDescending(x => x.IndividualProductTransactionID).ToList();
 
-			return View(ctranVM);
+			return RedirectToAction("Index");
 		}
 	}
 }

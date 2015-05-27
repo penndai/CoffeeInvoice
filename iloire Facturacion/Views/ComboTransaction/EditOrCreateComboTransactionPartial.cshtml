@@ -40,9 +40,9 @@
 				<td>@Html.Raw(@Html.Currency(item.CNYSellPrice.Value,"zh-CN"))</td>
 				<td>@Html.Raw(@Html.Currency(item.TotalPrice,"zh-CN"))</td>
 				<td class="noprint" nowrap>
-				@Html.ActionLink("Edit", "Edit", "Individual", new { id = item.IndividualProductTransactionID }, new { @class = "btn primary" })
-				@Html.ActionLink("Details", "Details", "Individual", new { id = item.IndividualProductTransactionID }, new { @class = "btn" })
-				@Html.ActionLink("Delete", "Delete", "Individual",new { id = item.IndividualProductTransactionID }, new { @class = "btn" })
+				@Html.ActionLink("Edit", "Edit", "IndividualProductTransaction", new { IndividualProductTransactionID = item.IndividualProductTransactionID }, new { @class = "btn primary" })
+				@Html.ActionLink("Details", "Details", "IndividualProductTransaction", new { IndividualProductTransactionID = item.IndividualProductTransactionID }, new { @class = "btn",  @disabled = "disabled"})
+				@Html.ActionLink("Delete", "Delete", "IndividualProductTransaction",new { IndividualProductTransactionID = item.IndividualProductTransactionID, ComboTransactionID = item.ComboTransactionID }, new {@class = "btn", onclick = "return confirm('Are you sure you wish to delete this product?');" })
 			</td>
 			</tr>
    }
@@ -52,7 +52,7 @@
 	<div class="clearfix">
 		@Html.LabelFor(x => Model.Weight, "Weight", new { @class = "control-label col-sm-3" })
 		<div class="input">
-			@Html.TextBoxFor(x=>Model.Weight)
+			<text>(kg)</text>@Html.TextBoxFor(x => Model.Weight)
 		</div>
 		</div>
 	<div class="clearfix">
