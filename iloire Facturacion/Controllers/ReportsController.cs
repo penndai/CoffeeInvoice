@@ -1,7 +1,9 @@
-﻿
+﻿using System.Collections.Generic;
 using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using CoffeeInvoice.Models.ViewModel;
 
 namespace CoffeeInvoice.Controllers
 {
@@ -19,10 +21,12 @@ namespace CoffeeInvoice.Controllers
 			{
 				User user = (User)Session["LoginUser"];				
 
-				ts.Transactions = db.Transactions.Where(x =>x.UserID == user.UserID && x.TimeStamp >= fromDate && x.TimeStamp <= toDate && x.IsPaid).ToList();
+				ts.SingleTransactions = db.Transactions.Where(x =>x.UserID == user.UserID && x.TimeStamp >= fromDate && x.TimeStamp <= toDate && x.IsPaid).ToList();
+				ts.ComboTransactions = db.ComboTransactions.Where(x => x.UserID == user.UserID && x.TimeStamp >= fromDate && x.TimeStamp <= toDate && x.IsPaid).ToList();
 
-				ts.Expense = ts.Transactions.Sum(x => x.Expense);
-				ts.Income = ts.Transactions.Sum(x => x.Income);
+				ts.Expense = ts.SingleTransactions.Sum(x => x.Expense)+ts.ComboTransactions.Sum(x=>x.Expense);
+				ts.Income = ts.SingleTransactions.Sum(x => x.Income)+ts.ComboTransactions.Sum(x=>x.Income);
+				ts.Benefit = ts.SingleTransactions.Sum(x => x.Number * x.Benefit) + ts.ComboTransactions.Sum(x=>x.Benefit);
 			}
 
 			return ts;
@@ -60,6 +64,123 @@ namespace CoffeeInvoice.Controllers
             return s;
         }
 
+		public ActionResult GetLatestTransaction()
+		{
+			List<CoffeeInvoice.Models.ViewModel.LatestTransaction> latestTrans = new List<Models.ViewModel.LatestTransaction>();
+			if (Session["LoginUser"] != null)
+			{
+				int userid = ((User)Session["LoginUser"]).UserID;
+				List<Transaction> latestSingleTrans =
+					db.Transactions.Where(x => x.UserID == userid).OrderByDescending(x => x.TimeStamp).Take(10).ToList();
+
+				List<ComboTransaction> latestComboTrans =
+					db.ComboTransactions.Where(x => x.UserID == userid).OrderByDescending(x => x.TimeStamp).Take(10).ToList();
+
+				latestTrans = ComboLatestTransaction(latestSingleTrans, latestComboTrans);
+			}
+
+			return PartialView("LatestTransactionListPartial", latestTrans);
+		}
+  
+		private List<LatestTransaction> ComboLatestTransaction(List<Transaction> latestSingleTrans, List<ComboTransaction> latestComboTrans)
+		{
+			List<LatestTransaction> transVM = new List<LatestTransaction>();
+			foreach (Transaction single in latestSingleTrans)
+			{
+				Models.ViewModel.LatestTransaction tranVM = new Models.ViewModel.LatestTransaction();
+				tranVM.Benefit = single.Benefit;
+				tranVM.CustomerID = single.CustomerID;
+				tranVM.Customer = single.Customer.Name;
+				tranVM.ID = single.TransactionID;
+				tranVM.Product = single.Product.ProductName;
+				tranVM.ProductID = single.ProductID;
+				tranVM.TotalPay = single.Income * single.Number;
+				tranVM.TransactionDate = single.TimeStamp;
+				tranVM.IsPaid = single.IsPaid;
+				tranVM.PaidDate = single.PaidDateTime;
+				transVM.Add(tranVM);
+			}
+
+			foreach (ComboTransaction combo in latestComboTrans)
+			{
+				Models.ViewModel.LatestTransaction tranVM = new Models.ViewModel.LatestTransaction();
+				tranVM.ID = combo.ComboTransactionID;
+				db.IndividualProductTransactions.Where(
+					x => x.ComboTransactionID == combo.ComboTransactionID).ToList().ForEach(x =>
+					{
+						tranVM.Product = string.Format("{0}\n{1}", tranVM.Product, x.Product.ProductName);
+					});
+
+				tranVM.ProductID = -1;
+				tranVM.Customer = combo.Customer.Name;
+				tranVM.CustomerID = combo.CustomerID;
+				tranVM.TransactionDate = combo.TimeStamp.Date;
+				tranVM.TotalPay = combo.Income;
+				tranVM.Benefit = combo.Benefit;
+				tranVM.IsPaid = combo.IsPaid;
+				tranVM.PaidDate = combo.PaidDateTime;
+				transVM.Add(tranVM);
+			}
+			return transVM;
+		}
+
+		public ActionResult GetOverdueTransaction()
+		{
+			var overdueTrans = new System.Collections.Generic.List<CoffeeInvoice.Models.ViewModel.OverdueTransactionVM>();
+
+			if (Session["LoginUser"] != null)
+			{
+				int userid = ((User)Session["LoginUser"]).UserID;
+
+				// Get single transaction 
+				System.Collections.Generic.List<Transaction> singleTrans =
+				db.Transactions.Where(x=>x.UserID == userid && !x.IsPaid && DbFunctions.AddDays(x.TimeStamp, 3) <= DateTime.Now).OrderBy(x => x.TimeStamp).ToList();
+				// Get combo transaction
+				System.Collections.Generic.List<ComboTransaction> comboTrans =
+					db.ComboTransactions.Where(x => x.UserID == userid && !x.IsPaid && DbFunctions.AddDays(x.TimeStamp, 3) <= DateTime.Now).OrderBy(x => x.TimeStamp).ToList();
+
+				overdueTrans = CombineTrans(singleTrans, comboTrans);
+			}
+
+			return PartialView("OverdueTransactionListPartial", overdueTrans);
+		}
+
+		private System.Collections.Generic.List<Models.ViewModel.OverdueTransactionVM> CombineTrans(System.Collections.Generic.List<Transaction> singleTrans, System.Collections.Generic.List<ComboTransaction> comboTrans)
+		{
+			System.Collections.Generic.List<Models.ViewModel.OverdueTransactionVM> transVM = new System.Collections.Generic.List<Models.ViewModel.OverdueTransactionVM>();
+			foreach (Transaction single in singleTrans)
+			{
+				Models.ViewModel.OverdueTransactionVM tranVM = new Models.ViewModel.OverdueTransactionVM();
+				tranVM.Benefit = single.Benefit;
+				tranVM.CustomerID = single.CustomerID;
+				tranVM.Customer = single.Customer.Name;
+				tranVM.ID = single.TransactionID;
+				tranVM.Product = single.Product.ProductName;
+				tranVM.ProductID = single.ProductID;
+				tranVM.TotalPay = single.Income*single.Number;
+				tranVM.TransactionDate = single.TimeStamp;
+				transVM.Add(tranVM);
+			}
+
+			foreach (ComboTransaction combo in comboTrans)
+			{
+				Models.ViewModel.OverdueTransactionVM tranVM = new Models.ViewModel.OverdueTransactionVM();
+				tranVM.ID = combo.ComboTransactionID;
+				db.IndividualProductTransactions.Where(
+					x => x.ComboTransactionID == combo.ComboTransactionID).ToList().ForEach(x => {
+						tranVM.Product = string.Format("{0}\n{1}", tranVM.Product,x.Product.ProductName);
+					});
+				
+				tranVM.ProductID = -1;
+				tranVM.Customer = combo.Customer.Name;
+				tranVM.CustomerID = combo.CustomerID;
+				tranVM.TransactionDate = combo.TimeStamp.Date;
+				tranVM.TotalPay = combo.Income;
+				tranVM.Benefit = combo.Benefit;
+				transVM.Add(tranVM);
+			}
+			return transVM;
+		}
         //
         // GET: /Reports/
 

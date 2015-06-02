@@ -13,15 +13,15 @@
 <table width="100%" class="dashboard">
 <tr>
     <td width="50%">
-        <h3>@Resources.Print.TransactionOverdue</h3>
-       @* @{Html.RenderAction("OverDueInvoices","Invoice");}*@
-		@{Html.RenderAction("OverDueTransaction", "Transaction");}
+        <h3>@Resources.Print.TransactionOverdue</h3>      
+		@*@{Html.RenderAction("OverDueTransaction", "Transaction");}*@
+		@{Html.RenderAction("GetOverdueTransaction", "Reports");}
        @* <h3>Unpaid invoices</h3>
         @{Html.RenderAction("UnPaidInvoices","Invoice");}*@
 
 		<h3>Latest Transatcions</h3>
-		@{Html.RenderAction("LatestTransactions", "Transaction");}
-
+		@*@{Html.RenderAction("LatestTransactions", "Transaction");}*@
+		@{Html.RenderAction("GetLatestTransaction", "Reports");}
 
        @* <h3>Latest proposals</h3>
         @{Html.RenderAction("LatestProposals","Invoice");}*@

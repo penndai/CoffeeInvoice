@@ -10,9 +10,9 @@ public class TSummary
 	public DateTime From { get; set; }
 	public DateTime To { get; set; }
 
-	public List<Transaction> Transactions { get; set; }
-
+	public List<Transaction> SingleTransactions { get; set; }
+	public List<ComboTransaction> ComboTransactions { get; set; }
 	public decimal Expense { get; set; }
 	public decimal Income { get; set; }
-	public decimal Benefit { get { return Income - Expense; } }
+	public decimal Benefit { get;set;}
 }
