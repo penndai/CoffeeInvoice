@@ -1,0 +1,92 @@
+﻿@using CoffeeInvoice.Models.ViewModel;
+
+@model IEnumerable<ComboTransactionWithProductVM>
+
+<div class="table-responsive">
+	<h2>Combo Transaction</h2>
+<table  class="zebra-striped">
+	<thead>
+        <th width="30">
+            ID
+        </th>
+        <th>
+            Customer
+        </th>
+        <th width="35%">
+            Products
+        </th>
+         <th width="90">
+            Total to pay
+        </th>
+        <th  width="80">
+            Date
+        </th>
+		<th>Paid</th>
+        <th  width="80">
+            Pay Date
+        </th>               
+    </thead>
+	@foreach (var item in Model)
+ {
+	 <tr>
+		 <td>
+			 <a href="@Url.Action("Edit", "ComboTransaction", new { id=item.ComboTransactionID})"> #@item.ComboTransactionID</a>
+		 </td>
+		 <td>
+         <a href="@Url.Action("Details", "Customer", new { id=item.CustomerID})">
+            @Html.DisplayFor(modelItem => item.Customer.Name)
+         </a>
+        </td>
+		<td>
+			<a href="@Url.Action("Edit", "ComboTransaction",new {id = item.ComboTransactionID})">@item.Product</a>
+		</td>
+		 <td nowrap="nowrap" align="right"   style="align:text-right">
+			 @Html.Raw(@Html.Currency(item.Income, "zh-CN"))
+			 </td>
+		 <td>
+			 @if (!item.IsPaid && item.TimeStamp < DateTime.Now.AddDays(-7))
+	{
+		<span class="label important">@Html.DisplayFor(modelItem => item.TimeStamp)</span>
+	}
+			 else if (!item.IsPaid && item.TimeStamp < DateTime.Now.AddDays(-5))
+			 {
+				<span class="label warning">@Html.DisplayFor(modelItem => item.TimeStamp)</span>
+	}
+			 else
+			 {
+				 @Html.DisplayFor(modelItem => item.TimeStamp,"ShortDate")
+			 }
+        </td>
+		 <td>
+			 @if (item.IsPaid)
+	{
+		<span class="label success">Yes</span>
+	}
+	else{
+		<span class="label important">No</span>
+	}
+			
+		 </td>
+		 <td>
+			 @if(item.IsPaid)
+	{
+		
+				@Html.DisplayFor(modelItem=>item.PaidDateTime,"ShortDate")
+	}
+			
+			 
+		 </td>
+		 </tr>
+		 }
+
+	 <tfoot>
+        <tr>
+            <td colspan=3><span class="label">TOTALS: </span></td>
+            <td nowrap="nowrap">
+				@Html.Raw(@Html.Currency((decimal)Model.Sum(i => i.Income),"zh-CN"))
+				@*@String.Format("{0:C}", Model.Sum(i => i.Number*i.Product.CNYSellPrice))*@</td>            
+            <td colspan="3"></td>
+        </tr>
+    </tfoot>
+	</table>
+	</div>

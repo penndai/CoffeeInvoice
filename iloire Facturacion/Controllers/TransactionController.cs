@@ -8,6 +8,7 @@ using MvcPaging;
 using Microsoft.AspNet.Identity;
 using CoffeeInvoice.Models.Helper;
 using System.Data.Entity.Core.Objects;
+using CoffeeInvoice.Models.ViewModel;
 
 namespace CoffeeInvoice.Controllers
 {
@@ -364,26 +365,59 @@ namespace CoffeeInvoice.Controllers
 
 		public PartialViewResult LastTransactionByCustomer(int id)
 		{
-			var trans = new List<Transaction>();
+			var singletrans = new List<Transaction>();
+			
 			if (Session["LoginUser"] != null)
 			{
 				int userid = ((User)Session["LoginUser"]).UserID;
-				trans = db.Transactions.Where(x => x.UserID == userid && x.CustomerID == id).OrderByDescending(x => x.TimeStamp).ToList();
+				singletrans = db.Transactions.Where(x => x.UserID == userid && x.CustomerID == id).OrderByDescending(x => x.TimeStamp).ToList();
 			}
 
-			return PartialView("TransactionListPartial", trans);
+			return PartialView("TransactionListPartial", singletrans);
 		}
 
 		public PartialViewResult RecendTransactionByProduct(int productId)
 		{
-			var trans = new List<Transaction>();
+			var model = new RecendTransactionByProductVM();
+
+			var singletrans = new List<Transaction>();
+			var combotransWithProduct = new List<ComboTransactionWithProductVM>();
+			var combotrans = new List<ComboTransaction>();
 			if (Session["LoginUser"] != null)
 			{
 				int userid = ((User)Session["LoginUser"]).UserID;
-				trans = db.Transactions.Where(x => x.UserID == userid && x.ProductID == productId).OrderByDescending(x => x.TimeStamp).ToList();
+
+				List<int> individualTrans = db.IndividualProductTransactions.Where(x => x.ProductID == productId).Select(x=>x.ComboTransactionID).ToList();
+				combotrans = db.ComboTransactions.Where(x=>x.UserID == userid && individualTrans.Contains(x.ComboTransactionID)).OrderByDescending(x=>x.TimeStamp).ToList();
+
+				foreach (ComboTransaction combo in combotrans)
+				{
+					ComboTransactionWithProductVM combovm = new ComboTransactionWithProductVM();
+					combovm.Benefit = combo.Benefit;
+					combovm.ComboTransactionID = combo.ComboTransactionID;
+					combovm.Customer = combo.Customer;
+					combovm.CustomerID = combo.CustomerID;
+					combovm.Expense = combo.Expense;
+					combovm.Income = combo.Income;
+					combovm.IsPaid = combo.IsPaid;
+					combovm.PaidDateTime = combo.PaidDateTime;
+					combovm.TimeStamp = combo.TimeStamp;
+					combovm.TransPortPrice = combo.TransPortPrice;
+					combovm.User = combo.User;
+					combovm.UserID = combo.UserID;
+					combovm.Weight = combo.Weight;
+					combovm.Product = 
+					db.IndividualProductTransactions.Where(x => x.ComboTransactionID == combo.ComboTransactionID).Select(x => x.Product.ProductName).ToList().Aggregate((current, next) => current + ',' + next);
+
+					combotransWithProduct.Add(combovm);
+				}
+				singletrans = db.Transactions.Where(x => x.UserID == userid && x.ProductID == productId).OrderByDescending(x => x.TimeStamp).ToList();				
 			}
 
-			return PartialView("TransactionListPartial", trans);
+			model.RecentComboTrans = combotransWithProduct;
+			model.RecentSingleTrans = singletrans;
+
+			return PartialView("RecendTransactionByProductPartial", model);
 		}
 	}
 }

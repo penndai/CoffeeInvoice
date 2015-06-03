@@ -187,13 +187,46 @@ namespace CoffeeInvoice.Controllers
 			if (Session["LoginUser"] != null)
 			{
 				User user = (User)Session["LoginUser"];
-				var mostPopularProds =
+				var singleTranMostPopularProds =
 					db.Transactions.Where(x => x.UserID == user.UserID).GroupBy(x => new { ProductID=x.ProductID, Product=x.Product.ProductName}).Select(x => new PopularProduct { ProductID = x.Key.ProductID,Product=x.Key.Product, TotalValue = x.Sum(y => y.Product.CNYSellPrice.Value), Count = x.Count() }).ToList();
 
-				products = mostPopularProds.OrderByDescending(x => x.TotalValue).Take(10).ToList();
+				List<PopularProduct> comboTransPopularProds = GetComboTransactionPopularProducts(user.UserID);
+				//products = comboTransPopularProds.OrderByDescending(x => x.TotalValue).ToList();	
+				
+				products.AddRange(singleTranMostPopularProds.OrderByDescending(x => x.TotalValue).ToList());
+				foreach (PopularProduct cPP in comboTransPopularProds)
+				{
+					PopularProduct pp = products.Where(x => x.ProductID == cPP.ProductID).FirstOrDefault();
+
+					if (pp != null)
+					{
+						pp.Count += cPP.Count;
+						pp.TotalValue += cPP.TotalValue;
+					}
+					else
+					{
+						products.Add(cPP);
+					}
+				}
 			}
 
-			return PartialView("TopProductsPartial", products);
+			return PartialView("TopProductsPartial", products.OrderByDescending(x=>x.TotalValue).Take(top));
+		}
+
+		private List<PopularProduct> GetComboTransactionPopularProducts(int userID)
+		{
+			List<int> comboTranIDs = db.ComboTransactions.Where(x=>x.UserID == userID).Select(x=>x.ComboTransactionID).ToList();
+
+			List<IndividualProductTransaction> individualTrans =
+				db.IndividualProductTransactions.Where(x => comboTranIDs.Contains(x.ComboTransactionID)).ToList();
+
+			List<PopularProduct> rtn = 
+				individualTrans.GroupBy(
+				x => new { ProductID = x.ProductID, Product = x.Product.ProductName }).
+					Select(
+					x => new PopularProduct { ProductID = x.Key.ProductID, Product = x.Key.Product, TotalValue = x.Sum(y=>y.CNYSellPrice.Value*y.Number), Count = x.Sum(y=>y.Number)}).ToList();
+
+			return rtn;
 		}
 
 		public ActionResult Delete(int id)

@@ -1,9 +1,4 @@
-﻿/*
-	Iván Loire - www.iloire.com
-	Please readme README file for license terms.
-
-	ASP.NET MVC3 ACME Invocing app (demo app for training purposes)
-*/
+﻿
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -70,14 +65,41 @@ namespace CoffeeInvoice.Controllers
 			if (Session["LoginUser"] != null)
 			{
 				User user = (User)Session["LoginUser"];
-				var mostPopularProds =
+				var singleTransmostPopularProds =
 					db.Transactions.Where(x => x.UserID == user.UserID).GroupBy(x => new { CustomerID = x.CustomerID, CustomerName = x.Customer.Name }).Select(x => new MostTopCustomer { CustomerID = x.Key.CustomerID, CustomerName = x.Key.CustomerName, TotalPaid = x.Sum(y => y.Product.CNYSellPrice.Value) }).ToList();
 
-				topCustomers = mostPopularProds.OrderByDescending(x => x.TotalPaid).Take(10).ToList();
+				List<MostTopCustomer> mostPopularProds = GetComboTransactionTopCustomer(user.UserID);
+				topCustomers.AddRange(singleTransmostPopularProds);
+				foreach (MostTopCustomer cus in mostPopularProds)
+				{
+					MostTopCustomer mtc = singleTransmostPopularProds.Where(x => x.CustomerID == cus.CustomerID).FirstOrDefault();
+					if (mtc != null)
+					{
+						mtc.TotalPaid += cus.TotalPaid;
+					}
+					else
+					{
+						topCustomers.Add(cus);
+					}
+				}
+
+				topCustomers = topCustomers.OrderByDescending(x => x.TotalPaid).Take(top).ToList();
 			}
 			return PartialView("TopCustomersPartial", topCustomers);
 		}
-        //
+  
+		private List<MostTopCustomer> GetComboTransactionTopCustomer(int userID)
+		{
+			List<MostTopCustomer> rtn =
+				db.ComboTransactions.GroupBy(
+				x => new { CustomerID = x.CustomerID, CustomerName = x.Customer.Name }).
+					Select(
+					x => new MostTopCustomer { CustomerID = x.Key.CustomerID, CustomerName = x.Key.CustomerName, TotalPaid = x.Sum(y => y.Income) }).ToList();
+
+			return rtn;
+		}
+
+		//
         // GET: /Customer/Details/5
 
         public ViewResult Details(int id)
