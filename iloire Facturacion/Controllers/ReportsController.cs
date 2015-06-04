@@ -24,6 +24,7 @@ namespace CoffeeInvoice.Controllers
 				ts.SingleTransactions = db.Transactions.Where(x =>x.UserID == user.UserID && x.TimeStamp >= fromDate && x.TimeStamp <= toDate && x.IsPaid).ToList();
 				ts.ComboTransactions = db.ComboTransactions.Where(x => x.UserID == user.UserID && x.TimeStamp >= fromDate && x.TimeStamp <= toDate && x.IsPaid).ToList();
 
+				ts.Transport = ts.ComboTransactions.Sum(x=>x.TransPortPrice);
 				ts.Expense = ts.SingleTransactions.Sum(x => x.Expense)+ts.ComboTransactions.Sum(x=>x.Expense);
 				ts.Income = ts.SingleTransactions.Sum(x => x.Income)+ts.ComboTransactions.Sum(x=>x.Income);
 				ts.Benefit = ts.SingleTransactions.Sum(x => x.Number * x.Benefit) + ts.ComboTransactions.Sum(x=>x.Benefit);
@@ -284,13 +285,13 @@ namespace CoffeeInvoice.Controllers
 			y.Q1 = GetTransSummary(TaxDateHelper.GetStartDate(1, id), TaxDateHelper.GetStartDate(2, id).AddDays(-1));
 			y.Q1.Year = id;
 
-			y.Q2 = GetTransSummary(TaxDateHelper.GetStartDate(1, id), TaxDateHelper.GetStartDate(3, id).AddDays(-1));
+			y.Q2 = GetTransSummary(TaxDateHelper.GetStartDate(2, id), TaxDateHelper.GetStartDate(3, id).AddDays(-1));
 			y.Q2.Year = id;
 			
-			y.Q3 = GetTransSummary(TaxDateHelper.GetStartDate(1, id), TaxDateHelper.GetStartDate(4, id).AddDays(-1));
+			y.Q3 = GetTransSummary(TaxDateHelper.GetStartDate(3, id), TaxDateHelper.GetStartDate(4, id).AddDays(-1));
 			y.Q3.Year = id;
 
-			y.Q4 = GetTransSummary(TaxDateHelper.GetStartDate(1, id), TaxDateHelper.GetStartDate(1, id).AddDays(1).AddDays(-1));
+			y.Q4 = GetTransSummary(TaxDateHelper.GetStartDate(4, id), TaxDateHelper.GetStartDate(1, id).AddYears(1).AddDays(-1));
 			y.Q4.Year = id;
 
 			return PartialView("TransYearSummary", y);

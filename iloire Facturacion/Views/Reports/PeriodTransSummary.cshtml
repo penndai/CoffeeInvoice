@@ -12,13 +12,15 @@
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Task');
             data.addColumn('number', 'Hours per Day');
-            data.addRows(2);
-            data.setValue(0, 0, 'Income');
-            data.setValue(0, 1, @Model.Income);
-            data.setValue(1, 0, 'Expenses');
+            data.addRows(3);
+            data.setValue(0, 0, 'Benefit');
+            data.setValue(0, 1, @Model.Benefit);
+            data.setValue(1, 0, 'Product Price');
             data.setValue(1, 1, @Model.Expense);
+        	data.setValue(2, 0, 'Transport');
+			data.setValue(2,1,@Model.Transport);
             var chart = new google.visualization.PieChart(document.getElementById('@chart_name'));
-            chart.draw(data, { width: 350, height: 150, title: 'Income vs expenses' });
+            chart.draw(data, { width: 350, height: 150, title: 'Benefit vs Product Expense vs Transport' });
         }
     </script>
     <div id="@chart_name"></div>
@@ -29,11 +31,13 @@
     @String.Format("{0:d}", Model.From)  -  @String.Format("{0:d}", Model.To)         
     </h4>
 	<p>
-        <strong>NET Income:</strong> <span class="income big">@String.Format("{0:C}", Model.Income)</span>
+        <strong>NET Benefit:</strong> <span class="income big">@String.Format("{0:C}", Model.Benefit)</span>
                 
         <br />
+		
         <strong>NET Expense:</strong><span class="expense big"> @String.Format("{0:C}", Model.Expense)</span>
-        
+        <br />
+		<strong>Transport:</strong> <span class="expense big"> @string.Format("{0:C}", Model.Transport)</span>
         <hr />
         <strong>Benefit:</strong> 
         <span class=expense>

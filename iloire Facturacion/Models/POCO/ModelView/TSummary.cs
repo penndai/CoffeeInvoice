@@ -12,6 +12,7 @@ public class TSummary
 
 	public List<Transaction> SingleTransactions { get; set; }
 	public List<ComboTransaction> ComboTransactions { get; set; }
+	public decimal Transport { get; set; }
 	public decimal Expense { get; set; }
 	public decimal Income { get; set; }
 	public decimal Benefit { get;set;}
