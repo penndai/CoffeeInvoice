@@ -91,7 +91,7 @@ namespace CoffeeInvoice.Controllers
 		private List<MostTopCustomer> GetComboTransactionTopCustomer(int userID)
 		{
 			List<MostTopCustomer> rtn =
-				db.ComboTransactions.GroupBy(
+				db.ComboTransactions.Where(x=>x.UserID==userID).GroupBy(
 				x => new { CustomerID = x.CustomerID, CustomerName = x.Customer.Name }).
 					Select(
 					x => new MostTopCustomer { CustomerID = x.Key.CustomerID, CustomerName = x.Key.CustomerName, TotalPaid = x.Sum(y => y.Income) }).ToList();
@@ -99,6 +99,32 @@ namespace CoffeeInvoice.Controllers
 			return rtn;
 		}
 
+		public ActionResult Copy(int id)
+		{
+			Customer customer = db.Customers.Find(id);
+			Customer target = new Customer();
+
+			if (customer != null)
+			{
+				target.Address = customer.Address;
+				target.City = customer.City;
+				target.CompanyNumber = customer.CompanyNumber;
+				target.ContactPerson = customer.ContactPerson;
+				target.CP = customer.CP;
+				target.Email = customer.Email;
+				target.Fax = customer.Fax;
+				target.Name = customer.Name;
+				target.Notes = customer.Notes;
+				target.Phone1 = customer.Phone1;
+				target.Phone2 = customer.Phone2;
+				target.UserID = customer.UserID;
+
+				db.Customers.Add(target);
+				db.SaveChanges();
+			}
+
+			return RedirectToAction("Index");
+		}
 		//
         // GET: /Customer/Details/5
 
@@ -161,7 +187,7 @@ namespace CoffeeInvoice.Controllers
                 db.SaveChanges();
                 //return RedirectToAction("Index");
                 //return list of customers as it is ajax request
-                return PartialView("CustomerListPartial", db.Customers.OrderBy(c => c.Name).ToPagedList(0, defaultPageSize));
+                return PartialView("CustomerListPartial", db.Customers.Where(x=>x.UserID == customer.UserID).OrderBy(c => c.Name).ToPagedList(0, defaultPageSize));
             }
             this.Response.StatusCode = 400;
             return PartialView(customer);
