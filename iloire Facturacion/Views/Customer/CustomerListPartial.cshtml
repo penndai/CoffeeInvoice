@@ -1,7 +1,8 @@
 ﻿
+@using CoffeeInvoice.Models.ViewModel;
 @using MvcPaging;
 
-@model IPagedList<Customer>
+@model IPagedList<CustomerWithPinYinName>
            
 <div class="pagingContainer">
         @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount)

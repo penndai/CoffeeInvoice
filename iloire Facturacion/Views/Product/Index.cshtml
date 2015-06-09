@@ -25,7 +25,7 @@
     <p>
         @Html.ActionLink("[+] Create New", "Create", null, new { @class = "btn primary" })
     </p>
-
+	@{Html.RenderPartial("SearchBoxCompany", "Product");}
 	<div class="pagingContainer">
         @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount)
     </div>

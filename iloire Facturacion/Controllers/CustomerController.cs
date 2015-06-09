@@ -7,6 +7,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MvcPaging;
+using System.Text;
+using CoffeeInvoice.Models.ViewModel;
+using Microsoft.International.Converters.PinYinConverter;
 
 namespace CoffeeInvoice.Controllers
 {
@@ -15,24 +18,66 @@ namespace CoffeeInvoice.Controllers
     {
         private int defaultPageSize = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["DefaultPaginationSize"]);
         private InvoiceDB db = new InvoiceDB();
-
-        /*CUSTOM*/
+	
         public ViewResultBase Search(string q, int? page)
         {
-            IQueryable<Customer> customers=db.Customers;
+			List<Customer> customers = db.Customers.OrderBy(c => c.Name).ToList();
+			List<CustomerWithPinYinName> customer_PinYin = new List<CustomerWithPinYinName>();
+			if (Session["LoginUser"] != null)
+			{
+				foreach (Customer cus in customers)
+				{
+					CustomerWithPinYinName cusPY = new CustomerWithPinYinName();
+					cusPY.Address = cus.Address;
+					cusPY.City = cus.City;
+					cusPY.CompanyNumber = cus.CompanyNumber;
+					cusPY.ContactPerson = cus.ContactPerson;
+					cusPY.CP = cus.CP;
+					cusPY.CustomerID = cus.CustomerID;
+					cusPY.Email = cus.Email;
+					cusPY.Fax = cus.Fax;
+					//cusPY.Invoices = cus.Invoices;
+					cusPY.Name = cus.Name;
+					cusPY.Notes = cus.Notes;
+					cusPY.Phone1 = cus.Phone1;
+					cusPY.Phone2 = cus.Phone2;
+					cusPY.User = cus.User;
+					cusPY.UserID = cus.UserID;
+					
+					string r = string.Empty;
+					foreach (char obj in cusPY.Name)
+					{
+						try
+						{
+							ChineseChar chineseChar = new ChineseChar(obj);
+							string t = chineseChar.Pinyins[0].ToString();
+							r += t.Substring(0, 1);
+						}
+						catch
+						{
+							r += obj.ToString();
+						}
+					}
+										
+					cusPY.PinYin = r;
+					customer_PinYin.Add(cusPY);
+				}
 
-            if (q.Length == 1)//alphabetical search, first letter
-            {
-                ViewBag.LetraAlfabetica = q;
-                customers =  customers.Where (c=>c.Name.StartsWith(q));
-            }
-            else if (q.Length>1){ 
-                //normal search
-                customers = customers.Where(c => c.Name.IndexOf(q) > -1);
-            }
+				if (q.Length == 1)//alphabetical search, first letter
+				{
+					ViewBag.LetraAlfabetica = q;
+
+					customer_PinYin = customer_PinYin.Where(c => c.PinYin.StartsWith(q)).ToList();
+				}
+				else if (q.Length > 1)
+				{
+					//normal search
+					customer_PinYin = customer_PinYin.Where(c => c.PinYin.IndexOf(q) > -1).ToList();
+				}
+			}
 
             int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
-            var customersListPaged = customers.OrderBy(i => i.Name).ToPagedList(currentPageIndex, defaultPageSize);
+			var customersListPaged = customer_PinYin.OrderBy(i => i.Name).ToPagedList(currentPageIndex, defaultPageSize);
 
 			if (Request.IsAjaxRequest())
 				return PartialView("Index", customersListPaged);
@@ -42,21 +87,61 @@ namespace CoffeeInvoice.Controllers
 
         /*END CUSTOM*/
         
-        
-        //
+
         // GET: /Customer/
 
         public ViewResult Index(int? page)
         {
             int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
 			var customers = db.Customers.OrderBy(c => c.Name).ToList();
+			List<CustomerWithPinYinName> customer_PinYin = new List<CustomerWithPinYinName>();
+
 			if (Session["LoginUser"] != null)
 			{
 				User user = (User)Session["LoginUser"];
 				customers = customers.Where(x => x.UserID == user.UserID).ToList();
+				
+				foreach (Customer cus in customers)
+				{
+					CustomerWithPinYinName cusPY = new CustomerWithPinYinName();
+					cusPY.Address = cus.Address;
+					cusPY.City = cus.City;
+					cusPY.CompanyNumber = cus.CompanyNumber;
+					cusPY.ContactPerson = cus.ContactPerson;
+					cusPY.CP = cus.CP;
+					cusPY.CustomerID = cus.CustomerID;
+					cusPY.Email = cus.Email;
+					cusPY.Fax = cus.Fax;
+					cusPY.Invoices = cus.Invoices;
+					cusPY.Name = cus.Name;
+					cusPY.Notes = cus.Notes;
+					cusPY.Phone1 = cus.Phone1;
+					cusPY.Phone2 = cus.Phone2;
+					cusPY.User = cus.User;
+					cusPY.UserID = cus.UserID;					
+
+					string r = string.Empty;
+					foreach (char obj in cusPY.Name)
+					{
+						try
+						{
+							ChineseChar chineseChar = new ChineseChar(obj);
+							string t = chineseChar.Pinyins[0].ToString();
+							r += t.Substring(0, 1);
+						}
+						catch
+						{
+							r += obj.ToString();
+						}
+					}
+
+					cusPY.PinYin = r;
+					
+					customer_PinYin.Add(cusPY);
+				}
 			}
 
-			return View(customers.ToPagedList(currentPageIndex, defaultPageSize));
+			return View(customer_PinYin.ToPagedList(currentPageIndex, defaultPageSize));
         }
 
 		public PartialViewResult MostTop10Customers(int top)

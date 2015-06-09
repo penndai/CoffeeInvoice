@@ -61,6 +61,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="ChnCharInfo">
+      <HintPath>..\..\..\..\Program Files (x86)\Microsoft Visual Studio International Pack\Simplified Chinese Pin-Yin Conversion Library\ChnCharInfo.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2\lib\Elmah.dll</HintPath>
     </Reference>
@@ -265,6 +268,7 @@
     <Compile Include="Models\Paging\PagingExtensions.cs" />
     <Compile Include="Models\POCO\ComboTransaction.cs" />
     <Compile Include="Models\POCO\Customer.cs" />
+    <Compile Include="Models\ViewModel\CustomerWithPinYinName.cs" />
     <Compile Include="Models\POCO\IndividualProductTransaction.cs" />
     <Compile Include="Models\POCO\ModelView\QuarterSummary.cs" />
     <Compile Include="Models\POCO\ModelView\TransYearSummary.cs" />

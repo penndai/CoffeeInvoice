@@ -40,6 +40,7 @@ namespace CoffeeInvoice.Controllers
 			return RedirectToAction("Index");
 		}
 
+
 		// GET: /Product/
 		public ViewResult Index(int? page)
 		{
