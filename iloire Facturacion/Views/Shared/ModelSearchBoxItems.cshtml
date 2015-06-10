@@ -29,10 +29,10 @@
 		Text:
 		@Html.TextBoxFor(x => x.text, new { @placeholder="Search text to look for ..."})
 		From:
-		@Html.EditorFor(x=>x.from,"DateTime",new {@Value=Model.from.HasValue?Model.from.Value.ToString("dd/MM/yyyy"):string.Empty,Placeholder="start Date from.."})
+		@Html.EditorFor(x=>x.from,"DateTime",new {@Value=Model.from,Placeholder="start Date from.."})
 		@*@Html.TextBoxFor(x=>x.from, new {@placeholder="Start Date from..", @class="datefield small"})*@
 		To:
-		@Html.EditorFor(x => x.to, "DateTime", new {@Value=Model.to.HasValue?Model.to.Value.ToString("dd/MM/yyyy"):string.Empty, Placeholder = "end Date to.." })
+		@Html.EditorFor(x => x.to, "DateTime", new {@Value=Model.to, Placeholder = "end Date to.." })
 		@*@Html.TextBoxFor(x =>x.to, new { @placeholder="End Date to..", @class="datefield small"})*@
 
 		 <input type="submit" value="Filter" class="btn small primary" />

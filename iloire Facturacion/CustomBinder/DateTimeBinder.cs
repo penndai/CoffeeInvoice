@@ -8,18 +8,33 @@ using System.Web.Mvc;
 namespace CoffeeInvoice.CustomBinder
 {
 
-	public class DateTimeBinder : IModelBinder
+	public class DateTimeBinder : DefaultModelBinder
 	{
-		#region IModelBinder Members
-		public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+		public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
 		{
-			DateTime dateTime;
-			if (DateTime.TryParse(controllerContext.HttpContext.Request.QueryString["dateTime"], CultureInfo.GetCultureInfo("en-AU"), DateTimeStyles.None, out dateTime))
-				return dateTime;
-			//else
-			return new DateTime();//or another appropriate default ;
+			var displayFormat = bindingContext.ModelMetadata.DisplayFormatString;
+			var value = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
+
+			if (!string.IsNullOrEmpty(displayFormat) && value != null)
+			{
+				DateTime date;
+				displayFormat = displayFormat.Replace("{0:", string.Empty).Replace("}", string.Empty);
+				// use the format specified in the DisplayFormat attribute to parse the date
+				if (DateTime.TryParseExact(value.AttemptedValue, displayFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+				{
+					return date;
+				}
+				else
+				{
+					bindingContext.ModelState.AddModelError(
+						bindingContext.ModelName,
+						string.Format("{0} is an invalid date format", value.AttemptedValue)
+					);
+				}
+			}
+
+			return base.BindModel(controllerContext, bindingContext);
 		}
-		#endregion
 	}
 
 }

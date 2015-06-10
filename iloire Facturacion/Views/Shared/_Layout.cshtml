@@ -127,7 +127,18 @@
              	return true;
              };
 
-             $(".datefield").datepicker({ "dateFormat": 'dd/mm/yy' });
+             $('.datefield').datepicker({
+             	dateFormat: "dd/mm/yy",
+             	showStatus: true,
+             	showWeeks: true,
+             	currentText: 'Now',
+             	autoSize: true,
+             	gotoCurrent: true,
+             	showAnim: 'blind',
+             	highlightWeek: true
+             })
+
+             //$(".datefield").datepicker({ "dateFormat": 'dd/MM/yyyy' });
 
          	try { //if no data will raise error ¿?
 				//alert(sorter_options);

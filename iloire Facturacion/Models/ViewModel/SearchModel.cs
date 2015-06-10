@@ -20,14 +20,14 @@ namespace CoffeeInvoice.Models.ViewModel
 			set;
 		}
 		
-		[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+		[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd'/'MM'/'yyyy}")]
 		public DateTime? from
 		{
 			get;
 			set;
 		}
 
-		[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+		[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd'/'MM'/'yyyy}")]
 		public DateTime? to
 		{
 			get;
