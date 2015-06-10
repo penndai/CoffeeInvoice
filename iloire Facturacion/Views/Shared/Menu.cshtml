@@ -12,7 +12,7 @@
 			<li>
 			</text>
 		}
-	@Html.ActionLink("Single Product Transaction", "Index", "Transaction")@Html.ActionLink("( + )", "Create", "Transaction")</li>		
+	@Html.ActionLink("Single Product Transaction", "Index", "Transaction")</li><li>@Html.ActionLink("( + )", "Create", "Transaction")</li>		
 		@if (Request.RawUrl.Contains("ComboTransaction"))
   {
 	  <text>
@@ -23,7 +23,7 @@
 			<text>
 			<li></text>
   }
-	@Html.ActionLink("Combo Product Transaction", "Index", "ComboTransaction")@Html.ActionLink("( + )", "Create", "ComboTransaction")</li>
+	@Html.ActionLink("Combo Product Transaction", "Index", "ComboTransaction")</li><li>@Html.ActionLink("( + )", "Create", "ComboTransaction")</li>
 		
 	@*	@if (Request.RawUrl.Contains("/Proposal"))
 		{
