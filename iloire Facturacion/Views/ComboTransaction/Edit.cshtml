@@ -6,20 +6,13 @@
 <table class="noborder">
 	<tr>
 		<td width="40%">
-			@using (Html.BeginForm())
-   {
-    @Html.ValidationSummary(true)
-    <text>
-    @{Html.RenderPartial("EditOrCreateComboTransactionPartial", Model);}
-    </text>
-   }
+		@using (Html.BeginForm())
+		{
+				@Html.ValidationSummary(true)
+				<text>
+				@{Html.RenderPartial("EditOrCreateComboTransactionPartial", Model);}
+				</text>
+		}
 		</td>
-
-		@*<td width="60%">
-     <p>
-         <a href="@Url.Action("Create", "ComboTransactionController", new { id = Model.ComboTransactionID })" id="@Model.ComboTransactionID" class="btn primary newDetailInvoice">Create new Combo Transaction details</a>
-     </p>
-    
-</td>*@
 	</tr>
 </table>

@@ -106,6 +106,16 @@ namespace CoffeeInvoice.Controllers
 					ctran.TransPortPrice = ctranVM.TransPortPrice;
 					ctran.IsPaid = ctranVM.IsPaid;
 					ctran.PaidDateTime = ctranVM.PaidDateTime;
+					ctran.Expense = 0;
+					ctran.Income = 0;
+					//update combo transaction income and expense
+					List<IndividualProductTransaction> individualProdTrans = db.IndividualProductTransactions.Where(x => x.ComboTransactionID == ctranVM.ComboTransactionID).ToList();
+					foreach (IndividualProductTransaction data in individualProdTrans)
+					{
+						ctran.Expense += data.CNYPrice.Value * data.Number;
+						ctran.Income += data.CNYSellPrice.Value * data.Number;
+					}
+
 					ctran.Benefit = ctran.Income - ctran.Expense - ctran.TransPortPrice;
 					db.Entry(ctran).State = System.Data.Entity.EntityState.Modified;
 					db.SaveChanges();
