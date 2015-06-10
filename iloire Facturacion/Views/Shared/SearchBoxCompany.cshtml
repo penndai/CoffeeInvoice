@@ -21,13 +21,13 @@
 {
     <div class="searchBox">
          <input name="q" id="search_Box" type="text" value="@Request["q"]"
-          placeholder="Please intro search text"/>
+          placeholder="Please input search text"/>
           <input type="submit" value="Search" class="btn small" />
     </div>
 }
 
 <ul class="filtroAlfab">
-@foreach (var letter in "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ")
+@foreach (var letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
  {
     if (ViewBag.LetraAlfabetica == letter.ToString())
     {     

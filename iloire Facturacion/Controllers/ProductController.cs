@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MvcPaging;
+using Microsoft.International.Converters.PinYinConverter;
 
 namespace CoffeeInvoice.Controllers
 {
@@ -40,43 +41,115 @@ namespace CoffeeInvoice.Controllers
 			return RedirectToAction("Index");
 		}
 
+		public ViewResultBase Search(string q, int? page)
+		{
+			q = q.ToUpper();
 
-		// GET: /Product/
+			List<CoffeeInvoice.Models.ViewModel.ProductViewModel> productsVM = new List<Models.ViewModel.ProductViewModel>();
+			if (Session["LoginUser"] != null)
+			{
+				User user = (User)Session["LoginUser"];
+				var products = db.Products.Where(x => x.UserID == user.UserID).OrderBy(x => x.ProductID).ToList();
+				foreach (var pro in products)
+				{
+					CoffeeInvoice.Models.ViewModel.ProductViewModel proVM = new Models.ViewModel.ProductViewModel();
+
+					proVM.ProductID = pro.ProductID;
+					proVM.ProductName = pro.ProductName;
+					
+					string r = string.Empty;
+
+					foreach (char obj in proVM.ProductName)
+					{
+						try
+						{
+							ChineseChar chineseChar = new ChineseChar(obj);
+							string t = chineseChar.Pinyins[0].ToString();
+							r += t.Substring(0, 1);
+						}
+						catch
+						{
+							r += obj.ToString();
+						}
+					}
+
+					if (q.Length == 1)//alphabetical search, first letter
+					{
+						ViewBag.LetraAlfabetica = q;
+						if (r.StartsWith(q) || proVM.ProductName.ToUpper().StartsWith(q))
+						{
+							proVM.Provider = pro.Provider;
+							proVM.ProviderID = pro.ProviderID;
+							proVM.Price = pro.Price;
+							proVM.CNYSellPrice = pro.CNYSellPrice;
+							proVM.CNYPrice = pro.Price * AUDCNYRate;
+							proVM.UserID = pro.UserID;
+							productsVM.Add(proVM);
+						}
+					}
+					else if (q.Length > 1)
+					{
+						//normal search
+						if (r.IndexOf(q) > -1 || proVM.ProductName.ToUpper().IndexOf(q) >-1)
+						{
+							proVM.Provider = pro.Provider;
+							proVM.ProviderID = pro.ProviderID;
+							proVM.Price = pro.Price;
+							proVM.CNYSellPrice = pro.CNYSellPrice;
+							proVM.CNYPrice = pro.Price * AUDCNYRate;
+							proVM.UserID = pro.UserID;
+							productsVM.Add(proVM);
+						}
+					}					
+				}
+			}
+
+			int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
+
+			var productsListPaged = productsVM.ToPagedList(currentPageIndex, defaultPageSize);
+
+			if (Request.IsAjaxRequest())
+			{
+				return PartialView("Index", productsListPaged);
+			}
+			else
+				return View("Index",productsListPaged);
+		}
+		 
 		public ViewResult Index(int? page)
 		{
 			CurrencyConvertYahooController rateController = new CurrencyConvertYahooController();
 			_rate = rateController.ConvertCurrency("AUD", "CNY", 1);
 
 			var productsVM = new List<CoffeeInvoice.Models.ViewModel.ProductViewModel>();
-			var products = db.Products.OrderBy(i => i.ProductName).Include("Provider").ToList();
-
+			
 			if (Session["LoginUser"] != null)
 			{
 				User user = (User)Session["LoginUser"];
+				var products = db.Products.OrderBy(i => i.ProductName).Include("Provider").ToList();
 				products = products.Where(x => x.UserID == user.UserID).ToList();
-			}
-
-			foreach (var pro in products)
-			{
-				CoffeeInvoice.Models.ViewModel.ProductViewModel proVM = new Models.ViewModel.ProductViewModel();
-
-				proVM.ProductID = pro.ProductID;
-				proVM.ProductName = pro.ProductName;
-				proVM.Provider = pro.Provider;
-				proVM.ProviderID = pro.ProviderID;
-				proVM.Price = pro.Price;
-				proVM.CNYSellPrice = pro.CNYSellPrice;				
-				proVM.CNYPrice = pro.Price * AUDCNYRate;
-				proVM.UserID = pro.UserID;
-
-				if (db.PurchaseProducts.Where(x => x.ProductID == pro.ProductID).Count() > 0)
+				foreach (var pro in products)
 				{
-					proVM.IsProductPurchased = true;
-				}
-				else
-					proVM.IsProductPurchased = false;
+					CoffeeInvoice.Models.ViewModel.ProductViewModel proVM = new Models.ViewModel.ProductViewModel();
 
-				productsVM.Add(proVM);
+					proVM.ProductID = pro.ProductID;
+					proVM.ProductName = pro.ProductName;
+					proVM.Provider = pro.Provider;
+					proVM.ProviderID = pro.ProviderID;
+					proVM.Price = pro.Price;
+					proVM.CNYSellPrice = pro.CNYSellPrice;
+					proVM.CNYPrice = pro.Price * AUDCNYRate;
+					proVM.UserID = pro.UserID;
+
+					if (db.PurchaseProducts.Where(x => x.ProductID == pro.ProductID).Count() > 0)
+					{
+						proVM.IsProductPurchased = true;
+					}
+					else
+						proVM.IsProductPurchased = false;
+
+					productsVM.Add(proVM);
+				}
 			}
 
 			int currentPageIndex = page.HasValue ? page.Value - 1 : 0;

@@ -21,6 +21,7 @@ namespace CoffeeInvoice.Controllers
 	
         public ViewResultBase Search(string q, int? page)
         {
+			q = q.ToUpper();
 			List<Customer> customers = db.Customers.OrderBy(c => c.Name).ToList();
 			List<CustomerWithPinYinName> customer_PinYin = new List<CustomerWithPinYinName>();
 			if (Session["LoginUser"] != null)

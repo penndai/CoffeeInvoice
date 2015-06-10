@@ -7,7 +7,6 @@
     ViewBag.Title = "Index";
 }
 
-@Html.Partial("CurrencyRate");
 @*<script>	
 	$(document).ready(function () {
 		var url = "api/ConvertCurrency/AUD/CNY/1";
@@ -20,6 +19,7 @@
 </script>
 <h4>Current Rate for AUD/CNY: <span id="rate"></span></h4>*@
 <div id="ajaxResponse">
+	@Html.Partial("CurrencyRate");
 	<h1>List <small>of Product</small></h1>
 
     <p>
