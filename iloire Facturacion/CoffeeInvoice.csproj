@@ -190,6 +190,7 @@
     <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="CustomBinder\CurrencyModelBinder.cs" />
     <Compile Include="CustomBinder\CurrencyStringModelBinder.cs" />
+    <Compile Include="CustomBinder\DateTimeBinder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

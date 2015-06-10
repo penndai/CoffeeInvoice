@@ -62,10 +62,7 @@
 
         $('.editCustomer').live('click', function () {
             clearErrors();
-
-            var id = $(this).attr("idCustomer");
-            
-			
+            var id = $(this).attr("idCustomer");           			
             var url = '@Url.Content("~/" + ViewContext.RouteData.Values["lang"] + "/Customer/Edit")/' + id;
 
             getRequest(url);

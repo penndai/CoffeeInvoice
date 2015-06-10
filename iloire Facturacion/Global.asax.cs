@@ -69,6 +69,7 @@ namespace CoffeeInvoice
 
 			
             AreaRegistration.RegisterAllAreas();
+			ModelBinders.Binders.Add(typeof(DateTime), new DateTimeBinder());
 			//ModelBinders.Binders.Add(typeof(string), new CurrencyStringModelBinder());
 			GlobalConfiguration.Configure(WebApiConfig.Register);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);

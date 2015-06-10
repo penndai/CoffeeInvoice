@@ -9,8 +9,7 @@
 	<div class="clearfix">
 		@Html.LabelFor(x => Model.ProductID, "Product", new { @class = "control-label col-sm-3" })
 		<div class="input chzn-select">
-			@Html.DropDownListFor(x => Model.ProductID, (SelectList)ViewBag.Products, Model.ProductID)
-			@*@Html.DropDownList("Products", string.Empty)*@
+			@Html.DropDownListFor(x => Model.ProductID, (SelectList)ViewBag.Products, Model.ProductID)			
 			@Html.ValidationMessageFor(x => Model.ProductID)		
 		</div>
 	</div>
@@ -19,8 +18,7 @@
 		
 		@Html.LabelFor(x => Model.CNYPrice, "Price/each", new {@class="control-label col-sm-3" })
 		<div class="input chzn-results">
-			@System.Globalization.CultureInfo.GetCultureInfo("zh-CN").NumberFormat.CurrencySymbol @Html.TextBoxFor(x=>x.CNYSellPrice,new { @readonly="readonly", @id="CNYPrice"})
-			@*@Html.TextBoxCurrencyReadOnly(x=>Model.CNYSellPrice.Value, new { @readonly="readonly", @id="CNYPrice"})*@
+			@System.Globalization.CultureInfo.GetCultureInfo("zh-CN").NumberFormat.CurrencySymbol @Html.TextBoxFor(x=>x.CNYSellPrice,new { @readonly="readonly", @id="CNYPrice"})			
 			@Html.ValidationMessageFor(x=>Model.CNYSellPrice)			
 		</div>
 	</div>

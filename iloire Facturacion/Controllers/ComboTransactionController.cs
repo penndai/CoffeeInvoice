@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MvcPaging;
+using CoffeeInvoice.Models.ViewModel;
 
 namespace CoffeeInvoice.Controllers
 {
@@ -92,6 +93,35 @@ namespace CoffeeInvoice.Controllers
 			ctranVM.Weight = ctran.Weight;
 			ViewBag.Customers = new SelectList(db.Customers.OrderByDescending(x => x.Name), "CustomerID", "Name", ctran.CustomerID);
 			return View(ctranVM);
+		}
+
+		public ActionResult Search(SearchModel sm, int? page, int? pagesize)
+		{
+			int currentPage = page.HasValue ? page.Value - 1 : 0;
+			IPagedList<ComboTransaction> comboTrans =
+						new List<ComboTransaction>().ToPagedList(currentPage, pagesize.HasValue ? pagesize.Value : defaultPageSize);
+
+			if (Session["LoginUser"] != null)
+			{
+
+				User user = (User)Session["LoginUser"];
+				if (sm.from.HasValue && sm.to.HasValue)
+				{
+					comboTrans =
+							db.ComboTransactions.Where(x => x.UserID == user.UserID && x.TimeStamp >= sm.from && x.TimeStamp <= sm.to).OrderByDescending(x => x.TimeStamp).ToPagedList(currentPage, pagesize.HasValue ? pagesize.Value : defaultPageSize);
+				}
+				else if (sm.from.HasValue)
+					comboTrans = db.ComboTransactions.Where(x => x.UserID == user.UserID && x.TimeStamp >= sm.from).OrderByDescending(x => x.TimeStamp).ToPagedList(currentPage, pagesize.HasValue ? pagesize.Value : defaultPageSize);
+				else if (sm.to.HasValue)
+					comboTrans = db.ComboTransactions.Where(x => x.UserID == user.UserID && x.TimeStamp <= sm.to).OrderByDescending(x => x.TimeStamp).ToPagedList(currentPage, pagesize.HasValue ? pagesize.Value : defaultPageSize);
+				else
+					comboTrans = db.ComboTransactions.Where(x => x.UserID == user.UserID).OrderByDescending(x => x.TimeStamp).ToPagedList(currentPage, pagesize.HasValue ? pagesize.Value : defaultPageSize);
+			}
+
+			 if (Request.IsAjaxRequest())
+                return PartialView("Index", comboTrans);
+            else
+                return View("Index", comboTrans);			
 		}
 
 		[HttpPost]
