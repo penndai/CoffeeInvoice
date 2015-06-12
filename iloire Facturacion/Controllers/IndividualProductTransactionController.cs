@@ -132,6 +132,14 @@ namespace CoffeeInvoice.Controllers
 					IndividualProductTransaction ipTranDB = db.IndividualProductTransactions.Find(ipTranVM.IndividualProductTransactionID);
 					if (ipTranDB != null)
 					{
+						if (ipTranDB.ProductID != ipTranVM.ProductID)
+						{
+							Product product = db.Products.Find(ipTranVM.ProductID);
+							ipTranDB.ProductID = ProductID;
+							ipTranDB.Price = product.Price;
+							ipTranDB.CNYPrice = product.CNYPrice;
+							ipTranDB.CNYSellPrice = product.CNYSellPrice;							
+						}
 						ipTranDB.Number = ipTranVM.Number;
 						ipTranDB.TotalPrice = ipTranVM.TotalPrice;
 

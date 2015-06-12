@@ -112,6 +112,8 @@
 		$('#CustomerID').change(function () {
 			var value = this.value;
 			
+			$("#selectedCustomerID").attr('CustomerID', value);
+			$("#selectedCustomerID").attr('ComboTransactionID', @Model.ComboTransactionID);
 
 			var hrefvalue = $("#selectedCustomerID").attr('href');
 			if (hrefvalue.indexOf("CustomerID") == -1) {
