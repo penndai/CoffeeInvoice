@@ -155,6 +155,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="api\CoffeeInvoiceApiController.cs" />
     <Compile Include="App_GlobalResources\Print.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

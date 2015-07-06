@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace CoffeeInvoice.CustomBinder
 {
-	public class CurrencyModelBinder:DefaultModelBinder
+	public class CurrencyModelBinder : DefaultModelBinder
 	{
 		public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
 		{
@@ -16,7 +16,7 @@ namespace CoffeeInvoice.CustomBinder
 			if (valueResult != null)
 			{
 				ModelState modelState = new ModelState { Value = valueResult };
-				
+
 				try
 				{
 					string valToCheck = valueResult.AttemptedValue;
