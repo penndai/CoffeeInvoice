@@ -8,13 +8,18 @@ using System.Web.Mvc;
 
 namespace CoffeeInvoice.Controllers
 {
-    [Authorize]
+	[Authorize]
 	[Localization]
-    public class HomeController : Controller
-    {
-        public ActionResult Index()
-        {
-            return View();
-        }	
-    }
+	public class HomeController : Controller
+	{
+		public ActionResult Index()
+		{
+			return View();
+		}
+
+		public ActionResult GetCustomer()
+		{
+			return View();
+		}
+	}
 }

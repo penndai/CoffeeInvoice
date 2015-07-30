@@ -23,7 +23,7 @@
 		<h3>Latest Transatcions</h3>
 		@*@{Html.RenderAction("LatestTransactions", "Transaction");}*@
 		@{Html.RenderAction("GetLatestTransaction", "Reports");}
-
+		
        @* <h3>Latest proposals</h3>
         @{Html.RenderAction("LatestProposals","Invoice");}*@
     </td>
@@ -53,6 +53,9 @@
         <h3>Last year</h3>
 		@{Html.RenderAction("TransYearSummary", "Reports", new { id = DateTime.Now.Year -1 });}
         @*@{Html.RenderAction("YearSummary", "Reports", new { id = DateTime.Now.Year - 1 });}*@
+
+		<h3>Get Customer Web API Test</h3>
+		@{Html.RenderAction("GetCustomer");}
     </td>
 </tr>
 </table>

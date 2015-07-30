@@ -13,7 +13,7 @@ namespace CoffeeInvoice.api
 	[Authorize]
     public class CoffeeInvoiceApiController : ApiController
     {
-		private InvoiceDB dbContext = new InvoiceDB();
+		private readonly InvoiceDB dbContext = new InvoiceDB();
 
 		protected override void Dispose(bool disposing)
 		{

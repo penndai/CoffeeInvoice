@@ -342,6 +342,10 @@
     <Content Include="Content\bootstrap.extra.css" />
     <Content Include="GetCurrency.html" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\app\ciapicontroller.js" />
     <Content Include="Scripts\bootstrap-dropdown.js" />
     <Content Include="Scripts\bootstrap-modal.js" />
     <Content Include="Scripts\chosen.jquery.js" />
@@ -847,6 +851,8 @@
     <Content Include="Views\Reports\LatestTransactionListPartial.cshtml" />
     <Content Include="Views\Transaction\RecendTransactionByProductPartial.cshtml" />
     <Content Include="Views\Transaction\ComboTransactionListPartial.cshtml" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Views\Home\GetCustomer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
