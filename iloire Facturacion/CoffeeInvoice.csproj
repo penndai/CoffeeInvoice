@@ -842,6 +842,7 @@
     <Content Include="Views\Transaction\ComboTransactionListPartial.cshtml" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Views\Home\GetCustomer.cshtml" />
+    <None Include="Properties\PublishProfiles\coffeeinvoice.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
