@@ -15,7 +15,7 @@ namespace CoffeeInvoice.App_Start
 			config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 			// Web API routes
 			config.MapHttpAttributeRoutes();
-
+           
 			config.Routes.MapHttpRoute(
 				name: "DefaultApi",
 				routeTemplate: "api/{controller}/{id}",

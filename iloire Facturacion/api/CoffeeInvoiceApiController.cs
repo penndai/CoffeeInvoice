@@ -10,7 +10,7 @@ using System.Web.Http.Description;
 
 namespace CoffeeInvoice.api
 {
-	[Authorize]
+    //[Authorize]
     public class CoffeeInvoiceApiController : ApiController
     {
 		private readonly InvoiceDB dbContext = new InvoiceDB();
@@ -29,10 +29,11 @@ namespace CoffeeInvoice.api
 		{
 			return await this.dbContext.Customers.FindAsync(CancellationToken.None, id);
 		}
-
+       
 		[ResponseType(typeof(Customer))]
 		public async Task<IHttpActionResult> GetCustomer(int id)
 		{
+            
 			Customer data = await SearchCustomer(id);
 			if (data == null)
 			{
